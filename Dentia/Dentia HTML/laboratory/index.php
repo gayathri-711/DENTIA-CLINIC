@@ -268,3 +268,4 @@ function openResultModal(ref, patient, test) {
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

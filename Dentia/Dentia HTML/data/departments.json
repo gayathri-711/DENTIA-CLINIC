@@ -12,3 +12,4 @@
   {"id": 11, "name": "Radiology", "slug": "radiology", "code": "RADI", "icon": "fa-x-ray", "short_desc": "3.0T MRI, 128-slice CT, and ultrasound."},
   {"id": 12, "name": "Emergency Medicine", "slug": "emergency-medicine", "code": "EMER", "icon": "fa-truck-medical", "short_desc": "Level-I trauma center, resuscitation, and ambulances."}
 ]
+

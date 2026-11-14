@@ -17,3 +17,4 @@ echo json_encode([
     'department_id' => $deptId,
     'doctors' => $doctors
 ]);
+

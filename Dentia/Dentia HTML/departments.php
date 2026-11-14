@@ -81,3 +81,4 @@ document.getElementById('deptSearchInput')?.addEventListener('keyup', function()
 </script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

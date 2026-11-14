@@ -346,3 +346,4 @@ document.getElementById('consultationForm')?.addEventListener('submit', function
 </script>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
+

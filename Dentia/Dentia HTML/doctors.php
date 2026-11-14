@@ -86,3 +86,4 @@ $doctors = get_doctors($deptFilter);
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

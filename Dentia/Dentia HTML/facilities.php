@@ -86,3 +86,4 @@ $settings = get_hospital_settings();
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

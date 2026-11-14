@@ -711,3 +711,4 @@ INSERT INTO `audit_logs` (`user_id`, `action`, `module`, `record_id`, `details`)
 (2, 'CONSULTATION_NOTE_CREATED', 'MedicalRecords', '1', 'Dr. Marcus Vance recorded clinical findings for Patient MED-PAT-1001.');
 
 SET FOREIGN_KEY_CHECKS = 1;
+

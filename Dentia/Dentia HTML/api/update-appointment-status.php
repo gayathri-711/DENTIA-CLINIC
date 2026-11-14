@@ -46,3 +46,4 @@ if (file_exists($jsonFile)) {
 }
 
 echo json_encode(['success' => true, 'message' => "Appointment {$ref} updated to {$status}."]);
+
