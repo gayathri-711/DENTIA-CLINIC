@@ -1,0 +1,339 @@
+/* ========================================================
+   Doctor Dental Clinic Dentia - Modern Medical UI/UX Theme
+   ======================================================== */
+
+:root {
+  --dentia-primary: #1463b8;
+  --dentia-primary-dark: #0f4f96;
+  --dentia-primary-light: #e8f2fc;
+  --dentia-cyan: #00a8cc;
+  --dentia-cyan-light: #e0f7fa;
+  --dentia-success: #10b981;
+  --dentia-success-light: #d1fae5;
+  --dentia-warning: #f59e0b;
+  --dentia-warning-light: #fef3c7;
+  --dentia-danger: #e11d48;
+  --dentia-danger-light: #ffe4e6;
+  --dentia-gray-50: #f8fafc;
+  --dentia-gray-100: #f1f5f9;
+  --dentia-gray-200: #e2e8f0;
+  --dentia-gray-600: #475569;
+  --dentia-gray-800: #1e293b;
+  --dentia-radius: 12px;
+  --dentia-shadow: 0 10px 25px -5px rgba(20, 99, 184, 0.08), 0 8px 10px -6px rgba(20, 99, 184, 0.04);
+  --dentia-shadow-lg: 0 20px 30px -10px rgba(20, 99, 184, 0.15);
+}
+
+/* --- Top Utility Bar --- */
+.dentia-topbar {
+  background: #0b2545;
+  color: #d1e3ff;
+  font-size: 13.5px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.dentia-topbar a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.dentia-topbar a:hover {
+  color: var(--dentia-cyan);
+}
+.dentia-topbar .emergency-badge {
+  background: var(--dentia-danger);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  animation: pulse-emergency 2s infinite;
+}
+@keyframes pulse-emergency {
+  0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(225, 29, 72, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+}
+
+/* --- Navigation Enhancements --- */
+header.dentia-header {
+  box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+}
+#mainmenu li a.active {
+  color: var(--dentia-primary) !important;
+  font-weight: 600;
+}
+.user-account-btn {
+  display: inline-flex;
+  align-items: center;
+  background: var(--dentia-primary-light);
+  color: var(--dentia-primary);
+  border: 1px solid rgba(20, 99, 184, 0.2);
+  padding: 8px 16px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.user-account-btn:hover {
+  background: var(--dentia-primary);
+  color: #fff !important;
+}
+
+/* --- Hero Section Floating Stats --- */
+.hero-floating-badge {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: var(--dentia-radius);
+  padding: 14px 20px;
+  box-shadow: var(--dentia-shadow-lg);
+  z-index: 3;
+}
+.hero-floating-badge.badge-1 {
+  bottom: 40px;
+  left: 20px;
+}
+.hero-floating-badge.badge-2 {
+  top: 60px;
+  right: 20px;
+}
+
+/* --- Modern Service Cards --- */
+.service-card-modern {
+  background: #ffffff;
+  border: 1px solid var(--dentia-gray-200);
+  border-radius: var(--dentia-radius);
+  padding: 30px 24px;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.service-card-modern:hover {
+  transform: translateY(-6px);
+  border-color: var(--dentia-primary);
+  box-shadow: var(--dentia-shadow-lg);
+}
+.service-icon-box {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background: var(--dentia-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+.service-card-modern:hover .service-icon-box {
+  background: var(--dentia-primary);
+}
+.service-card-modern:hover .service-icon-box img {
+  filter: brightness(0) invert(1);
+}
+.service-card-modern .service-price {
+  font-weight: 700;
+  color: var(--dentia-primary);
+  font-size: 18px;
+}
+
+/* --- Dentist Cards --- */
+.dentist-card-modern {
+  background: #ffffff;
+  border-radius: var(--dentia-radius);
+  overflow: hidden;
+  box-shadow: var(--dentia-shadow);
+  border: 1px solid var(--dentia-gray-200);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dentist-card-modern:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--dentia-shadow-lg);
+}
+.dentist-img-wrap {
+  position: relative;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+.dentist-img-wrap img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.dentist-card-modern:hover .dentist-img-wrap img {
+  transform: scale(1.04);
+}
+.dentist-badge-active {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(16, 185, 129, 0.9);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* --- Appointment Booking Slots Picker --- */
+.slot-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.slot-pill {
+  display: inline-block;
+  text-align: center;
+  padding: 10px 8px;
+  border: 1px solid var(--dentia-gray-200);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--dentia-gray-800);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.slot-pill:hover:not(.booked):not(.disabled) {
+  border-color: var(--dentia-primary);
+  background: var(--dentia-primary-light);
+  color: var(--dentia-primary);
+}
+.slot-pill.selected {
+  background: var(--dentia-primary) !important;
+  color: #fff !important;
+  border-color: var(--dentia-primary) !important;
+  box-shadow: 0 4px 10px rgba(20, 99, 184, 0.3);
+}
+.slot-pill.booked {
+  background: #f1f5f9 !important;
+  color: #94a3b8 !important;
+  border-color: #e2e8f0 !important;
+  cursor: not-allowed !important;
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+/* --- Status Badges --- */
+.badge-status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.badge-status.status-Pending {
+  background: var(--dentia-warning-light);
+  color: #b45309;
+}
+.badge-status.status-Confirmed {
+  background: var(--dentia-success-light);
+  color: #047857;
+}
+.badge-status.status-Completed {
+  background: var(--dentia-primary-light);
+  color: var(--dentia-primary);
+}
+.badge-status.status-Cancelled {
+  background: var(--dentia-danger-light);
+  color: #b91c1c;
+}
+
+/* --- Dashboard UI --- */
+.dashboard-stat-card {
+  background: #ffffff;
+  border-radius: var(--dentia-radius);
+  border: 1px solid var(--dentia-gray-200);
+  padding: 24px;
+  box-shadow: var(--dentia-shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+.dashboard-stat-card:hover {
+  transform: translateY(-3px);
+}
+.stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.stat-icon.primary { background: var(--dentia-primary-light); color: var(--dentia-primary); }
+.stat-icon.warning { background: var(--dentia-warning-light); color: var(--dentia-warning); }
+.stat-icon.success { background: var(--dentia-success-light); color: var(--dentia-success); }
+.stat-icon.danger { background: var(--dentia-danger-light); color: var(--dentia-danger); }
+
+/* --- Admin Sidebar --- */
+.admin-sidebar {
+  background: #0f172a;
+  color: #94a3b8;
+  min-height: 100vh;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+.admin-sidebar .sidebar-heading {
+  padding: 20px 24px;
+  color: #f8fafc;
+  font-weight: 700;
+  font-size: 18px;
+  border-bottom: 1px solid #1e293b;
+}
+.admin-nav {
+  list-style: none;
+  padding: 15px 0;
+  margin: 0;
+}
+.admin-nav li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+.admin-nav li a:hover,
+.admin-nav li a.active {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.08);
+  border-left-color: #38bdf8;
+}
+
+/* --- Section Dividers & Soft Elements --- */
+.section-subtitle-modern {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  color: var(--dentia-primary);
+  margin-bottom: 8px;
+  display: inline-block;
+  background: var(--dentia-primary-light);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* --- Emergency Banner --- */
+.emergency-callout-box {
+  background: linear-gradient(135deg, #1463b8 0%, #0284c7 100%);
+  color: #ffffff;
+  border-radius: var(--dentia-radius);
+  padding: 35px;
+  box-shadow: var(--dentia-shadow-lg);
+}
