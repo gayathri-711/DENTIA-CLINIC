@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reception & Front Desk Intake - MEDINOVA Hospital</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../fonts/fontawesome6/css/all.min.css">
+    <link rel="stylesheet" href="../css/plugins.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/medinova-theme.css">
+</head>
+<body class="bg-light">
+
+<!-- Top Utility Bar -->
+<div class="med-topbar d-none d-md-block">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-4">
+                <div><i class="fa fa-hospital me-2 text-info"></i>MEDINOVA Central Hospital &bull; Front Atrium Desk</div>
+                <div><i class="fa fa-phone-volume me-2 text-info"></i>Ext: 104 / Front Desk Station</div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="emergency-badge"><i class="fa fa-phone-volume me-1"></i> 24/7 ER: +1 (800) 555-9111</span>
+                <span class="text-white-50">|</span>
+                <a href="../index.html"><i class="fa fa-globe me-1"></i> Public Website</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Navigation Bar -->
+<nav class="navbar navbar-expand-lg med-navbar">
+    <div class="container">
+        <a class="med-logo" href="../index.html">
+            <div class="med-logo-icon">
+                <i class="fa fa-heart-pulse"></i>
+            </div>
+            <div>
+                <div class="med-logo-text">MEDINOVA</div>
+                <div class="med-logo-tagline">Advanced Healthcare</div>
+            </div>
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill"><i class="fa fa-id-card me-1"></i> Reception Desk</span>
+            <a href="../logout.php" class="btn btn-outline-danger btn-sm rounded-pill"><i class="fa fa-arrow-right-from-bracket me-1"></i> Sign Out</a>
+        </div>
+    </div>
+</nav>
+
+<div class="py-5">
+    <div class="container">
+        <!-- Reception Header Banner -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fs-2" style="width: 60px; height: 60px;">
+                        <i class="fa fa-id-card"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold text-primary mb-1">Reception & Patient Intake Desk</h3>
+                        <p class="text-muted mb-0 small">Front Desk Officer: <strong>Sarah Jenkins</strong> &bull; Central OPD Atrium Station</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="../booking.html" class="btn btn-med-primary"><i class="fa fa-calendar-plus me-1"></i> Walk-In Booking</a>
+                    <button class="btn btn-med-outline" onclick="window.location.reload();"><i class="fa fa-rotate me-1"></i> Refresh Desk</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Today's Intakes</small>
+                        <h3 class="fw-bold text-primary mb-0 mt-1">42</h3>
+                    </div>
+                    <div class="med-stat-icon bg-primary bg-opacity-10 text-primary">
+                        <i class="fa fa-user-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Waiting in Lounge</small>
+                        <h3 class="fw-bold text-warning mb-0 mt-1">5</h3>
+                    </div>
+                    <div class="med-stat-icon bg-warning bg-opacity-10 text-warning">
+                        <i class="fa fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Doctors on Duty</small>
+                        <h3 class="fw-bold text-success mb-0 mt-1">12</h3>
+                    </div>
+                    <div class="med-stat-icon bg-success bg-opacity-10 text-success">
+                        <i class="fa fa-user-doctor"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">ER Admissions</small>
+                        <h3 class="fw-bold text-danger mb-0 mt-1">3</h3>
+                    </div>
+                    <div class="med-stat-icon bg-danger bg-opacity-10 text-danger">
+                        <i class="fa fa-truck-medical"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registered Appointments & Intake Table -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+            <div class="card-header bg-white py-3 px-4 border-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-primary mb-0"><i class="fa fa-hospital-user me-2"></i> Patient Arrival Roster & Intake Tokens</h5>
+                <span class="badge bg-success rounded-pill px-3 py-2">Front Desk Active</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Token / Ref</th>
+                            <th>Patient Information</th>
+                            <th>Assigned Department & Doctor</th>
+                            <th>Slot</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Intake Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receptionTableBody">
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">TKN-01 &bull; MED-2026-1001</td>
+                            <td>
+                                <div class="fw-bold">John Doe</div>
+                                <small class="text-muted">+1 (555) 234-5678</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">Cardiology</div>
+                                <small class="text-muted">Dr. Marcus Vance (Room 101)</small>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">10:00 AM</span></td>
+                            <td><span class="badge bg-success">Checked In</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-outline-primary" onclick="alert('Token issued for Room 101: Dr. Marcus Vance.')"><i class="fa fa-print me-1"></i> Print Token</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">TKN-02 &bull; MED-2026-1002</td>
+                            <td>
+                                <div class="fw-bold">Emily Watson</div>
+                                <small class="text-muted">+1 (555) 987-6543</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">Neurology</div>
+                                <small class="text-muted">Dr. Elena Rostova (Room 204)</small>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">11:00 AM</span></td>
+                            <td><span class="badge bg-warning text-dark">Pending Arrival</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-med-primary" onclick="alert('Patient checked in! Direct to 2nd Floor Neurology Wing.')"><i class="fa fa-check me-1"></i> Check In</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">TKN-03 &bull; MED-2026-1003</td>
+                            <td>
+                                <div class="fw-bold">Robert Miller</div>
+                                <small class="text-muted">+1 (555) 456-7890</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">Orthopedics</div>
+                                <small class="text-muted">Dr. David Chen (Room 112)</small>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">02:00 PM</span></td>
+                            <td><span class="badge bg-info text-dark">Pre-Registered</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-med-primary" onclick="alert('Patient checked in! Direct to Ground Floor Ortho Clinic.')"><i class="fa fa-check me-1"></i> Check In</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="med-footer mt-5">
+    <div class="container text-center py-4">
+        <small class="text-white-50">&copy; 2026 <strong>MEDINOVA Multi-Speciality Hospital</strong> &bull; Front Desk & Patient Intake &bull; HIPAA Compliant</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

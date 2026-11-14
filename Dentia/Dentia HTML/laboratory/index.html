@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnostic Pathology Laboratory - MEDINOVA Hospital</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../fonts/fontawesome6/css/all.min.css">
+    <link rel="stylesheet" href="../css/plugins.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/medinova-theme.css">
+</head>
+<body class="bg-light">
+
+<!-- Top Utility Bar -->
+<div class="med-topbar d-none d-md-block">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-4">
+                <div><i class="fa fa-hospital me-2 text-info"></i>Central Diagnostic & Molecular Pathology Wing</div>
+                <div><i class="fa fa-flask me-2 text-info"></i>Laboratory Accreditation: CAP & ISO 15189 Certified</div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="emergency-badge"><i class="fa fa-clock me-1"></i> STAT Turnaround: < 45 Mins</span>
+                <span class="text-white-50">|</span>
+                <a href="../index.html"><i class="fa fa-globe me-1"></i> Hospital Main</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Nav -->
+<nav class="navbar navbar-expand-lg med-navbar">
+    <div class="container">
+        <a class="med-logo" href="../index.html">
+            <div class="med-logo-icon">
+                <i class="fa fa-heart-pulse"></i>
+            </div>
+            <div>
+                <div class="med-logo-text">MEDINOVA</div>
+                <div class="med-logo-tagline">Advanced Healthcare</div>
+            </div>
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="badge bg-warning-subtle text-dark px-3 py-2 rounded-pill"><i class="fa fa-flask me-1"></i> Lab Portal</span>
+            <a href="../logout.php" class="btn btn-outline-danger btn-sm rounded-pill"><i class="fa fa-arrow-right-from-bracket me-1"></i> Sign Out</a>
+        </div>
+    </div>
+</nav>
+
+<div class="py-5">
+    <div class="container">
+        <!-- Lab Header Banner -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-warning text-dark d-flex align-items-center justify-content-center fs-2" style="width: 60px; height: 60px;">
+                        <i class="fa fa-flask"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold text-primary mb-1">Pathology & Diagnostic Laboratory Portal</h3>
+                        <p class="text-muted mb-0 small">Lab Technologist: <strong>David Miller</strong> &bull; Central Clinical Laboratory</p>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-med-outline" onclick="window.location.reload();"><i class="fa fa-rotate me-1"></i> Refresh Test Orders</button>
+                    <a href="../admin/index.html" class="btn btn-med-primary"><i class="fa fa-gauge me-1"></i> Admin View</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric KPI Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Pending Tests</small>
+                        <h3 class="fw-bold text-warning mb-0 mt-1">4</h3>
+                    </div>
+                    <div class="med-stat-icon bg-warning bg-opacity-10 text-warning">
+                        <i class="fa fa-vial"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Samples Collected</small>
+                        <h3 class="fw-bold text-primary mb-0 mt-1">19</h3>
+                    </div>
+                    <div class="med-stat-icon bg-primary bg-opacity-10 text-primary">
+                        <i class="fa fa-vials"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Results Validated</small>
+                        <h3 class="fw-bold text-success mb-0 mt-1">32</h3>
+                    </div>
+                    <div class="med-stat-icon bg-success bg-opacity-10 text-success">
+                        <i class="fa fa-circle-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Critical STAT Alerts</small>
+                        <h3 class="fw-bold text-danger mb-0 mt-1">1 Urgent</h3>
+                    </div>
+                    <div class="med-stat-icon bg-danger bg-opacity-10 text-danger">
+                        <i class="fa fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagnostic Requisitions Table -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+            <div class="card-header bg-white py-3 px-4 border-0 d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold text-primary mb-0"><i class="fa fa-microscope me-2"></i> Diagnostic Requisition Worklist</h5>
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">Automated Analyzers Connected</span>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Order Ref</th>
+                            <th>Patient Information</th>
+                            <th>Diagnostic Test Ordered</th>
+                            <th>Ordering Physician</th>
+                            <th>Normal Range</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">LAB-2026-001</td>
+                            <td>
+                                <div class="fw-bold">John Doe</div>
+                                <small class="text-muted">ID: MED-PAT-1001</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">Lipid Profile Panel</div>
+                                <small class="text-muted">Biochemistry Analyzer</small>
+                            </td>
+                            <td>Dr. Marcus Vance</td>
+                            <td>Total Chol &lt; 200 mg/dL</td>
+                            <td><span class="badge bg-success">Result Ready</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-outline-primary" onclick="alert('Viewing John Doe Lipid Profile: Total Chol: 184 mg/dL (Normal). Report signed.');"><i class="fa fa-file-pdf me-1"></i> View Report</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">LAB-2026-002</td>
+                            <td>
+                                <div class="fw-bold">Emily Watson</div>
+                                <small class="text-muted">ID: MED-PAT-1002</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-primary">Complete Blood Count (CBC)</div>
+                                <small class="text-muted">Hematology 5-Part</small>
+                            </td>
+                            <td>Dr. Elena Rostova</td>
+                            <td>WBC: 4.5 - 11.0 x10^3/uL</td>
+                            <td><span class="badge bg-warning text-dark">Testing in Progress</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-med-primary" onclick="alert('Enter CBC Result: WBC 7.2, RBC 4.8, Hb 14.1 g/dL. Marked Verified!'); window.location.reload();"><i class="fa fa-pen me-1"></i> Enter Values</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4 fw-bold text-primary">LAB-2026-003</td>
+                            <td>
+                                <div class="fw-bold">Robert Miller</div>
+                                <small class="text-muted">ID: MED-PAT-1003</small>
+                            </td>
+                            <td>
+                                <div class="fw-bold text-danger">Cardiac Troponin I (STAT)</div>
+                                <small class="text-muted">Emergency Biomarker</small>
+                            </td>
+                            <td>Dr. Arthur Sterling</td>
+                            <td>&lt; 0.04 ng/mL</td>
+                            <td><span class="badge bg-danger">Sample In Lab</span></td>
+                            <td class="text-end pe-4">
+                                <button class="btn btn-sm btn-danger" onclick="alert('Troponin I: 0.01 ng/mL (Normal/Negative). Notified ER Team.'); window.location.reload();"><i class="fa fa-bolt me-1"></i> STAT Process</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="med-footer mt-5">
+    <div class="container text-center py-4">
+        <small class="text-white-50">&copy; 2026 <strong>MEDINOVA Multi-Speciality Hospital</strong> &bull; Diagnostic Pathology &bull; HIPAA Compliant</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -55,6 +55,7 @@ if (empty($appointments)) {
 }
 
 $pageTitle = "Reception & Patient Intake Desk";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

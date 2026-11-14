@@ -97,6 +97,7 @@ if (empty($appointments)) {
 }
 
 $pageTitle = "Patient Health Portal";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

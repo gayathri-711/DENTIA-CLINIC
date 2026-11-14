@@ -11,6 +11,7 @@ require_role(['lab_technician', 'admin', 'superadmin']);
 
 $user = current_user();
 $pageTitle = "Diagnostic Pathology Laboratory";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

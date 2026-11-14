@@ -11,6 +11,7 @@ require_role(['pharmacist', 'admin', 'superadmin']);
 
 $user = current_user();
 $pageTitle = "Pharmacy & Drug Dispensary";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

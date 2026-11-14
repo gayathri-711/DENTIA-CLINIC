@@ -72,6 +72,7 @@ if (empty($appointments)) {
 }
 
 $pageTitle = "Physician Clinical Portal";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

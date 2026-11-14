@@ -11,6 +11,7 @@ require_role(['billing', 'admin', 'superadmin']);
 
 $user = current_user();
 $pageTitle = "Hospital Billing & Invoicing";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

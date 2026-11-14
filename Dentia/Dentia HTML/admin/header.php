@@ -12,11 +12,18 @@ $admin = get_logged_in_admin();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($adminPageTitle) ? e($adminPageTitle) . ' — ' : '' ?>Dentia Admin Management</title>
+    <title><?= isset($adminPageTitle) ? e($adminPageTitle) . ' — ' : '' ?>MEDINOVA Hospital Administration</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Stylesheets -->
     <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../fonts/fontawesome6/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/plugins.css" rel="stylesheet" type="text/css">
     <link href="../css/style.css" rel="stylesheet" type="text/css">
     <link href="../css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link href="../css/medinova-theme.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="../images/icon.webp" type="image/gif">
 </head>
 <body class="bg-light">
@@ -24,8 +31,14 @@ $admin = get_logged_in_admin();
 <div class="d-flex">
     <!-- Sidebar -->
     <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 260px;">
-        <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100">
-            <img src="../images/logo-white.webp" alt="Dentia" style="max-height: 38px;">
+        <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100 gap-2">
+            <div class="med-logo-icon" style="width: 36px; height: 36px; font-size: 16px;">
+                <i class="fa fa-heart-pulse"></i>
+            </div>
+            <div>
+                <div class="med-logo-text text-white fs-5 lh-1">MEDINOVA</div>
+                <div class="med-logo-tagline text-info" style="font-size: 10px;">Hospital Administration</div>
+            </div>
         </a>
 
         <div class="py-2 px-2 text-white-50 small mt-2">

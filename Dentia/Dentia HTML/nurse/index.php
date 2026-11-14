@@ -11,6 +11,7 @@ require_role(['nurse', 'admin', 'superadmin']);
 
 $user = current_user();
 $pageTitle = "Inpatient Nursing Care Portal";
+$assetPrefix = '../';
 require_once __DIR__ . '/../includes/header.php';
 ?>
 

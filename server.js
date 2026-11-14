@@ -106,13 +106,39 @@ const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
-  // Friendly Route Aliases
+  // Friendly Route Aliases & Module Mappings
   if (pathname === '/' || pathname === '/index.php') pathname = '/index.html';
-  if (pathname === '/admin' || pathname === '/admin/' || pathname === '/admin/index.php') pathname = '/admin/index.html';
+  if (pathname === '/about' || pathname === '/about.php') pathname = '/about.html';
+  if (pathname === '/departments' || pathname === '/departments.php') pathname = '/departments.html';
+  if (pathname === '/doctors' || pathname === '/doctors.php' || pathname === '/dentists' || pathname === '/dentists.php') pathname = '/dentists.html';
+  if (pathname === '/facilities' || pathname === '/facilities.php' || pathname === '/services' || pathname === '/services.php') pathname = '/services.html';
+  if (pathname === '/contact' || pathname === '/contact.php') pathname = '/contact.html';
   if (pathname === '/login' || pathname === '/login.php') pathname = '/login.html';
   if (pathname === '/register' || pathname === '/register.php') pathname = '/register.html';
   if (pathname === '/booking' || pathname === '/booking.php') pathname = '/booking.html';
-  if (pathname === '/dashboard' || pathname === '/patient/dashboard.php') pathname = '/patient-dashboard.html';
+  if (pathname === '/logout' || pathname === '/logout.php') {
+    res.writeHead(302, { 'Location': '/login.html' });
+    return res.end();
+  }
+
+  // Module Portals Aliases
+  if (pathname === '/admin' || pathname === '/admin/' || pathname === '/admin/index.php') pathname = '/admin/index.html';
+  if (pathname === '/doctor' || pathname === '/doctor/' || pathname === '/doctor/index.php') pathname = '/doctor/index.html';
+  if (pathname === '/patient' || pathname === '/patient/' || pathname === '/patient/dashboard.php' || pathname === '/patient/index.php' || pathname === '/dashboard') pathname = '/patient/dashboard.html';
+  if (pathname === '/receptionist' || pathname === '/receptionist/' || pathname === '/receptionist/index.php') pathname = '/receptionist/index.html';
+  if (pathname === '/nurse' || pathname === '/nurse/' || pathname === '/nurse/index.php') pathname = '/nurse/index.html';
+  if (pathname === '/laboratory' || pathname === '/laboratory/' || pathname === '/laboratory/index.php') pathname = '/laboratory/index.html';
+  if (pathname === '/pharmacy' || pathname === '/pharmacy/' || pathname === '/pharmacy/index.php') pathname = '/pharmacy/index.html';
+  if (pathname === '/billing' || pathname === '/billing/' || pathname === '/billing/index.php') pathname = '/billing/index.html';
+
+  // Department Details Mapping
+  if (pathname === '/department-details.php') {
+    const slug = parsedUrl.query.slug || 'cardiology';
+    pathname = `/departments/${slug}.html`;
+  }
+  if (pathname.startsWith('/departments/') && pathname.endsWith('.php')) {
+    pathname = pathname.replace('.php', '.html');
+  }
 
   // ----------------------------------------------------
   // REST API ENDPOINTS
@@ -291,6 +317,17 @@ const server = http.createServer(async (req, res) => {
 
   // Static File Resolution
   let filePath = path.join(WEB_ROOT, pathname);
+
+  // Automatic Static Asset Resolution from any subdirectory (doctor/css/..., nurse/css/..., etc.)
+  const assetMatch = pathname.match(/\/(css|fonts|images|js)\/(.*)$/);
+  if (assetMatch) {
+    const assetDir = assetMatch[1];
+    const assetFile = assetMatch[2];
+    const directAssetPath = path.join(WEB_ROOT, assetDir, assetFile);
+    if (fs.existsSync(directAssetPath)) {
+      filePath = directAssetPath;
+    }
+  }
 
   if (!fs.existsSync(filePath)) {
     if (fs.existsSync(filePath + '.html')) filePath += '.html';

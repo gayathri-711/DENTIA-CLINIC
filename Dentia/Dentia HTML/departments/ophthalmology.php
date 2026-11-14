@@ -1,4 +1,4 @@
 <?php
-$_GET['slug'] = 'ophthalmology';
+ = '../';
+['slug'] = 'ophthalmology';
 require_once __DIR__ . '/../department-details.php';
-

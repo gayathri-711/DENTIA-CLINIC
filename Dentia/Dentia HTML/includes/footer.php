@@ -4,6 +4,20 @@
  * Global Responsive Public Footer
  */
 $footerSettings = get_hospital_settings();
+
+// Ensure asset prefix exists
+if (!isset($assetPrefix)) {
+    $docRoot = realpath(__DIR__ . '/..');
+    $currentDir = realpath(dirname($_SERVER['SCRIPT_FILENAME'] ?? getcwd()));
+    $assetPrefix = '';
+    if ($docRoot && $currentDir && $currentDir !== $docRoot) {
+        $rel = str_replace('\\', '/', trim(substr($currentDir, strlen($docRoot)), '/\\'));
+        if ($rel !== '') {
+            $depth = count(explode('/', $rel));
+            $assetPrefix = str_repeat('../', $depth);
+        }
+    }
+}
 ?>
 <!-- Hospital Emergency Banner -->
 <div class="py-4 bg-primary text-white" style="background: linear-gradient(135deg, var(--med-primary-dark), var(--med-secondary-dark)) !important;">
@@ -59,12 +73,12 @@ $footerSettings = get_hospital_settings();
             <div class="col-lg-3 col-md-6">
                 <h5>Speciality Centers</h5>
                 <ul class="list-unstyled mb-0">
-                    <li class="mb-2"><a href="department-details.php?slug=cardiology"><i class="fa fa-angle-right me-2 text-info"></i> Cardiology & Cath Lab</a></li>
-                    <li class="mb-2"><a href="department-details.php?slug=neurology"><i class="fa fa-angle-right me-2 text-info"></i> Neurology & Stroke Unit</a></li>
-                    <li class="mb-2"><a href="department-details.php?slug=orthopedics"><i class="fa fa-angle-right me-2 text-info"></i> Robotic Joint Surgery</a></li>
-                    <li class="mb-2"><a href="department-details.php?slug=pediatrics"><i class="fa fa-angle-right me-2 text-info"></i> Pediatrics & Level-III NICU</a></li>
-                    <li class="mb-2"><a href="department-details.php?slug=oncology"><i class="fa fa-angle-right me-2 text-info"></i> Comprehensive Oncology</a></li>
-                    <li class="mb-2"><a href="departments.php" class="text-info fw-bold"><i class="fa fa-arrow-right me-1"></i> View All 12 Departments</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=cardiology"><i class="fa fa-angle-right me-2 text-info"></i> Cardiology & Cath Lab</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=neurology"><i class="fa fa-angle-right me-2 text-info"></i> Neurology & Stroke Unit</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=orthopedics"><i class="fa fa-angle-right me-2 text-info"></i> Robotic Joint Surgery</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=pediatrics"><i class="fa fa-angle-right me-2 text-info"></i> Pediatrics & Level-III NICU</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=oncology"><i class="fa fa-angle-right me-2 text-info"></i> Comprehensive Oncology</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>departments.php" class="text-info fw-bold"><i class="fa fa-arrow-right me-1"></i> View All 12 Departments</a></li>
                 </ul>
             </div>
 
@@ -72,13 +86,13 @@ $footerSettings = get_hospital_settings();
             <div class="col-lg-2 col-md-6">
                 <h5>Hospital Portals</h5>
                 <ul class="list-unstyled mb-0">
-                    <li class="mb-2"><a href="login.php?role=patient"><i class="fa fa-angle-right me-2 text-info"></i> Patient Portal</a></li>
-                    <li class="mb-2"><a href="login.php?role=doctor"><i class="fa fa-angle-right me-2 text-info"></i> Doctor Portal</a></li>
-                    <li class="mb-2"><a href="login.php?role=receptionist"><i class="fa fa-angle-right me-2 text-info"></i> Reception Desk</a></li>
-                    <li class="mb-2"><a href="login.php?role=nurse"><i class="fa fa-angle-right me-2 text-info"></i> Inpatient Nursing</a></li>
-                    <li class="mb-2"><a href="login.php?role=lab_technician"><i class="fa fa-angle-right me-2 text-info"></i> Diagnostic Lab</a></li>
-                    <li class="mb-2"><a href="login.php?role=pharmacist"><i class="fa fa-angle-right me-2 text-info"></i> Pharmacy Dispensary</a></li>
-                    <li class="mb-2"><a href="login.php?role=admin"><i class="fa fa-angle-right me-2 text-info"></i> Admin Dashboard</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=patient"><i class="fa fa-angle-right me-2 text-info"></i> Patient Portal</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=doctor"><i class="fa fa-angle-right me-2 text-info"></i> Doctor Portal</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=receptionist"><i class="fa fa-angle-right me-2 text-info"></i> Reception Desk</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=nurse"><i class="fa fa-angle-right me-2 text-info"></i> Inpatient Nursing</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=lab_technician"><i class="fa fa-angle-right me-2 text-info"></i> Diagnostic Lab</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=pharmacist"><i class="fa fa-angle-right me-2 text-info"></i> Pharmacy Dispensary</a></li>
+                    <li class="mb-2"><a href="<?= $assetPrefix ?>admin/index.php"><i class="fa fa-angle-right me-2 text-info"></i> Admin Dashboard</a></li>
                 </ul>
             </div>
 
@@ -115,9 +129,9 @@ $footerSettings = get_hospital_settings();
 </footer>
 
 <!-- Core Scripts -->
-<script src="js/plugins.js"></script>
+<script src="<?= $assetPrefix ?>js/plugins.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/custom-app.js"></script>
+<script src="<?= $assetPrefix ?>js/custom-app.js"></script>
 
 </body>
 </html>

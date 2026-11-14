@@ -77,16 +77,19 @@ function require_role($allowed_roles = []) {
         $allowed_roles = [$allowed_roles];
     }
     
+    global $assetPrefix;
+    $p = $assetPrefix ?? '';
+
     if (!is_logged_in()) {
         $_SESSION['flash_error'] = "Please sign in to access the hospital management portal.";
-        header("Location: /login.php");
+        header("Location: {$p}login.php");
         exit;
     }
     
     $userRole = $_SESSION['user_role'];
     if (!in_array($userRole, $allowed_roles) && !in_array('superadmin', $allowed_roles) && $userRole !== 'superadmin') {
         $_SESSION['flash_error'] = "Access denied: Your account role ({$userRole}) is not authorized for this module.";
-        redirect_to_dashboard($userRole);
+        redirect_to_dashboard($userRole, $p);
         exit;
     }
 }
@@ -94,35 +97,39 @@ function require_role($allowed_roles = []) {
 /**
  * Redirects user to their designated role dashboard
  */
-function redirect_to_dashboard($role) {
+function redirect_to_dashboard($role, $prefix = '') {
+    if (empty($prefix)) {
+        global $assetPrefix;
+        $prefix = $assetPrefix ?? '';
+    }
     switch ($role) {
         case 'superadmin':
         case 'admin':
-            header("Location: /admin/index.php");
+            header("Location: {$prefix}admin/index.php");
             break;
         case 'doctor':
-            header("Location: /doctor/index.php");
+            header("Location: {$prefix}doctor/index.php");
             break;
         case 'patient':
-            header("Location: /patient/dashboard.php");
+            header("Location: {$prefix}patient/dashboard.php");
             break;
         case 'receptionist':
-            header("Location: /receptionist/index.php");
+            header("Location: {$prefix}receptionist/index.php");
             break;
         case 'nurse':
-            header("Location: /nurse/index.php");
+            header("Location: {$prefix}nurse/index.php");
             break;
         case 'lab_technician':
-            header("Location: /laboratory/index.php");
+            header("Location: {$prefix}laboratory/index.php");
             break;
         case 'pharmacist':
-            header("Location: /pharmacy/index.php");
+            header("Location: {$prefix}pharmacy/index.php");
             break;
         case 'billing':
-            header("Location: /billing/index.php");
+            header("Location: {$prefix}billing/index.php");
             break;
         default:
-            header("Location: /index.php");
+            header("Location: {$prefix}index.php");
             break;
     }
     exit;
