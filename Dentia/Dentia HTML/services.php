@@ -113,3 +113,4 @@ $allServices = get_all_services();
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

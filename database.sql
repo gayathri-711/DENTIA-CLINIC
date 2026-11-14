@@ -297,3 +297,4 @@ INSERT INTO `blogs` (`title`, `slug`, `excerpt`, `content`, `image`, `author`, `
  'Separating commercial myths from clinically proven whitening methods that protect your enamel while delivering bright smiles.', 
  '<p>Many over-the-counter DIY kits can damage tooth enamel or cause severe gum irritation. Professional in-office laser treatments utilize pH-balanced hydrogen peroxide gels activated by specialized light frequencies for fast, safe, and even shade enhancement.</p>', 
  'images/blog/l3.webp', 'Dr. Maya Lin', 'Aesthetic Care', '2026-11-02');
+

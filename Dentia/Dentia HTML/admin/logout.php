@@ -13,3 +13,4 @@ unset($_SESSION['admin_role']);
 set_flash_message('info', 'Admin session terminated safely.');
 header("Location: login.php");
 exit;
+

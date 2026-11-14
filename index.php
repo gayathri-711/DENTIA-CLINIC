@@ -5,3 +5,4 @@
  */
 header("Location: Dentia/Dentia HTML/index.php");
 exit;
+

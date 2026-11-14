@@ -13,3 +13,4 @@ unset($_SESSION['patient_phone']);
 set_flash_message('info', 'You have been safely signed out. See you next visit!');
 header("Location: index.php");
 exit;
+

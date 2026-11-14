@@ -265,3 +265,4 @@ $dentists = get_all_dentists(false);
 </div>
 
 <?php require_once __DIR__ . '/footer.php'; ?>
+

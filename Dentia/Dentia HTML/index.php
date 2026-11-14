@@ -511,3 +511,4 @@ $blogs = get_recent_blogs(3);
 <!-- Content end -->
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

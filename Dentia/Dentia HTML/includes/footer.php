@@ -116,3 +116,4 @@ $clinicSettings = get_clinic_settings();
     <script src="js/custom-app.js"></script>
 </body>
 </html>
+

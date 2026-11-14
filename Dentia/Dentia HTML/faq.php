@@ -80,3 +80,4 @@ $faqs = get_all_faqs();
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

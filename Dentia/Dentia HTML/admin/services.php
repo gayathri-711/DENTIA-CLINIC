@@ -241,3 +241,4 @@ $services = get_all_services(false);
 </div>
 
 <?php require_once __DIR__ . '/footer.php'; ?>
+

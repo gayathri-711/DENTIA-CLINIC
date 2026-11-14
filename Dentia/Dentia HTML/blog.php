@@ -83,3 +83,4 @@ $blogs = get_recent_blogs(10);
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

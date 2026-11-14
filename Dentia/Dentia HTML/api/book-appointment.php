@@ -15,3 +15,4 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $result = process_appointment_booking($_POST);
 echo json_encode($result);
 exit;
+

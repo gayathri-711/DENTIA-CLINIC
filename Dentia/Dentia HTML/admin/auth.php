@@ -9,3 +9,4 @@ require_once __DIR__ . '/../includes/functions.php';
 require_admin_login('login.php');
 
 $adminData = get_logged_in_admin();
+

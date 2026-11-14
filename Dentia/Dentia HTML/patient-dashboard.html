@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Patient Portal — Doctor Dental Clinic Dentia</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="images/icon.webp" type="image/gif">
+    <style>
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .badge-confirmed { background: #d1fae5; color: #065f46; }
+        .badge-completed { background: #e0f2fe; color: #0369a1; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <header class="bg-white border-bottom py-3 shadow-sm sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="index.html" class="d-flex align-items-center text-decoration-none">
+                <img src="images/logo-black.webp" alt="Dentia" style="max-height: 40px;">
+            </a>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:38px; height:38px;" id="avatar_initial">
+                        P
+                    </div>
+                    <div>
+                        <div class="fw-bold small text-dark leading-tight" id="header_patient_name">Patient</div>
+                        <div class="text-muted" style="font-size: 11px;" id="header_patient_email">user@example.com</div>
+                    </div>
+                </div>
+                <a href="booking.html" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold">
+                    <i class="fa fa-calendar-plus-o me-1"></i> Book Visit
+                </a>
+                <button onclick="handleLogout()" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                    <i class="fa fa-sign-out me-1"></i> Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subheader -->
+    <section class="py-4 bg-primary text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <h2 class="fw-bold text-white mb-1">Welcome, <span id="welcome_name">Patient</span></h2>
+                    <p class="small text-white-50 mb-0">Your Personal Dental Care Hub & Scheduled Appointments</p>
+                </div>
+                <div>
+                    <a href="booking.html" class="btn btn-light text-primary rounded-pill px-4 fw-bold shadow-sm">
+                        <i class="fa fa-plus-circle me-1"></i> Book New Procedure
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+
+            <div id="patient_alert" class="alert d-none rounded-3 shadow-sm mb-4"></div>
+
+            <!-- Stats Overview -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Upcoming Visits</div>
+                            <h2 class="fw-bold mb-0 text-primary" id="count_upcoming">0</h2>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fa fa-calendar-check-o fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Completed Treatments</div>
+                            <h2 class="fw-bold mb-0 text-success" id="count_completed">0</h2>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fa fa-check-circle fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Total Scheduled</div>
+                            <h2 class="fw-bold mb-0 text-dark" id="count_total">0</h2>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fa fa-history fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointment List Section -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-stethoscope text-primary me-2"></i> My Dental Appointments</h5>
+                    <span class="badge bg-light text-primary border rounded-pill px-3 py-1 small">Real-Time Sync</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Dental Procedure</th>
+                                    <th>Doctor</th>
+                                    <th>Appointment Date & Time</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient_appointments_body">
+                                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading your appointments...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Need Help Section -->
+            <div class="emergency-callout-box">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <h4 class="text-white fw-bold mb-1">Have an Urgent Dental Emergency?</h4>
+                        <p class="text-white mb-0" style="opacity:0.9;">Our New York dental emergency specialists provide immediate same-day relief.</p>
+                    </div>
+                    <a href="tel:+18009113368" class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow">
+                        <i class="fa fa-phone me-2"></i> Emergency: +1 (800) 911-DENT
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+<script>
+let currentPatient = null;
+
+function checkAuth() {
+    const raw = localStorage.getItem('dentia_patient');
+    if (!raw) {
+        window.location.href = 'login.html';
+        return;
+    }
+    try {
+        currentPatient = JSON.parse(raw);
+        document.getElementById('header_patient_name').innerText = currentPatient.name || 'Patient';
+        document.getElementById('welcome_name').innerText = currentPatient.name || 'Patient';
+        document.getElementById('header_patient_email').innerText = currentPatient.email || '';
+        document.getElementById('avatar_initial').innerText = (currentPatient.name || 'P')[0].toUpperCase();
+    } catch (e) {
+        window.location.href = 'login.html';
+    }
+}
+
+async function loadPatientAppointments() {
+    if (!currentPatient) return;
+    const tbody = document.getElementById('patient_appointments_body');
+
+    try {
+        const res = await fetch(`/api/patient/appointments?email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
+        const list = res.appointments || [];
+
+        const upcoming = list.filter(a => a.status === 'Pending' || a.status === 'Confirmed');
+        const completed = list.filter(a => a.status === 'Completed');
+
+        document.getElementById('count_upcoming').innerText = upcoming.length;
+        document.getElementById('count_completed').innerText = completed.length;
+        document.getElementById('count_total').innerText = list.length;
+
+        if (list.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="text-muted mb-3" style="font-size: 48px;"><i class="fa fa-calendar-o"></i></div>
+                        <h5 class="fw-bold text-dark mb-2">No Appointments Scheduled</h5>
+                        <p class="text-muted small mb-3">You don't have any dental visits scheduled yet.</p>
+                        <a href="booking.html" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Book Your First Visit</a>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = list.map(app => {
+            const canCancel = app.status === 'Pending' || app.status === 'Confirmed';
+            return `
+                <tr>
+                    <td><strong class="font-monospace text-primary">${app.appointment_ref}</strong></td>
+                    <td>
+                        <div class="fw-bold text-dark">${app.service_name || 'Dental Service'}</div>
+                        <small class="text-muted">${app.message ? `"${app.message}"` : ''}</small>
+                    </td>
+                    <td>
+                        <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i> ${app.dentist_name || 'Doctor'}</div>
+                    </td>
+                    <td>
+                        <div class="fw-bold small"><i class="fa fa-calendar me-1 text-primary"></i> ${app.appointment_date}</div>
+                        <small class="text-muted"><i class="fa fa-clock-o me-1"></i> ${app.appointment_time}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-${(app.status || 'pending').toLowerCase()} px-3 py-1 rounded-pill fw-semibold">
+                            ${app.status === 'Confirmed' ? '<i class="fa fa-check-circle me-1"></i> Confirmed' : app.status}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        ${canCancel ? `
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="cancelAppointment(${app.id})">
+                                <i class="fa fa-times me-1"></i> Cancel
+                            </button>
+                        ` : `
+                            <span class="text-muted small">—</span>
+                        `}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error loading appointments.</td></tr>`;
+    }
+}
+
+async function cancelAppointment(id) {
+    if (!confirm('Are you sure you want to cancel this appointment?')) return;
+    try {
+        const res = await fetch('/api/appointments/status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, status: 'Cancelled' })
+        }).then(r => r.json());
+
+        if (res.success) {
+            const alertEl = document.getElementById('patient_alert');
+            alertEl.className = 'alert alert-warning rounded-3 shadow-sm mb-4 d-block';
+            alertEl.innerHTML = '<i class="fa fa-info-circle me-2"></i> Your appointment has been cancelled.';
+            setTimeout(() => { alertEl.className = 'alert d-none'; }, 4000);
+            loadPatientAppointments();
+        }
+    } catch (e) {
+        alert('Server communication error');
+    }
+}
+
+function handleLogout() {
+    localStorage.removeItem('dentia_patient');
+    window.location.href = 'index.html';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadPatientAppointments();
+});
+</script>
+</body>
+</html>

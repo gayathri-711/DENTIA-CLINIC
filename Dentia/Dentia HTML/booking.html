@@ -28,6 +28,26 @@
         <div id="de-loader"></div>
         <!-- preloader end -->
 
+        <!-- Top Utility Bar -->
+        <div class="dentia-topbar d-none d-lg-block" style="background:#0b2545; color:#d1e3ff; padding:8px 0; font-size:13.5px; z-index:100; position:relative;">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-4">
+                        <div><i class="fa fa-clock-o text-info me-2"></i>Mon - Fri: 08:00 AM - 08:00 PM</div>
+                        <div><i class="fa fa-map-marker text-danger me-2"></i>100 S Main St, New York, NY</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span style="background:#e11d48; color:#fff; padding:3px 10px; border-radius:20px; font-weight:600;"><i class="fa fa-phone me-1"></i> EMERGENCY: +1 (800) 911-DENT</span>
+                        <span class="text-white-50">|</span>
+                        <a href="login.html" class="text-white text-decoration-none"><i class="fa fa-user me-1"></i> Patient Login</a>
+                        <a href="register.html" class="text-white text-decoration-none"><i class="fa fa-user-plus me-1"></i> Register</a>
+                        <span class="text-white-50">|</span>
+                        <a href="admin/index.html" class="text-warning text-decoration-none fw-bold"><i class="fa fa-shield me-1"></i> Admin Portal</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- header begin -->
         <header class="transparent header-light">
             <div class="container">
@@ -239,6 +259,22 @@
                                                     <option value="Restorative Dentistry">Restorative Dentistry</option>
                                                     <option value="Preventive Dentistry">Preventive Dentistry</option>
                                                     <option value="Orthodontics">Orthodontics</option>
+                                                    <option value="Teeth Whitening">Teeth Whitening</option>
+                                                    <option value="Dental Implants">Dental Implants</option>
+                                                    <option value="Root Canal Treatment">Root Canal Treatment</option>
+                                                    <option value="Tooth Extraction">Tooth Extraction</option>
+                                                    <option value="Dental Cleaning">Dental Cleaning</option>
+                                                    <option value="Gum Treatment">Gum Treatment</option>
+                                                </select>
+                                                <i class="absolute top-0 end-0 id-color pt-3 pe-3 icofont-simple-down"></i>
+                                            </div>
+
+                                            <div class="relative mt-3">
+                                                <select name="dentist_id" id="dentist_id" class="form-control">
+                                                    <option value="1">Dr. Sarah Bennett (Lead Dentist & General Care)</option>
+                                                    <option value="2">Dr. Maya Lin (Cosmetic & Aesthetic Dentistry)</option>
+                                                    <option value="3">Dr. James Rodriguez (Orthodontics & Implants)</option>
+                                                    <option value="4">Dr. Emily Chen (Pediatric Dentistry & Gum Therapy)</option>
                                                 </select>
                                                 <i class="absolute top-0 end-0 id-color pt-3 pe-3 icofont-simple-down"></i>
                                             </div>
@@ -472,6 +508,30 @@
 
     </script>
     <!-- datepicker close -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Populate doctors dynamically from API
+            try {
+                const res = await fetch('/api/dentists').then(r => r.json());
+                if (Array.isArray(res) && res.length > 0) {
+                    const select = document.getElementById('dentist_id');
+                    select.innerHTML = res.map(d => `<option value="${d.id}">${d.name} (${d.specialization})</option>`).join('');
+                }
+            } catch (e) {}
+
+            // Auto-fill logged-in patient details
+            try {
+                const pRaw = localStorage.getItem('dentia_patient');
+                if (pRaw) {
+                    const p = JSON.parse(pRaw);
+                    if (p.name) document.getElementById('name').value = p.name;
+                    if (p.email) document.getElementById('email').value = p.email;
+                    if (p.phone) document.getElementById('phone').value = p.phone;
+                }
+            } catch (e) {}
+        });
+    </script>
 
 </body>
 

@@ -120,3 +120,4 @@ $clinicSettings = get_clinic_settings();
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+

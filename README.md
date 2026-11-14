@@ -190,3 +190,4 @@ Open your browser at `http://localhost:8000/install.php` to initialize the datab
 - **Email**: `john.doe@example.com`
 - **Password**: `patient123`
 - *Access*: Patient dashboard, upcoming appointments, appointment cancellation, and profile management.
+

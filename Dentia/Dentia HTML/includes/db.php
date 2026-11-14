@@ -74,3 +74,4 @@ function are_tables_installed() {
         return false;
     }
 }
+

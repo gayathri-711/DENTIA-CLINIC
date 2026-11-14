@@ -254,3 +254,4 @@ $benefitsList = array_filter(array_map('trim', explode("\n", $service['benefits'
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
