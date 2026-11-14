@@ -1,123 +1,117 @@
 <?php
 /**
- * Doctor Dental Clinic Dentia - About Clinic & Heritage
+ * MEDINOVA Multi-Speciality Hospital Management System
+ * About Hospital Overview, Vision, Mission & Standards
  */
-$pageTitle = "About Our Clinic & Philosophy";
+$pageTitle = "About MEDINOVA Hospital";
 require_once __DIR__ . '/includes/header.php';
-
-$dentists = get_all_dentists(true);
-$clinicSettings = get_clinic_settings();
+$settings = get_hospital_settings();
 ?>
 
-<div class="no-bottom no-top" id="content">
-    <div id="top"></div>
+<!-- Breadcrumb Header -->
+<div class="py-5 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Hospital Profile</span>
+                <h1 class="fw-bold text-primary mb-2">About MEDINOVA</h1>
+                <p class="text-muted mb-0">Committed to clinical excellence, patient-centric compassion, and cutting-edge healthcare technology across 12 tertiary medical specialities.</p>
+            </div>
+            <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                <a href="booking.php" class="btn btn-med-primary"><i class="fa fa-calendar-check me-2"></i> Book Appointment</a>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <!-- Subheader -->
-    <section id="subheader" class="bg-color-op-1 text-center py-5" style="background: linear-gradient(135deg, #e8f2fc 0%, #d4e8fa 100%);">
-        <div class="container relative z-2">
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <span class="badge bg-primary text-white rounded-pill px-3 py-1 mb-2">Our Mission & Care</span>
-                    <h1 class="fw-bold mb-2">About Doctor Dental Clinic Dentia</h1>
-                    <div class="border-bottom my-3 mx-auto" style="width: 60px; border-width: 3px !important; border-color: var(--dentia-primary) !important;"></div>
-                    <ul class="crumb list-inline mb-0">
-                        <li class="list-inline-item"><a href="index.php" class="text-decoration-none text-muted">Home</a></li>
-                        <li class="list-inline-item">/</li>
-                        <li class="list-inline-item active text-primary fw-bold">About Us</li>
-                    </ul>
+<!-- Hospital Overview Section -->
+<div class="py-5">
+    <div class="container">
+        <div class="row align-items-center g-5 mb-5">
+            <div class="col-lg-6">
+                <span class="badge bg-primary text-uppercase px-3 py-2 mb-3">Our Foundation</span>
+                <h2 class="fw-bold text-primary mb-4">Dedicated to Transforming Patient Lives for Over 20 Years</h2>
+                <p class="fs-5 text-muted lh-base mb-3">
+                    Founded with the vision to deliver world-class medical care at international benchmarks, <strong>MEDINOVA Multi-Speciality Hospital</strong> has grown into a leading tertiary referral center serving thousands of patients annually.
+                </p>
+                <p class="text-muted mb-4">
+                    Our 450-bed quaternary facility integrates 12 Centers of Excellence—including Cardiovascular Sciences, Neurosciences, Robotic Orthopedics, Oncology, and Comprehensive Emergency Care. We pair internationally trained clinicians with AI-driven diagnostic imaging and precision surgical robotics to ensure the highest standard of healing.
+                </p>
+                <div class="p-3 bg-light rounded-3 border-start border-4 border-primary">
+                    <p class="fst-italic text-dark mb-0 fw-semibold">
+                        "At MEDINOVA, our motto is 'Advanced Healthcare, Better Tomorrow.' We treat the patient, not just the symptom, fostering trust through transparent clinical decisions and compassionate care."
+                    </p>
+                    <small class="text-muted d-block mt-2">— Dr. Arthur Sterling, Chief Medical Officer</small>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="images/misc/l2.webp" class="img-fluid rounded-4 shadow-lg w-100" alt="MEDINOVA Infrastructure" style="max-height: 440px; object-fit: cover;">
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Clinic Intro & Philosophy -->
-    <section class="py-5 bg-white">
-        <div class="container py-3">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-6">
-                    <span class="section-subtitle-modern">Our Story</span>
-                    <h2 class="fw-bold mt-2 mb-4">Dedicated to Exceptional Dental Health For Over 15 Years</h2>
-                    <p class="lead text-dark" style="line-height: 1.8;">
-                        Doctor Dental Clinic Dentia was founded with a singular conviction: dental visits should be welcoming, transparent, and completely free of discomfort.
-                    </p>
-                    <p class="text-muted" style="line-height: 1.8;">
-                        Located in the heart of New York, our practice combines compassionate patient care with the gold standard of contemporary dental science. From routine checkups to intricate smile makeovers and guided implant surgery, we treat every patient like family.
-                    </p>
-
-                    <div class="row g-3 my-4">
-                        <div class="col-sm-6">
-                            <div class="border rounded-3 p-3 bg-light">
-                                <h4 class="fw-bold text-primary mb-1">10,000+</h4>
-                                <div class="small text-muted">Successful Smile Transformations</div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="border rounded-3 p-3 bg-light">
-                                <h4 class="fw-bold text-success mb-1">99.2%</h4>
-                                <div class="small text-muted">Implant Integration Success Rate</div>
-                            </div>
-                        </div>
+        <!-- Vision, Mission & Core Values -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-3 d-inline-block fs-3 mb-3">
+                        <i class="fa fa-bullseye"></i>
                     </div>
-
-                    <a href="booking.php" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow">
-                        <i class="fa fa-calendar-check-o me-2"></i> Book Your First Visit
-                    </a>
+                    <h4 class="fw-bold text-primary mb-2">Our Vision</h4>
+                    <p class="text-muted mb-0">To be the most trusted healthcare institution in the region, recognized globally for clinical excellence, pioneering research, and empathetic patient outcomes.</p>
                 </div>
+            </div>
 
-                <div class="col-lg-6">
-                    <div class="position-relative">
-                        <img src="images/misc/l2.webp" alt="Clinic Interior" class="img-fluid rounded-4 shadow-lg w-100">
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="rounded-3 bg-secondary bg-opacity-10 text-secondary p-3 d-inline-block fs-3 mb-3">
+                        <i class="fa fa-hand-holding-heart"></i>
                     </div>
+                    <h4 class="fw-bold text-secondary mb-2">Our Mission</h4>
+                    <p class="text-muted mb-0">To provide accessible, ethical, and high-precision multi-speciality medical care through continuous technological innovation and patient-centered service.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="rounded-3 bg-success bg-opacity-10 text-success p-3 d-inline-block fs-3 mb-3">
+                        <i class="fa fa-shield-halved"></i>
+                    </div>
+                    <h4 class="fw-bold text-success mb-2">Healthcare Standards</h4>
+                    <p class="text-muted mb-0">Fully accredited by Joint Commission International (JCI) and NABH. We maintain strict zero-tolerance infection prevention protocols and transparent electronic medical records.</p>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Core Values Section -->
-    <section class="py-5 bg-light">
-        <div class="container py-3">
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8">
-                    <span class="section-subtitle-modern">Our Pillars</span>
-                    <h2 class="fw-bold mt-2">The Principles That Guide Our Care</h2>
-                </div>
-            </div>
-
+        <!-- Infrastructure Highlights -->
+        <div class="bg-light p-4 p-md-5 rounded-4 border">
+            <h3 class="fw-bold text-primary mb-4 text-center">World-Class Infrastructure & Technology</h3>
             <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 p-4 shadow-sm h-100 bg-white">
-                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px; font-size: 22px;">
-                            <i class="fa fa-heart"></i>
-                        </div>
-                        <h5 class="fw-bold mb-2">Patient Empathy</h5>
-                        <p class="text-muted small mb-0">We listen carefully to your concerns, respect your time, and customize every procedure to minimize anxiety and discomfort.</p>
-                    </div>
+                <div class="col-md-3 col-sm-6 text-center">
+                    <div class="display-5 fw-bold text-primary mb-1">450+</div>
+                    <h6 class="fw-bold mb-1">Inpatient Beds</h6>
+                    <small class="text-muted">Including ICU, CCU & Private Suites</small>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 p-4 shadow-sm h-100 bg-white">
-                        <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px; font-size: 22px;">
-                            <i class="fa fa-shield"></i>
-                        </div>
-                        <h5 class="fw-bold mb-2">OSHA Sterility Protocol</h5>
-                        <p class="text-muted small mb-0">Our hospital-grade sterilization center uses multi-stage autoclave cycles and spore-testing to ensure pristine patient safety.</p>
-                    </div>
+                <div class="col-md-3 col-sm-6 text-center">
+                    <div class="display-5 fw-bold text-secondary mb-1">16</div>
+                    <h6 class="fw-bold mb-1">Modular OTs</h6>
+                    <small class="text-muted">HEPA laminar airflow surgical suites</small>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 p-4 shadow-sm h-100 bg-white">
-                        <div class="bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 56px; height: 56px; font-size: 22px;">
-                            <i class="fa fa-desktop"></i>
-                        </div>
-                        <h5 class="fw-bold mb-2">Digital Accuracy</h5>
-                        <p class="text-muted small mb-0">Digital impression scanners, 3D Cone Beam Computed Tomography (CBCT), and computer-guided ceramic milling.</p>
-                    </div>
+                <div class="col-md-3 col-sm-6 text-center">
+                    <div class="display-5 fw-bold text-success mb-1">12</div>
+                    <h6 class="fw-bold mb-1">Specialities</h6>
+                    <small class="text-muted">Comprehensive multidisciplinary departments</small>
+                </div>
+                <div class="col-md-3 col-sm-6 text-center">
+                    <div class="display-5 fw-bold text-danger mb-1">24/7</div>
+                    <h6 class="fw-bold mb-1">Trauma & ER</h6>
+                    <small class="text-muted">Emergency catheterization & stroke care</small>
                 </div>
             </div>
         </div>
-    </section>
-
+    </div>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

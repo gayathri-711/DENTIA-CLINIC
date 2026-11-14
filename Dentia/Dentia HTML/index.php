@@ -1,514 +1,361 @@
 <?php
 /**
- * Doctor Dental Clinic Dentia - Modern Homepage
+ * MEDINOVA Multi-Speciality Hospital Management System
+ * Public Modern Hospital Homepage
  */
-$pageTitle = "Advanced & Compassionate Dental Care";
+$pageTitle = "Advanced Healthcare, Better Tomorrow";
 require_once __DIR__ . '/includes/header.php';
 
-$services = get_all_services(true); // featured services
-$dentists = get_all_dentists(true);
-$testimonials = get_all_testimonials(true);
-$blogs = get_recent_blogs(3);
+$departments = get_departments(true);
+$doctors = get_doctors();
 ?>
 
-<!-- Content begin -->
-<div class="no-bottom no-top" id="content">
-    <div id="top"></div>
-
-    <!-- Hero Section Begin -->
-    <section class="section-dark text-light no-top no-bottom position-relative overflow-hidden" style="background: linear-gradient(135deg, #0b2545 0%, #134074 100%); min-height: 85vh; display: flex; align-items: center;">
-        <div class="container position-relative z-2 py-5">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-6">
-                    <span class="badge bg-primary px-3 py-2 rounded-pill mb-3 text-uppercase fw-bold" style="letter-spacing: 1px;">
-                        <i class="fa fa-certificate me-1"></i> Board Certified Dental Specialists
-                    </span>
-                    <h1 class="display-4 fw-bold mb-3 text-white">
-                        Excellence in Modern Dentistry & Beautiful Smiles
-                    </h1>
-                    <p class="lead text-light mb-4" style="opacity: 0.9;">
-                        Experience pain-free, state-of-the-art dental care tailored for your family. From cosmetic smile makeovers and dental implants to routine pediatric checkups.
-                    </p>
-                    
-                    <div class="d-flex flex-wrap gap-3 mb-5">
-                        <a href="booking.php" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow-lg fw-bold">
-                            <i class="fa fa-calendar-check-o me-2"></i> Book Appointment
-                        </a>
-                        <a href="services.php" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 fw-bold">
-                            <i class="fa fa-th-list me-2"></i> Explore Services
-                        </a>
-                    </div>
-
-                    <!-- Quick Highlights -->
-                    <div class="row g-3 pt-3 border-top border-secondary">
-                        <div class="col-sm-4 col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="fa fa-check-circle text-info fs-4 me-2"></i>
-                                <div>
-                                    <div class="fw-bold text-white">15+ Years</div>
-                                    <div class="small text-white-50">Clinical Care</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="fa fa-smile-o text-warning fs-4 me-2"></i>
-                                <div>
-                                    <div class="fw-bold text-white">10,000+</div>
-                                    <div class="small text-white-50">Happy Patients</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4 col-12">
-                            <div class="d-flex align-items-center">
-                                <i class="fa fa-shield text-success fs-4 me-2"></i>
-                                <div>
-                                    <div class="fw-bold text-white">100% Sterile</div>
-                                    <div class="small text-white-50">OSHA Safety</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<!-- Hero Section -->
+<section class="med-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="med-hero-badge">
+                    <i class="fa fa-shield-heart text-warning"></i>
+                    <span>JCI & NABH Accredited Tertiary Healthcare</span>
                 </div>
-
-                <div class="col-lg-6 position-relative">
-                    <div class="position-relative text-center">
-                        <img src="images/misc/l1.webp" alt="Modern Dental Clinic" class="img-fluid rounded-4 shadow-lg border border-3 border-light">
-                        
-                        <!-- Floating Badge 1 -->
-                        <div class="hero-floating-badge badge-1 text-dark text-start">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="bg-primary text-white rounded-circle p-2">
-                                    <i class="fa fa-heartbeat fs-4"></i>
-                                </div>
-                                <div>
-                                    <div class="fw-bold mb-0">Gentle & Painless</div>
-                                    <small class="text-muted">Advanced sedation options</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Floating Badge 2 -->
-                        <div class="hero-floating-badge badge-2 text-dark text-start d-none d-sm-block">
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="fa fa-star text-warning fs-5"></i>
-                                <i class="fa fa-star text-warning fs-5"></i>
-                                <i class="fa fa-star text-warning fs-5"></i>
-                                <i class="fa fa-star text-warning fs-5"></i>
-                                <i class="fa fa-star text-warning fs-5"></i>
-                            </div>
-                            <div class="fw-bold mt-1">4.9 / 5.0 Rating</div>
-                            <small class="text-muted">Over 1,200 verified reviews</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Hero Section End -->
-
-    <!-- Quick Booking Bar -->
-    <section class="py-4 bg-white shadow-sm border-bottom">
-        <div class="container">
-            <div class="row align-items-center justify-content-between g-3">
-                <div class="col-lg-4">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-primary-subtle text-primary p-3 rounded-circle me-3">
-                            <i class="fa fa-clock-o fs-3"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-0 fw-bold">Emergency Walk-ins Welcome</h6>
-                            <small class="text-muted">Same-day relief for acute dental pain</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-danger-subtle text-danger p-3 rounded-circle me-3">
-                            <i class="fa fa-ambulance fs-3"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-0 fw-bold">24/7 Dental Emergency Hotline</h6>
-                            <a href="tel:<?= e($clinicSettings['emergency_phone']) ?>" class="fs-5 fw-bold text-danger text-decoration-none">
-                                <?= e($clinicSettings['emergency_phone']) ?>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 text-lg-end">
-                    <a href="booking.php" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold w-100 w-lg-auto">
-                        <i class="fa fa-calendar me-2"></i> Book Online Now
+                <h1 class="text-white">Precision Medicine.<br><span class="text-info">Compassionate Healing.</span></h1>
+                <p class="fs-5 text-white-50 mb-4 lh-base" style="max-width: 580px;">
+                    MEDINOVA brings together world-renowned physicians, robotic surgical suites, and 24/7 emergency trauma care across 12 medical specialities to provide world-class patient outcomes.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="booking.php" class="btn btn-warning btn-lg px-4 py-3 fw-bold rounded-pill shadow">
+                        <i class="fa fa-calendar-check me-2"></i> Book an Appointment
+                    </a>
+                    <a href="departments.php" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold rounded-pill">
+                        <i class="fa fa-stethoscope me-2"></i> Explore Specialities
                     </a>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Featured Dental Services Section -->
-    <section class="py-5 bg-light">
-        <div class="container py-4">
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8">
-                    <span class="section-subtitle-modern">Specialized Dental Care</span>
-                    <h2 class="fw-bold mt-2">Comprehensive Dental Services</h2>
-                    <p class="text-muted lead">We provide comprehensive preventive, cosmetic, restorative, and surgical dental treatments under one comfortable roof.</p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <?php foreach ($services as $service): ?>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="service-card-modern">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="service-icon-box">
-                                    <img src="<?= e($service['icon']) ?>" alt="<?= e($service['name']) ?>" style="max-height: 40px; max-width: 40px;">
-                                </div>
-                                <span class="badge bg-light text-primary border rounded-pill px-3 py-2 small">
-                                    <i class="fa fa-clock-o me-1"></i> <?= e($service['duration']) ?>
-                                </span>
-                            </div>
-
-                            <h4 class="fw-bold mb-2">
-                                <a href="service-<?= e($service['slug']) ?>.php" class="text-dark text-decoration-none">
-                                    <?= e($service['name']) ?>
-                                </a>
-                            </h4>
-                            <p class="text-muted flex-grow-1 small mb-4">
-                                <?= e($service['short_description']) ?>
-                            </p>
-
-                            <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                <div>
-                                    <span class="small text-muted d-block">Starting from</span>
-                                    <span class="service-price">$<?= number_format($service['price'], 2) ?></span>
-                                </div>
-                                <div class="d-flex gap-2">
-                                    <a href="service-<?= e($service['slug']) ?>.php" class="btn btn-sm btn-outline-secondary rounded-pill px-3" title="Learn More">
-                                        Details
-                                    </a>
-                                    <a href="booking.php?service_id=<?= $service['id'] ?>" class="btn btn-sm btn-primary rounded-pill px-3" title="Book this procedure">
-                                        Book
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Live Quick Stats -->
+                <div class="row g-3 mt-4 pt-3 border-top border-white border-opacity-25" style="max-width: 550px;">
+                    <div class="col-4">
+                        <h3 class="fw-bold text-white mb-0">12+</h3>
+                        <small class="text-white-50">Speciality Wings</small>
                     </div>
-                <?php endforeach; ?>
-            </div>
-
-            <div class="text-center mt-5">
-                <a href="services.php" class="btn btn-outline-primary btn-lg rounded-pill px-5 fw-bold">
-                    View All 10 Dental Services <i class="fa fa-arrow-right ms-2"></i>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Choose Us Section -->
-    <section class="py-5 bg-white">
-        <div class="container py-4">
-            <div class="row align-items-center g-5">
-                <div class="col-lg-6">
-                    <span class="section-subtitle-modern">The Dentia Standard</span>
-                    <h2 class="fw-bold mt-2 mb-4">Why Families Trust Dentia For Their Dental Care</h2>
-                    <p class="text-muted mb-4">
-                        We combine compassionate clinical expertise with the latest advances in digital dentistry to deliver treatments that are comfortable, swift, and beautifully durable.
-                    </p>
-
-                    <div class="row g-4">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start">
-                                <div class="bg-primary text-white rounded-3 p-3 me-3">
-                                    <i class="fa fa-laptop fs-4"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Digital 3D Dentistry</h6>
-                                    <p class="small text-muted mb-0">Low-radiation digital X-rays and precise 3D intraoral scanners.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start">
-                                <div class="bg-success text-white rounded-3 p-3 me-3">
-                                    <i class="fa fa-leaf fs-4"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Painless Anesthesia</h6>
-                                    <p class="small text-muted mb-0">Gentle computerized numbing and anxiety-free sedation options.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start">
-                                <div class="bg-info text-white rounded-3 p-3 me-3">
-                                    <i class="fa fa-hospital-o fs-4"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Hospital-Grade Sterility</h6>
-                                    <p class="small text-muted mb-0">Autoclave sterilization and strict infection control protocols.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start">
-                                <div class="bg-warning text-white rounded-3 p-3 me-3">
-                                    <i class="fa fa-credit-card fs-4"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-1">Transparent Pricing</h6>
-                                    <p class="small text-muted mb-0">No hidden fees, flexible financing, and broad insurance acceptance.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-white mb-0">50+</h3>
+                        <small class="text-white-50">Board Specialists</small>
                     </div>
-
-                    <div class="mt-4 pt-3">
-                        <a href="about.php" class="btn btn-outline-primary rounded-pill px-4 fw-semibold">
-                            Learn More About Our Clinic
-                        </a>
+                    <div class="col-4">
+                        <h3 class="fw-bold text-white mb-0">24/7</h3>
+                        <small class="text-white-50">Emergency & ER</small>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-6">
-                    <div class="position-relative">
-                        <img src="images/misc/l4.webp" alt="Doctor Dental Care" class="img-fluid rounded-4 shadow-lg w-100">
-                        <div class="position-absolute bottom-0 start-0 m-4 bg-white p-4 rounded-3 shadow-lg d-none d-sm-block border" style="max-width: 320px;">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="bg-success text-white rounded-circle p-3">
-                                    <i class="fa fa-check fs-4"></i>
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0">Same-Day Emergency</h6>
-                                    <small class="text-muted">Walk-in relief guaranteed for dental emergencies</small>
-                                </div>
-                            </div>
+            <div class="col-lg-5 d-none d-lg-block">
+                <!-- Fast Booking Card -->
+                <div class="card border-0 shadow-lg rounded-4 p-4 text-dark" style="background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px);">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-2 fs-4">
+                            <i class="fa fa-calendar-plus"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0 text-primary">Schedule Consultation</h5>
+                            <small class="text-muted">Instant slot reservation with attending specialists</small>
                         </div>
                     </div>
+
+                    <form action="booking.php" method="GET">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Select Medical Department</label>
+                            <select name="department_id" class="form-select py-2 border-primary-subtle" required>
+                                <option value="">Choose Speciality...</option>
+                                <?php foreach ($departments as $dept): ?>
+                                    <option value="<?= e($dept['id']) ?>"><?= e($dept['name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Preferred Date</label>
+                            <input type="date" name="date" class="form-control py-2" min="<?= date('Y-m-d') ?>" value="<?= date('Y-m-d', strtotime('+1 day')) ?>">
+                        </div>
+
+                        <div class="p-3 bg-light rounded-3 mb-3 border">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="small text-muted"><i class="fa fa-phone-volume text-danger me-1"></i> Emergency Desk</span>
+                                <strong class="text-primary"><?= e($settings['emergency_phone']) ?></strong>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-med-primary w-100 py-3 fw-bold">
+                            Find Available Doctors <i class="fa fa-arrow-right ms-2"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Experienced Dentists Section -->
-    <section class="py-5 bg-light">
-        <div class="container py-4">
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8">
-                    <span class="section-subtitle-modern">Medical Excellence</span>
-                    <h2 class="fw-bold mt-2">Meet Our Experienced Dentists</h2>
-                    <p class="text-muted lead">Our board-certified dentists bring decades of specialized training from premier medical institutions.</p>
+<!-- Hospital Introduction Section -->
+<section class="py-5 bg-white border-bottom">
+    <div class="container py-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="images/misc/l1.webp" class="img-fluid rounded-4 shadow-lg w-100" alt="MEDINOVA Hospital Facility" style="max-height: 440px; object-fit: cover;">
+                    <div class="position-absolute bottom-0 start-0 m-3 p-3 bg-white rounded-3 shadow border d-flex align-items-center gap-3">
+                        <div class="bg-success text-white p-3 rounded-circle fs-4">
+                            <i class="fa fa-heart-pulse"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-dark">99.4% Clinical Success</h6>
+                            <small class="text-muted">Over 45,000 successful procedures</small>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="row g-4">
-                <?php foreach ($dentists as $dentist): ?>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="dentist-card-modern h-100 d-flex flex-column">
-                            <div class="dentist-img-wrap">
-                                <img src="<?= e($dentist['image']) ?>" alt="<?= e($dentist['name']) ?>">
-                                <span class="dentist-badge-active"><i class="fa fa-circle me-1 small"></i> Available</span>
-                            </div>
-                            <div class="p-4 d-flex flex-column flex-grow-1">
-                                <h5 class="fw-bold mb-1"><?= e($dentist['name']) ?></h5>
-                                <div class="text-primary small fw-semibold mb-2"><?= e($dentist['specialization']) ?></div>
-                                <div class="text-muted small mb-3">
-                                    <i class="fa fa-graduation-cap me-1"></i> <?= e($dentist['qualification']) ?>
-                                </div>
-                                
-                                <div class="bg-light p-2 rounded-2 small text-muted mb-4 mt-auto">
-                                    <i class="fa fa-calendar-o me-1 text-primary"></i> <?= e($dentist['availability_days']) ?> (<?= e($dentist['availability_hours']) ?>)
-                                </div>
-
-                                <a href="booking.php?dentist_id=<?= $dentist['id'] ?>" class="btn btn-outline-primary rounded-pill w-100 fw-semibold">
-                                    <i class="fa fa-calendar-check-o me-1"></i> Book with Doctor
-                                </a>
+            <div class="col-lg-6">
+                <span class="badge bg-primary text-uppercase px-3 py-2 mb-3">About MEDINOVA</span>
+                <h2 class="display-6 fw-bold text-primary mb-3">A New Standard in Multi-Speciality Healthcare</h2>
+                <p class="fs-5 text-muted lh-base mb-4">
+                    At MEDINOVA, healthcare is more than treatment—it is a continuum of preventive diagnostics, empathetic bedside care, and state-of-the-art medical technology.
+                </p>
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa fa-circle-check text-primary fs-5 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Robotic Surgery Suites</h6>
+                                <small class="text-muted">Sub-millimeter precision for joint and abdominal surgeries.</small>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="dentists.php" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold">
-                    View Complete Medical Credentials <i class="fa fa-arrow-right ms-1"></i>
-                </a>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa fa-circle-check text-primary fs-5 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">24/7 Level-I Trauma Center</h6>
+                                <small class="text-muted">Direct cardiac cath labs and stroke thrombolysis units.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa fa-circle-check text-primary fs-5 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Fully Automated Pathology</h6>
+                                <small class="text-muted">Real-time digital results delivered to patient portal.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-start gap-2">
+                            <i class="fa fa-circle-check text-primary fs-5 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">Paperless Patient Portals</h6>
+                                <small class="text-muted">Instant access to medical records, e-prescriptions, and bills.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="about.php" class="btn btn-med-outline px-4 py-2 fw-bold">Read Our Full Story <i class="fa fa-arrow-right ms-1"></i></a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Facilities and Equipment Section -->
-    <section class="py-5 bg-white">
-        <div class="container py-4">
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8">
-                    <span class="section-subtitle-modern">State of the Art Clinic</span>
-                    <h2 class="fw-bold mt-2">Modern Facilities & Advanced Equipment</h2>
-                    <p class="text-muted lead">We invest in cutting-edge dental technology to ensure gentle treatment, accurate diagnosis, and rapid recovery.</p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100">
-                        <img src="images/gallery/l1.webp" alt="3D Dental Imaging" class="card-img-top" style="height: 220px; object-fit: cover;">
-                        <div class="card-body p-4">
-                            <h5 class="fw-bold mb-2">3D CBCT Digital Imaging</h5>
-                            <p class="text-muted small mb-0">High-resolution panoramic imaging with 90% less radiation for millimeter-precise implant planning.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100">
-                        <img src="images/gallery/l2.webp" alt="Sterilization Suite" class="card-img-top" style="height: 220px; object-fit: cover;">
-                        <div class="card-body p-4">
-                            <h5 class="fw-bold mb-2">Hospital-Grade Sterilization</h5>
-                            <p class="text-muted small mb-0">Class B medical autoclaves, ultrasonic instrument washing, and biological test monitoring.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100">
-                        <img src="images/gallery/l4.webp" alt="Ergonomic Dental Operatories" class="card-img-top" style="height: 220px; object-fit: cover;">
-                        <div class="card-body p-4">
-                            <h5 class="fw-bold mb-2">Ergonomic Dental Suites</h5>
-                            <p class="text-muted small mb-0">Comfort memory foam treatment chairs, ceiling entertainment screens, and noise-canceling headphones.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<!-- 12 Medical Specialities Showcase -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5" style="max-width: 650px; margin: 0 auto;">
+            <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Our Specialities</span>
+            <h2 class="display-6 fw-bold text-primary">12 Centres of Excellence</h2>
+            <p class="text-muted">Providing comprehensive medical, diagnostic, and surgical expertise under one unified health system.</p>
         </div>
-    </section>
 
-    <!-- Patient Testimonials Section -->
-    <section class="py-5 bg-light">
-        <div class="container py-4">
-            <div class="row justify-content-center text-center mb-5">
-                <div class="col-lg-8">
-                    <span class="section-subtitle-modern">Patient Stories</span>
-                    <h2 class="fw-bold mt-2">What Our Patients Say</h2>
-                    <p class="text-muted lead">Real feedback from patients who entrusted their smiles to Doctor Dental Clinic Dentia.</p>
-                </div>
-            </div>
-
-            <div class="row g-4">
-                <?php foreach ($testimonials as $item): ?>
-                    <div class="col-lg-6">
-                        <div class="card border-0 rounded-4 shadow-sm p-4 h-100 bg-white">
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div class="text-warning">
-                                    <?php for ($i = 0; $i < $item['rating']; $i++): ?>
-                                        <i class="fa fa-star"></i>
-                                    <?php endfor; ?>
-                                </div>
-                                <span class="badge bg-success-subtle text-success small rounded-pill px-3 py-1">
-                                    <i class="fa fa-check-circle me-1"></i> Verified Patient
-                                </span>
+        <div class="row g-4">
+            <?php foreach (array_slice($departments, 0, 6) as $dept): ?>
+                <div class="col-lg-4 col-md-6">
+                    <div class="med-card d-flex flex-column p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="med-card-icon">
+                                <i class="fa <?= e($dept['icon']) ?>"></i>
                             </div>
-                            <p class="text-dark fst-italic mb-4" style="line-height: 1.7;">
-                                "<?= e($item['comment']) ?>"
-                            </p>
-                            <div class="d-flex align-items-center mt-auto">
-                                <img src="<?= e($item['image']) ?>" alt="<?= e($item['patient_name']) ?>" class="rounded-circle me-3" style="width: 52px; height: 52px; object-fit: cover;">
-                                <div>
-                                    <h6 class="fw-bold mb-0"><?= e($item['patient_name']) ?></h6>
-                                    <small class="text-muted"><?= e($item['patient_role']) ?></small>
-                                </div>
-                            </div>
+                            <span class="badge bg-light text-primary border px-3 py-2 fw-bold"><?= e($dept['code']) ?></span>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Emergency Dental Contact & Working Hours Callout -->
-    <section class="py-5 bg-white">
-        <div class="container">
-            <div class="emergency-callout-box">
-                <div class="row align-items-center g-4">
-                    <div class="col-lg-8">
-                        <span class="badge bg-danger text-white px-3 py-2 rounded-pill mb-3 fw-bold">
-                            <i class="fa fa-exclamation-triangle me-1"></i> IMMEDIATE DENTAL ASSISTANCE
-                        </span>
-                        <h2 class="text-white fw-bold mb-3">Suffering from a Toothache or Dental Trauma?</h2>
-                        <p class="text-white mb-4" style="opacity: 0.95; max-width: 650px;">
-                            Dental emergencies cannot wait. Our on-call emergency dental specialists in New York provide prompt same-day appointments, trauma relief, and repair for broken teeth.
-                        </p>
-                        <div class="d-flex flex-wrap gap-3">
-                            <a href="tel:<?= e($clinicSettings['emergency_phone']) ?>" class="btn btn-danger btn-lg rounded-pill px-4 fw-bold shadow">
-                                <i class="fa fa-phone me-2"></i> Call Now: <?= e($clinicSettings['emergency_phone']) ?>
+                        <h4 class="fw-bold mb-2">
+                            <a href="department-details.php?slug=<?= e($dept['slug']) ?>" class="text-dark text-decoration-none hover-teal">
+                                <?= e($dept['name']) ?>
                             </a>
-                            <a href="booking.php" class="btn btn-light btn-lg rounded-pill px-4 fw-bold text-primary">
-                                <i class="fa fa-calendar me-2"></i> Book Emergency Slot
+                        </h4>
+                        <p class="text-muted flex-grow-1 mb-4"><?= e($dept['short_desc']) ?></p>
+                        <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                            <a href="department-details.php?slug=<?= e($dept['slug']) ?>" class="text-primary fw-bold text-decoration-none">
+                                Learn More <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                            <a href="booking.php?department_id=<?= e($dept['id']) ?>" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                Book Doctor
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="bg-white text-dark p-4 rounded-4 shadow text-center">
-                            <i class="fa fa-clock-o text-primary fs-1 mb-2"></i>
-                            <h5 class="fw-bold mb-1">Standard Working Hours</h5>
-                            <div class="border-bottom my-2"></div>
-                            <div class="small mb-1"><strong>Mon - Fri:</strong> 08:00 AM - 08:00 PM</div>
-                            <div class="small mb-1"><strong>Saturday:</strong> 09:00 AM - 05:00 PM</div>
-                            <div class="small text-danger fw-bold"><strong>Sunday:</strong> 24/7 Emergency On-Call</div>
-                        </div>
-                    </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
         </div>
-    </section>
 
-    <!-- Latest Dental Health Blog -->
-    <section class="py-5 bg-light">
-        <div class="container py-4">
-            <div class="row justify-content-between align-items-end mb-4">
-                <div class="col-md-8">
-                    <span class="section-subtitle-modern">Patient Education</span>
-                    <h2 class="fw-bold mt-2">Latest Dental Health Insights</h2>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <a href="blog.php" class="btn btn-outline-primary rounded-pill px-4">View All Articles</a>
-                </div>
+        <div class="text-center mt-5">
+            <a href="departments.php" class="btn btn-med-primary btn-lg px-5 py-3 fw-bold rounded-pill shadow">
+                View All 12 Medical Departments <i class="fa fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Specialist Doctors Section -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container py-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
+            <div>
+                <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Clinical Faculty</span>
+                <h2 class="display-6 fw-bold text-primary mb-0">Meet Our Chief Specialists</h2>
             </div>
+            <a href="doctors.php" class="btn btn-med-outline mt-3 mt-md-0">View All Hospital Doctors <i class="fa fa-arrow-right ms-1"></i></a>
+        </div>
 
-            <div class="row g-4">
-                <?php foreach ($blogs as $post): ?>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100 bg-white">
-                            <img src="<?= e($post['image']) ?>" alt="<?= e($post['title']) ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
-                            <div class="card-body p-4 d-flex flex-column">
-                                <div class="d-flex justify-content-between align-items-center mb-2 small text-muted">
-                                    <span><i class="fa fa-tag me-1 text-primary"></i> <?= e($post['category']) ?></span>
-                                    <span><i class="fa fa-calendar me-1"></i> <?= e($post['published_at']) ?></span>
-                                </div>
-                                <h5 class="fw-bold mb-2">
-                                    <a href="blog-single.php?slug=<?= e($post['slug']) ?>" class="text-dark text-decoration-none">
-                                        <?= e($post['title']) ?>
-                                    </a>
-                                </h5>
-                                <p class="text-muted small flex-grow-1">
-                                    <?= e($post['excerpt']) ?>
-                                </p>
-                                <div class="pt-3 border-top mt-auto">
-                                    <a href="blog-single.php?slug=<?= e($post['slug']) ?>" class="text-primary fw-bold text-decoration-none small">
-                                        Read Full Article <i class="fa fa-angle-right ms-1"></i>
-                                    </a>
-                                </div>
+        <div class="row g-4">
+            <?php foreach (array_slice($doctors, 0, 4) as $doc): ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="doctor-profile-card">
+                        <img src="<?= e($doc['avatar']) ?>" class="doctor-profile-img" alt="<?= e($doc['name']) ?>">
+                        <div class="doctor-profile-body">
+                            <span class="badge bg-primary bg-opacity-10 text-primary mb-2"><?= e($doc['department_name'] ?? 'Specialist') ?></span>
+                            <h5 class="fw-bold mb-1"><?= e($doc['name']) ?></h5>
+                            <p class="small text-muted mb-2 text-truncate" title="<?= e($doc['specialization']) ?>"><?= e($doc['specialization']) ?></p>
+                            <p class="small text-muted mb-3"><i class="fa fa-graduation-cap me-1"></i> <?= e($doc['qualification']) ?></p>
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                <span class="fw-bold text-primary">$<?= number_format($doc['consultation_fee'], 2) ?></span>
+                                <a href="booking.php?doctor_id=<?= e($doc['id']) ?>" class="btn btn-sm btn-med-primary">
+                                    Book
+                                </a>
                             </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<!-- Hospital Facilities & Infrastructure -->
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="text-center mb-5" style="max-width: 650px; margin: 0 auto;">
+            <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Infrastructure</span>
+            <h2 class="display-6 fw-bold text-primary">Advanced Clinical Facilities</h2>
+            <p class="text-muted">Engineered with high-standard infection controls, advanced surgical suites, and round-the-clock intensive care units.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="rounded-3 bg-primary bg-opacity-10 text-primary p-3 d-inline-block fs-3 mb-3">
+                        <i class="fa fa-x-ray"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">3.0 Tesla Silent MRI & CT</h5>
+                    <p class="text-muted mb-0">High-definition neuro and cardiac imaging with ultra-fast scan times and reduced radiation exposure.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="rounded-3 bg-danger bg-opacity-10 text-danger p-3 d-inline-block fs-3 mb-3">
+                        <i class="fa fa-heart-pulse"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Digital Biplane Cath Lab</h5>
+                    <p class="text-muted mb-0">Dedicated coronary intervention theatre for primary emergency angioplasty, stenting, and pacemaker implants.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 bg-white rounded-4 shadow-sm border h-100">
+                    <div class="rounded-3 bg-success bg-opacity-10 text-success p-3 d-inline-block fs-3 mb-3">
+                        <i class="fa fa-bed-pulse"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Level-III Neonatal & Adult ICU</h5>
+                    <p class="text-muted mb-0">Independent isolation airflow cubicles, advanced mechanical ventilators, and 1:1 dedicated nursing care.</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-</div>
-<!-- Content end -->
+<!-- Patient Testimonials -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container py-4">
+        <div class="text-center mb-5" style="max-width: 600px; margin: 0 auto;">
+            <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Patient Stories</span>
+            <h2 class="display-6 fw-bold text-primary">Trusted by Thousands</h2>
+            <p class="text-muted">Read real reviews from patients and families who experienced healing and support at MEDINOVA.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 bg-light h-100 border">
+                    <div class="text-warning mb-3">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-muted fst-italic mb-4">"The speed and clinical precision of the cardiology team saved my father's life during an acute myocardial infarction. Outstanding emergency team!"</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="images/testimonial/1.webp" class="rounded-circle" width="48" height="48" alt="David Harrison">
+                        <div>
+                            <h6 class="fw-bold mb-0">David Harrison</h6>
+                            <small class="text-primary">Cardiology Patient</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 bg-light h-100 border">
+                    <div class="text-warning mb-3">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-muted fst-italic mb-4">"Underwent robotic knee replacement with Dr. Julian Thorne. The hospital room was impeccably clean and the nursing care was world-class."</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="images/testimonial/2.webp" class="rounded-circle" width="48" height="48" alt="Michael Scott">
+                        <div>
+                            <h6 class="fw-bold mb-0">Michael Scott</h6>
+                            <small class="text-primary">Orthopedics Patient</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 rounded-4 bg-light h-100 border">
+                    <div class="text-warning mb-3">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                    </div>
+                    <p class="text-muted fst-italic mb-4">"The pediatric wing is designed so gently. Dr. Sophia Martinez made our daughter feel safe and relaxed throughout her treatment. Truly grateful."</p>
+                    <div class="d-flex align-items-center gap-3">
+                        <img src="images/testimonial/3.webp" class="rounded-circle" width="48" height="48" alt="Amanda Clark">
+                        <div>
+                            <h6 class="fw-bold mb-0">Amanda Clark</h6>
+                            <small class="text-primary">Pediatrics Parent</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Fast Appointment Booking CTA -->
+<section class="py-5" style="background: linear-gradient(135deg, var(--med-primary-dark), var(--med-primary)); color: #fff;">
+    <div class="container text-center py-4">
+        <h2 class="display-6 fw-bold text-white mb-3">Take the First Step Toward Better Health</h2>
+        <p class="fs-5 text-white-50 mb-4" style="max-width: 650px; margin: 0 auto;">
+            Our board-certified physicians across 12 specialities are ready to assist you. Book online in under two minutes with instant slot confirmation.
+        </p>
+        <a href="booking.php" class="btn btn-warning btn-lg px-5 py-3 fw-bold rounded-pill shadow">
+            <i class="fa fa-calendar-check me-2"></i> Book Online Consultation Now
+        </a>
+    </div>
+</section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

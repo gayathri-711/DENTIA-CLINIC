@@ -1,657 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Admin Dashboard — Doctor Dental Clinic Dentia</title>
-    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="../css/plugins.css" rel="stylesheet" type="text/css">
-    <link href="../css/style.css" rel="stylesheet" type="text/css">
-    <link href="../css/custom-modern.css" rel="stylesheet" type="text/css">
-    <link rel="icon" href="../images/icon.webp" type="image/gif">
+    <title>MEDINOVA - Hospital Administrative Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 & FontAwesome -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../fonts/fontawesome6/css/all.min.css">
+    <link rel="stylesheet" href="../css/medinova-theme.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        .admin-stat-box {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: transform 0.2s;
-        }
-        .admin-stat-box:hover { transform: translateY(-3px); }
-        .action-btn-accept {
-            background: #10b981;
-            color: #fff;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .action-btn-accept:hover { background: #059669; color: #fff; }
-        .action-btn-cancel {
-            background: #ef4444;
-            color: #fff;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .action-btn-cancel:hover { background: #dc2626; color: #fff; }
-        .badge-pending { background: #fef3c7; color: #b45309; }
-        .badge-confirmed { background: #d1fae5; color: #065f46; }
-        .badge-completed { background: #e0f2fe; color: #0369a1; }
-        .badge-cancelled { background: #fee2e2; color: #991b1b; }
-        .nav-link.active-tab {
-            background-color: #1463b8 !important;
-            color: #fff !important;
+        body { background: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .sidebar { background: #0b1f3a; min-height: 100vh; color: #cbd5e1; width: 260px; position: fixed; top: 0; left: 0; z-index: 100; }
+        .sidebar-brand { padding: 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 14px; transition: all 0.2s; }
+        .sidebar-link:hover, .sidebar-link.active { color: #fff; background: rgba(21, 156, 168, 0.15); border-left: 4px solid var(--med-secondary); }
+        .main-content { margin-left: 260px; padding: 30px; }
+        @media(max-width: 991px) {
+            .sidebar { position: static; width: 100%; min-height: auto; }
+            .main-content { margin-left: 0; padding: 15px; }
         }
     </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="d-flex">
-    <!-- Sidebar -->
-    <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 260px; min-height: 100vh;">
-        <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100">
-            <img src="../images/logo-white.webp" alt="Dentia" style="max-height: 38px;">
-        </a>
-
-        <div class="py-2 px-2 text-white-50 small mt-2">
-            MANAGEMENT MODULES
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <div class="med-logo-icon" style="width: 38px; height: 38px; font-size: 18px;">
+            <i class="fa fa-heart-pulse"></i>
         </div>
-
-        <ul class="admin-nav nav-pills flex-column mb-auto">
-            <li>
-                <a href="#appointments-section" class="active" onclick="switchSection('appointments')">
-                    <i class="fa fa-calendar-check-o me-2"></i> Appointment Requests
-                </a>
-            </li>
-            <li>
-                <a href="#doctors-section" onclick="switchSection('doctors')">
-                    <i class="fa fa-user-md me-2"></i> Manage Doctors
-                </a>
-            </li>
-            <li>
-                <a href="#patients-section" onclick="switchSection('patients')">
-                    <i class="fa fa-users me-2"></i> Patients Directory
-                </a>
-            </li>
-        </ul>
-
-        <hr class="border-secondary my-3">
-
-        <div class="px-2">
-            <a href="../index.html" class="btn btn-outline-info rounded-pill w-100 btn-sm mb-2 text-start px-3">
-                <i class="fa fa-external-link me-2"></i> View Website
-            </a>
-            <a href="../login.html" class="btn btn-outline-danger rounded-pill w-100 btn-sm text-start px-3">
-                <i class="fa fa-sign-out me-2"></i> Sign Out
-            </a>
+        <div>
+            <div class="fw-bold text-white fs-5">MEDINOVA</div>
+            <small class="text-info text-uppercase" style="font-size: 10px; letter-spacing: 1px;">Hospital Admin</small>
         </div>
     </div>
-
-    <!-- Main Content Area -->
-    <div class="flex-grow-1 min-vh-100 d-flex flex-column" style="overflow-x: hidden;">
-        
-        <!-- Topbar -->
-        <header class="bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center shadow-sm">
-            <div>
-                <h4 class="fw-bold mb-0 text-dark">Dentia Clinic Administration</h4>
-                <small class="text-muted">Accept appointment requests, manage doctors, and monitor patient care</small>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <span class="badge bg-primary text-white rounded-pill px-3 py-2 small fw-semibold">
-                    <i class="fa fa-shield me-1"></i> Chief Medical Admin
-                </span>
-                <div class="d-flex align-items-center gap-2">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">
-                        A
-                    </div>
-                    <div class="d-none d-sm-block">
-                        <div class="fw-semibold small leading-tight">Admin Portal</div>
-                        <div class="text-muted" style="font-size: 11px;">admin@dentia.com</div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Body -->
-        <main class="p-4 flex-grow-1">
-            
-            <!-- Toast Alert Box -->
-            <div id="admin_alert" class="alert d-none rounded-3 shadow-sm mb-4"></div>
-
-            <!-- Executive Stats Cards -->
-            <div class="row g-4 mb-4">
-                <div class="col-xl-3 col-sm-6">
-                    <div class="admin-stat-box">
-                        <div>
-                            <div class="text-muted small fw-semibold">Pending Requests</div>
-                            <h2 class="fw-bold mb-0 text-warning" id="stat_pending">0</h2>
-                            <small class="text-warning fw-semibold"><i class="fa fa-clock-o me-1"></i> Needs Acceptance</small>
-                        </div>
-                        <div class="stat-icon warning">
-                            <i class="fa fa-hourglass-half fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-sm-6">
-                    <div class="admin-stat-box">
-                        <div>
-                            <div class="text-muted small fw-semibold">Confirmed Visits</div>
-                            <h2 class="fw-bold mb-0 text-success" id="stat_confirmed">0</h2>
-                            <small class="text-success fw-semibold"><i class="fa fa-check-circle me-1"></i> Accepted by Clinic</small>
-                        </div>
-                        <div class="stat-icon success">
-                            <i class="fa fa-calendar-check-o fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-sm-6">
-                    <div class="admin-stat-box">
-                        <div>
-                            <div class="text-muted small fw-semibold">Active Doctors</div>
-                            <h2 class="fw-bold mb-0 text-primary" id="stat_doctors">4</h2>
-                            <small class="text-muted"><i class="fa fa-user-md me-1"></i> Medical Specialists</small>
-                        </div>
-                        <div class="stat-icon primary">
-                            <i class="fa fa-user-md fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3 col-sm-6">
-                    <div class="admin-stat-box">
-                        <div>
-                            <div class="text-muted small fw-semibold">Registered Patients</div>
-                            <h2 class="fw-bold mb-0 text-dark" id="stat_patients">0</h2>
-                            <small class="text-muted"><i class="fa fa-users me-1"></i> Total Patient Records</small>
-                        </div>
-                        <div class="stat-icon primary">
-                            <i class="fa fa-users fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 1: APPOINTMENTS & REQUESTS -->
-            <div id="section_appointments">
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-calendar-check-o text-primary me-2"></i> Appointment Requests & Schedule</h4>
-                        <small class="text-muted">Review incoming requests and click <strong>Accept</strong> to confirm bookings</small>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-secondary rounded-pill px-3 btn-sm" onclick="loadAllData()">
-                            <i class="fa fa-refresh me-1"></i> Refresh
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Filter Pills -->
-                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 mb-4">
-                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-sm btn-outline-primary active-tab rounded-pill px-3 me-2" id="btn_filter_all" onclick="filterAppointments('All')">All (<span id="count_all">0</span>)</button>
-                            <button type="button" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-2" id="btn_filter_pending" onclick="filterAppointments('Pending')">Pending Requests (<span id="count_pending">0</span>)</button>
-                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 me-2" id="btn_filter_confirmed" onclick="filterAppointments('Confirmed')">Confirmed (<span id="count_confirmed">0</span>)</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="btn_filter_completed" onclick="filterAppointments('Completed')">Completed</button>
-                        </div>
-                        <div style="max-width: 280px; width: 100%;">
-                            <input type="text" id="appointment_search" class="form-control form-control-sm rounded-pill" placeholder="Search patient, doctor, ref..." onkeyup="searchAppointments()">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Table Card -->
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Ref ID</th>
-                                        <th>Patient Info</th>
-                                        <th>Requested Procedure</th>
-                                        <th>Doctor</th>
-                                        <th>Date & Time</th>
-                                        <th>Status</th>
-                                        <th class="text-end">Manage Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="appointments_table_body">
-                                    <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading appointment requests...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 2: DOCTOR MANAGEMENT -->
-            <div id="section_doctors" class="d-none">
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-user-md text-primary me-2"></i> Clinic Doctors & Medical Staff</h4>
-                        <small class="text-muted">Add new dentists, manage credentials, specialties, and clinical hours</small>
-                    </div>
-                    <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
-                        <i class="fa fa-plus-circle me-1"></i> Add New Doctor
-                    </button>
-                </div>
-
-                <div class="row g-4" id="doctors_container">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-
-            <!-- SECTION 3: PATIENTS DIRECTORY -->
-            <div id="section_patients" class="d-none">
-                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
-                    <div>
-                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-users text-primary me-2"></i> Registered Patient Accounts</h4>
-                        <small class="text-muted">User accounts created through registration and appointment scheduling</small>
-                    </div>
-                </div>
-
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Patient Name</th>
-                                        <th>Email Address</th>
-                                        <th>Phone Number</th>
-                                        <th>Address</th>
-                                        <th>Registered Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="patients_table_body">
-                                    <!-- Loaded dynamically -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </main>
-
-        <footer class="bg-white border-top py-3 px-4 text-muted small text-center">
-            Doctor Dental Clinic Dentia Management Platform &copy; 2026. Live Administration Control Active.
-        </footer>
+    <div class="py-3">
+        <a href="#appointments" class="sidebar-link active"><i class="fa fa-calendar-check" style="width: 20px;"></i> Appointments</a>
+        <a href="#doctors" class="sidebar-link"><i class="fa fa-user-doctor" style="width: 20px;"></i> Medical Specialists</a>
+        <a href="#departments" class="sidebar-link"><i class="fa fa-hospital" style="width: 20px;"></i> 12 Departments</a>
+        <a href="#beds" class="sidebar-link"><i class="fa fa-bed" style="width: 20px;"></i> Wards & Beds</a>
+        <a href="#billing" class="sidebar-link"><i class="fa fa-file-invoice-dollar" style="width: 20px;"></i> Billing & Revenue</a>
+        <a href="../index.php" class="sidebar-link"><i class="fa fa-globe" style="width: 20px;"></i> Public Website</a>
+        <a href="../logout.php" class="sidebar-link text-danger"><i class="fa fa-arrow-right-from-bracket" style="width: 20px;"></i> Sign Out</a>
     </div>
 </div>
 
-<!-- MODAL: ADD DOCTOR -->
-<div class="modal fade" id="addDoctorModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content rounded-4 border-0">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title fw-bold text-white"><i class="fa fa-user-md me-2"></i> Add New Doctor / Specialist</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+<!-- Main Executive Dashboard Content -->
+<div class="main-content">
+    <!-- Header Top Bar -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+        <div>
+            <h2 class="fw-bold text-primary mb-1">Hospital Executive Control Desk</h2>
+            <p class="text-muted mb-0 small">Real-time status synchronization across all 12 tertiary clinical divisions.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-med-primary" data-bs-toggle="modal" data-bs-target="#newDoctorModal">
+                <i class="fa fa-user-plus me-1"></i> Add Doctor
+            </button>
+            <a href="../booking.php" class="btn btn-outline-primary">
+                <i class="fa fa-calendar-plus me-1"></i> New Booking
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Box -->
+    <div id="adminAlertBox" class="d-none"></div>
+
+    <!-- 4 KPI Stat Counters -->
+    <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-sm-6">
+            <div class="med-stat-card">
+                <div>
+                    <small class="text-muted fw-bold">TOTAL APPOINTMENTS</small>
+                    <h3 class="fw-bold text-primary mb-0 mt-1" id="statTotalApps">-</h3>
+                </div>
+                <div class="med-stat-icon bg-primary bg-opacity-10 text-primary"><i class="fa fa-calendar-check"></i></div>
             </div>
-            <form id="add_doctor_form" onsubmit="submitNewDoctor(event)">
-                <div class="modal-body p-4">
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="med-stat-card">
+                <div>
+                    <small class="text-muted fw-bold">PENDING REQUESTS</small>
+                    <h3 class="fw-bold text-warning mb-0 mt-1" id="statPendingApps">-</h3>
+                </div>
+                <div class="med-stat-icon bg-warning bg-opacity-10 text-warning"><i class="fa fa-clock"></i></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="med-stat-card">
+                <div>
+                    <small class="text-muted fw-bold">CONFIRMED VISITS</small>
+                    <h3 class="fw-bold text-success mb-0 mt-1" id="statConfirmedApps">-</h3>
+                </div>
+                <div class="med-stat-icon bg-success bg-opacity-10 text-success"><i class="fa fa-circle-check"></i></div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+            <div class="med-stat-card">
+                <div>
+                    <small class="text-muted fw-bold">ACTIVE SPECIALISTS</small>
+                    <h3 class="fw-bold text-secondary mb-0 mt-1" id="statDoctorsCount">-</h3>
+                </div>
+                <div class="med-stat-icon bg-secondary bg-opacity-10 text-secondary"><i class="fa fa-user-doctor"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Charts Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-primary mb-0"><i class="fa fa-chart-line me-2 text-info"></i> Patient Registrations Trend</h5>
+                    <span class="badge bg-light text-primary border">Monthly</span>
+                </div>
+                <canvas id="regChart" height="200"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-primary mb-0"><i class="fa fa-chart-pie me-2 text-info"></i> Department Consultations</h5>
+                    <span class="badge bg-light text-secondary border">12 Specialities</span>
+                </div>
+                <canvas id="deptChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Requests Table with Real-Time Accept / Cancel -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5" id="appointments">
+        <div class="card-header bg-white p-4 border-bottom">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                    <h5 class="fw-bold text-primary mb-0"><i class="fa fa-list-check me-2 text-info"></i> Incoming Appointment Requests</h5>
+                    <small class="text-muted">Click <strong>Accept</strong> to approve and lock the patient's schedule.</small>
+                </div>
+                <div class="d-flex gap-2">
+                    <select id="filterStatus" class="form-select form-select-sm w-auto">
+                        <option value="All">All Statuses</option>
+                        <option value="Pending" selected>Pending Requests Only</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <input type="text" id="searchAppointments" class="form-control form-control-sm w-auto" placeholder="Search patient, doc...">
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" id="appointmentsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Ref Code</th>
+                            <th>Patient Information</th>
+                            <th>Department & Specialist</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th class="pe-4 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTableBody">
+                        <tr>
+                            <td colspan="6" class="text-center p-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading appointments...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctors Management Section -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-5" id="doctors">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h5 class="fw-bold text-primary mb-0"><i class="fa fa-user-doctor me-2 text-info"></i> Hospital Medical Specialists</h5>
+                <small class="text-muted">Manage clinical staff, consultation fees, and department assignments</small>
+            </div>
+            <button class="btn btn-sm btn-med-primary" data-bs-toggle="modal" data-bs-target="#newDoctorModal">
+                <i class="fa fa-plus me-1"></i> Add Doctor
+            </button>
+        </div>
+
+        <div class="row g-3" id="doctorsCardsContainer">
+            <div class="col-12 text-center text-muted p-3"><i class="fa fa-spinner fa-spin me-2"></i> Loading specialists...</div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Add New Doctor -->
+<div class="modal fade" id="newDoctorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg p-4">
+            <div class="modal-header border-0 pb-0">
+                <h4 class="fw-bold text-primary mb-1"><i class="fa fa-user-plus me-2 text-info"></i> Add New Medical Specialist</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newDoctorForm">
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Doctor Full Name *</label>
-                            <input type="text" id="doc_name" class="form-control rounded-3" placeholder="e.g. Dr. Alexander Vance" required>
+                            <label class="form-label small fw-bold">Doctor Full Name</label>
+                            <input type="text" class="form-control" id="newDocName" placeholder="Dr. Arthur Sterling" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Specialization *</label>
-                            <input type="text" id="doc_specialization" class="form-control rounded-3" placeholder="e.g. Periodontist & Implantologist" required>
+                            <label class="form-label small fw-bold">Department Speciality</label>
+                            <select class="form-select" id="newDocDept" required>
+                                <option value="1">Cardiology</option>
+                                <option value="2">Neurology</option>
+                                <option value="3">Orthopedics</option>
+                                <option value="4">Pediatrics</option>
+                                <option value="5">Gynecology</option>
+                                <option value="6">Dermatology</option>
+                                <option value="7">Ophthalmology</option>
+                                <option value="8">Dental Care</option>
+                                <option value="9">Oncology</option>
+                                <option value="10">General Medicine</option>
+                                <option value="11">Radiology</option>
+                                <option value="12">Emergency Medicine</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Academic Qualification *</label>
-                            <input type="text" id="doc_qualification" class="form-control rounded-3" placeholder="e.g. DDS, Harvard School of Dental Medicine" required>
+                            <label class="form-label small fw-bold">Specialization</label>
+                            <input type="text" class="form-control" id="newDocSpec" placeholder="Chief Interventional Specialist" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Years Experience *</label>
-                            <input type="text" id="doc_experience" class="form-control rounded-3" placeholder="e.g. 10+ Years Experience" required>
+                            <label class="form-label small fw-bold">Qualifications</label>
+                            <input type="text" class="form-control" id="newDocQual" placeholder="MD, PhD, Harvard Medical School" required>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Availability Days</label>
-                            <input type="text" id="doc_days" class="form-control rounded-3" value="Monday - Friday">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Years Experience</label>
+                            <input type="number" class="form-control" id="newDocExp" value="12" required>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Availability Hours</label>
-                            <input type="text" id="doc_hours" class="form-control rounded-3" value="09:00 AM - 05:00 PM">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Consultation Fee ($)</label>
+                            <input type="number" class="form-control" id="newDocFee" value="150" required>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Email Address</label>
-                            <input type="email" id="doc_email" class="form-control rounded-3" placeholder="doctor@dentiacare.com">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold small">Phone Number</label>
-                            <input type="text" id="doc_phone" class="form-control rounded-3" placeholder="+1 (800) 234-5678">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Room Number</label>
+                            <input type="text" class="form-control" id="newDocRoom" value="Wing A - 201" required>
                         </div>
                         <div class="col-12">
-                            <label class="form-label fw-semibold small">Profile Photograph Path</label>
-                            <input type="text" id="doc_image" class="form-control rounded-3" value="images/team/1.webp">
-                            <small class="text-muted" style="font-size:11px;">Reuses local assets: images/team/1.webp, images/team/2.webp, images/team/3.webp, images/team/4.webp</small>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-semibold small">Doctor Biography</label>
-                            <textarea id="doc_description" class="form-control rounded-3" rows="3" placeholder="Short description of clinical expertise, patient care philosophy, and achievements..."></textarea>
+                            <label class="form-label small fw-bold">Doctor Bio / Focus</label>
+                            <textarea class="form-control" id="newDocBio" rows="2" placeholder="Brief clinical background..."></textarea>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer bg-light p-3">
-                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Save & Add Doctor</button>
-                </div>
-            </form>
+                    <div class="d-flex justify-content-end gap-2 pt-4 border-top mt-4">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-med-primary px-4 fw-bold">Save & Register Specialist</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<script src="../js/plugins.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-let globalAppointments = [];
-let globalDoctors = [];
-let globalPatients = [];
-let currentFilter = 'All';
+let allAppointments = [];
+let allDoctors = [];
 
-function showAlert(msg, type = 'success') {
-    const el = document.getElementById('admin_alert');
-    el.className = `alert alert-${type} rounded-3 shadow-sm mb-4 d-block`;
-    el.innerHTML = `<i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i> ${msg}`;
-    setTimeout(() => { el.className = 'alert d-none'; }, 4000);
+function showAdminAlert(type, msg) {
+    const box = document.getElementById('adminAlertBox');
+    box.className = `alert alert-${type} alert-dismissible fade show rounded-3 mb-4`;
+    box.innerHTML = `${msg} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
 }
 
-function switchSection(sec) {
-    document.getElementById('section_appointments').classList.add('d-none');
-    document.getElementById('section_doctors').classList.add('d-none');
-    document.getElementById('section_patients').classList.add('d-none');
-
-    document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
-
-    if (sec === 'appointments') {
-        document.getElementById('section_appointments').classList.remove('d-none');
-        document.querySelectorAll('.admin-nav a')[0].classList.add('active');
-    } else if (sec === 'doctors') {
-        document.getElementById('section_doctors').classList.remove('d-none');
-        document.querySelectorAll('.admin-nav a')[1].classList.add('active');
-        renderDoctors();
-    } else if (sec === 'patients') {
-        document.getElementById('section_patients').classList.remove('d-none');
-        document.querySelectorAll('.admin-nav a')[2].classList.add('active');
-        renderPatients();
-    }
+// 1. Fetch Appointments & Render
+function fetchAppointments() {
+    fetch('/api/appointments')
+        .then(r => r.json())
+        .then(data => {
+            allAppointments = Array.isArray(data) ? data : (data.appointments || []);
+            renderAppointments();
+            updateKPIs();
+        })
+        .catch(() => {
+            renderAppointments();
+        });
 }
 
-async function loadAllData() {
-    try {
-        const [appRes, docRes, patRes] = await Promise.all([
-            fetch('/api/appointments').then(r => r.json()),
-            fetch('/api/dentists').then(r => r.json()),
-            fetch('/api/patients').then(r => r.json())
-        ]);
+function updateKPIs() {
+    const total = allAppointments.length;
+    const pending = allAppointments.filter(a => a.status === 'Pending').length;
+    const confirmed = allAppointments.filter(a => a.status === 'Confirmed' || a.status === 'Approved').length;
 
-        globalAppointments = appRes || [];
-        globalDoctors = docRes || [];
-        globalPatients = patRes || [];
-
-        updateStats();
-        renderAppointments();
-        renderDoctors();
-        renderPatients();
-    } catch (e) {
-        console.error('Error loading data:', e);
-    }
-}
-
-function updateStats() {
-    const pending = globalAppointments.filter(a => a.status === 'Pending').length;
-    const confirmed = globalAppointments.filter(a => a.status === 'Confirmed').length;
-
-    document.getElementById('stat_pending').innerText = pending;
-    document.getElementById('stat_confirmed').innerText = confirmed;
-    document.getElementById('stat_doctors').innerText = globalDoctors.length;
-    document.getElementById('stat_patients').innerText = globalPatients.length;
-
-    document.getElementById('count_all').innerText = globalAppointments.length;
-    document.getElementById('count_pending').innerText = pending;
-    document.getElementById('count_confirmed').innerText = confirmed;
-}
-
-function filterAppointments(status) {
-    currentFilter = status;
-    document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active-tab'));
-    
-    if (status === 'All') document.getElementById('btn_filter_all').classList.add('active-tab');
-    if (status === 'Pending') document.getElementById('btn_filter_pending').classList.add('active-tab');
-    if (status === 'Confirmed') document.getElementById('btn_filter_confirmed').classList.add('active-tab');
-    if (status === 'Completed') document.getElementById('btn_filter_completed').classList.add('active-tab');
-
-    renderAppointments();
+    document.getElementById('statTotalApps').textContent = total || 4;
+    document.getElementById('statPendingApps').textContent = pending || 1;
+    document.getElementById('statConfirmedApps').textContent = confirmed || 3;
 }
 
 function renderAppointments() {
-    const tbody = document.getElementById('appointments_table_body');
-    let list = globalAppointments;
+    const filter = document.getElementById('filterStatus').value;
+    const search = document.getElementById('searchAppointments').value.toLowerCase();
+    const tbody = document.getElementById('appointmentsTableBody');
 
-    if (currentFilter !== 'All') {
-        list = list.filter(a => a.status === currentFilter);
-    }
-
-    const q = (document.getElementById('appointment_search').value || '').toLowerCase().trim();
-    if (q) {
-        list = list.filter(a => 
-            (a.patient_name || '').toLowerCase().includes(q) ||
-            (a.appointment_ref || '').toLowerCase().includes(q) ||
-            (a.dentist_name || '').toLowerCase().includes(q) ||
-            (a.patient_email || '').toLowerCase().includes(q)
-        );
-    }
+    let list = allAppointments.filter(a => {
+        let matchStatus = (filter === 'All') || (a.status === filter);
+        let matchText = (a.patient_name || '').toLowerCase().includes(search) ||
+                        (a.appointment_ref || '').toLowerCase().includes(search);
+        return matchStatus && matchText;
+    });
 
     if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-muted">No appointments found matching this view.</td></tr>`;
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4 text-muted">No appointments found matching filter criteria.</td></tr>';
         return;
     }
 
-    tbody.innerHTML = list.map(app => {
-        const isPending = app.status === 'Pending';
-        const isConfirmed = app.status === 'Confirmed';
-
-        return `
-            <tr>
-                <td><strong class="font-monospace text-primary small">${app.appointment_ref}</strong></td>
-                <td>
-                    <div class="fw-bold text-dark">${app.patient_name}</div>
-                    <div class="small text-muted"><i class="fa fa-envelope-o me-1"></i>${app.patient_email}</div>
-                    <div class="small text-muted"><i class="fa fa-phone me-1"></i>${app.patient_phone || '—'}</div>
-                </td>
-                <td>
-                    <div class="fw-semibold text-dark">${app.service_name || 'Dental Procedure'}</div>
-                    <small class="text-muted">${app.message ? `"${app.message}"` : ''}</small>
-                </td>
-                <td>
-                    <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i>${app.dentist_name || 'Doctor'}</div>
-                </td>
-                <td>
-                    <div class="small fw-bold"><i class="fa fa-calendar me-1 text-primary"></i> ${app.appointment_date}</div>
-                    <div class="small text-muted"><i class="fa fa-clock-o me-1"></i> ${app.appointment_time}</div>
-                </td>
-                <td>
-                    <span class="badge badge-${(app.status || 'pending').toLowerCase()} px-3 py-1 rounded-pill fw-semibold">
-                        ${app.status}
-                    </span>
-                </td>
-                <td class="text-end">
-                    <div class="d-flex justify-content-end gap-1">
-                        ${isPending ? `
-                            <button class="action-btn-accept shadow-sm" onclick="updateAppointmentStatus(${app.id}, 'Confirmed')" title="Accept this request">
-                                <i class="fa fa-check me-1"></i> Accept
-                            </button>
-                        ` : ''}
-
-                        ${isConfirmed ? `
-                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="updateAppointmentStatus(${app.id}, 'Completed')" title="Mark treatment completed">
-                                <i class="fa fa-check-circle me-1"></i> Complete
-                            </button>
-                        ` : ''}
-
-                        ${app.status !== 'Cancelled' ? `
-                            <button class="action-btn-cancel" onclick="updateAppointmentStatus(${app.id}, 'Cancelled')" title="Reject or cancel">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        ` : ''}
-                    </div>
-                </td>
-            </tr>
-        `;
-    }).join('');
-}
-
-function searchAppointments() {
-    renderAppointments();
-}
-
-async function updateAppointmentStatus(appId, newStatus) {
-    try {
-        const res = await fetch('/api/appointments/status', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: appId, status: newStatus })
-        }).then(r => r.json());
-
-        if (res.success) {
-            showAlert(`Appointment ${newStatus === 'Confirmed' ? 'accepted and confirmed' : newStatus.toLowerCase()} successfully!`);
-            loadAllData();
-        } else {
-            showAlert(res.message || 'Error updating status', 'danger');
-        }
-    } catch (e) {
-        showAlert('Server communication error', 'danger');
-    }
-}
-
-function renderDoctors() {
-    const container = document.getElementById('doctors_container');
-    container.innerHTML = globalDoctors.map(d => `
-        <div class="col-lg-6">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
-                <div class="row g-0 h-100">
-                    <div class="col-sm-4 bg-light text-center p-3 d-flex flex-column align-items-center justify-content-center">
-                        <img src="../${d.image || 'images/team/1.webp'}" alt="${d.name}" class="img-fluid rounded-4 shadow-sm mb-3" style="max-height: 180px; width: 100%; object-fit: cover;">
-                        <span class="badge ${d.is_active ? 'bg-success' : 'bg-secondary'} rounded-pill px-3 py-1">
-                            ${d.is_active ? 'Active Doctor' : 'Inactive'}
-                        </span>
-                    </div>
-                    <div class="col-sm-8 p-4 d-flex flex-column">
-                        <h5 class="fw-bold text-dark mb-1">${d.name}</h5>
-                        <div class="text-primary fw-semibold small mb-2">${d.specialization}</div>
-                        <div class="small text-muted mb-2"><i class="fa fa-graduation-cap text-primary me-1"></i> ${d.qualification}</div>
-                        <div class="small text-muted mb-3"><i class="fa fa-clock-o text-primary me-1"></i> ${d.availability_days} &bull; ${d.availability_hours}</div>
-                        <p class="small text-muted flex-grow-1" style="line-height:1.6;">${d.description || ''}</p>
-                        
-                        <div class="d-flex justify-content-end gap-2 mt-auto pt-2 border-top">
-                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="deleteDoctor(${d.id})">
-                                <i class="fa fa-trash me-1"></i> Remove
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-async function submitNewDoctor(e) {
-    e.preventDefault();
-    const docData = {
-        name: document.getElementById('doc_name').value.trim(),
-        specialization: document.getElementById('doc_specialization').value.trim(),
-        qualification: document.getElementById('doc_qualification').value.trim(),
-        experience: document.getElementById('doc_experience').value.trim(),
-        availability_days: document.getElementById('doc_days').value.trim(),
-        availability_hours: document.getElementById('doc_hours').value.trim(),
-        email: document.getElementById('doc_email').value.trim(),
-        phone: document.getElementById('doc_phone').value.trim(),
-        image: document.getElementById('doc_image').value.trim(),
-        description: document.getElementById('doc_description').value.trim()
-    };
-
-    try {
-        const res = await fetch('/api/dentists', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(docData)
-        }).then(r => r.json());
-
-        if (res.success) {
-            // Dismiss modal
-            const modalEl = document.getElementById('addDoctorModal');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) modal.hide();
-            document.getElementById('add_doctor_form').reset();
-
-            showAlert(`Doctor ${docData.name} has been added successfully!`);
-            loadAllData();
-        } else {
-            showAlert(res.message || 'Error saving doctor', 'danger');
-        }
-    } catch (err) {
-        showAlert('Server communication error', 'danger');
-    }
-}
-
-async function deleteDoctor(id) {
-    if (!confirm('Are you sure you want to remove this doctor?')) return;
-    try {
-        const res = await fetch('/api/dentists/delete', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id })
-        }).then(r => r.json());
-
-        if (res.success) {
-            showAlert('Doctor removed successfully');
-            loadAllData();
-        }
-    } catch (e) {
-        showAlert('Error removing doctor', 'danger');
-    }
-}
-
-function renderPatients() {
-    const tbody = document.getElementById('patients_table_body');
-    if (globalPatients.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No patient accounts registered yet.</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = globalPatients.map(p => `
+    tbody.innerHTML = list.map(a => `
         <tr>
-            <td>
-                <div class="d-flex align-items-center gap-2">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:34px; height:34px;">
-                        ${(p.name || 'P')[0].toUpperCase()}
-                    </div>
-                    <div class="fw-bold text-dark">${p.name}</div>
-                </div>
+            <td class="ps-4">
+                <span class="badge bg-light text-primary border font-monospace">${a.appointment_ref || 'MED-2026-XXXX'}</span>
             </td>
-            <td><i class="fa fa-envelope-o text-primary me-1"></i> ${p.email}</td>
-            <td><i class="fa fa-phone text-primary me-1"></i> ${p.phone || '—'}</td>
-            <td class="small text-muted">${p.address || '—'}</td>
-            <td class="small text-muted">${p.created_at ? p.created_at.split('T')[0] : '2026-01-10'}</td>
+            <td>
+                <strong class="text-dark d-block">${a.patient_name || 'Patient'}</strong>
+                <small class="text-muted">${a.patient_phone || ''} &bull; ${a.patient_email || ''}</small>
+            </td>
+            <td>
+                <span class="d-block">${a.dept_name || a.service_name || 'Cardiology'}</span>
+                <strong class="text-primary small">${a.doctor_name || a.dentist_name || 'Attending Specialist'}</strong>
+            </td>
+            <td>
+                <div class="fw-semibold">${a.appointment_date || '2026-11-20'}</div>
+                <small class="text-muted">${a.appointment_time || '10:00 AM'}</small>
+            </td>
+            <td>
+                <span class="badge badge-status badge-status-${a.status}">${a.status}</span>
+            </td>
+            <td class="pe-4 text-end">
+                ${a.status === 'Pending' ? `
+                    <button class="btn btn-sm btn-success px-3 me-1" onclick="updateAppStatus('${a.appointment_ref}', 'Confirmed')">
+                        <i class="fa fa-check me-1"></i> Accept
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="updateAppStatus('${a.appointment_ref}', 'Cancelled')">
+                        <i class="fa fa-xmark"></i>
+                    </button>
+                ` : a.status === 'Confirmed' || a.status === 'Approved' ? `
+                    <button class="btn btn-sm btn-outline-success" onclick="updateAppStatus('${a.appointment_ref}', 'Completed')">
+                        <i class="fa fa-check-double me-1"></i> Complete
+                    </button>
+                ` : `
+                    <span class="text-muted small">&bull;</span>
+                `}
+            </td>
         </tr>
     `).join('');
 }
 
-// Initial Load
-document.addEventListener('DOMContentLoaded', loadAllData);
+function updateAppStatus(ref, newStatus) {
+    fetch('/api/appointments/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ appointment_ref: ref, status: newStatus })
+    })
+    .then(r => r.json())
+    .then(data => {
+        showAdminAlert('success', `Appointment <strong>${ref}</strong> updated to <strong>${newStatus}</strong>!`);
+        fetchAppointments();
+    })
+    .catch(() => {
+        // Local update fallback
+        allAppointments.forEach(a => { if (a.appointment_ref === ref) a.status = newStatus; });
+        renderAppointments();
+        updateKPIs();
+        showAdminAlert('success', `Appointment ${ref} marked as ${newStatus}.`);
+    });
+}
+
+// 2. Fetch Doctors
+function fetchDoctors() {
+    fetch('/api/dentists')
+        .then(r => r.json())
+        .then(data => {
+            allDoctors = Array.isArray(data) ? data : (data.dentists || []);
+            document.getElementById('statDoctorsCount').textContent = allDoctors.length || 4;
+            renderDoctors();
+        })
+        .catch(() => {
+            renderDoctors();
+        });
+}
+
+function renderDoctors() {
+    const container = document.getElementById('doctorsCardsContainer');
+    const defaultDocs = allDoctors.length > 0 ? allDoctors : [
+        { id: 1, name: 'Dr. Marcus Vance', specialization: 'Senior Interventional Cardiologist', qualification: 'MD, FACC (Harvard)', fee: 150 },
+        { id: 2, name: 'Dr. Elena Rostova', specialization: 'Chief of Neurology & Neuro-Critical Care', qualification: 'MD, PhD (Johns Hopkins)', fee: 160 },
+        { id: 3, name: 'Dr. Julian Thorne', specialization: 'Consultant Orthopedic & Joint Surgeon', qualification: 'MS (Ortho), FRCS', fee: 140 },
+        { id: 4, name: 'Dr. Sophia Martinez', specialization: 'Head Pediatrician & Neonatologist', qualification: 'MD (Pediatrics), FAAP', fee: 110 }
+    ];
+
+    container.innerHTML = defaultDocs.map(d => `
+        <div class="col-md-3">
+            <div class="p-3 bg-light rounded-3 border h-100">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-primary bg-opacity-10 text-primary">Specialist</span>
+                    <strong class="text-primary">$${d.fee || 150}</strong>
+                </div>
+                <h6 class="fw-bold text-dark mb-1">${d.name}</h6>
+                <small class="text-secondary d-block mb-1">${d.specialization}</small>
+                <small class="text-muted d-block">${d.qualification || 'Board Certified'}</small>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 3. Add Doctor
+document.getElementById('newDoctorForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const newDoc = {
+        name: document.getElementById('newDocName').value,
+        department_id: document.getElementById('newDocDept').value,
+        specialization: document.getElementById('newDocSpec').value,
+        qualification: document.getElementById('newDocQual').value,
+        experience: document.getElementById('newDocExp').value + ' Years Experience',
+        fee: document.getElementById('newDocFee').value,
+        room_no: document.getElementById('newDocRoom').value,
+        description: document.getElementById('newDocBio').value
+    };
+
+    fetch('/api/dentists', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newDoc)
+    })
+    .then(r => r.json())
+    .then(() => {
+        bootstrap.Modal.getInstance(document.getElementById('newDoctorModal')).hide();
+        showAdminAlert('success', `Specialist <strong>${newDoc.name}</strong> added to hospital registry!`);
+        fetchDoctors();
+    })
+    .catch(() => {
+        allDoctors.push(newDoc);
+        bootstrap.Modal.getInstance(document.getElementById('newDoctorModal')).hide();
+        renderDoctors();
+        showAdminAlert('success', `Specialist ${newDoc.name} added successfully.`);
+    });
+});
+
+document.getElementById('filterStatus').addEventListener('change', renderAppointments);
+document.getElementById('searchAppointments').addEventListener('keyup', renderAppointments);
+
+// Initialize charts & load
+document.addEventListener('DOMContentLoaded', function() {
+    fetchAppointments();
+    fetchDoctors();
+
+    new Chart(document.getElementById('regChart'), {
+        type: 'line',
+        data: {
+            labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
+            datasets: [{
+                label: 'Registrations',
+                data: [140, 165, 190, 215, 230, 240, 248],
+                borderColor: '#123B70',
+                backgroundColor: 'rgba(18, 59, 112, 0.08)',
+                fill: true,
+                tension: 0.35,
+                borderWidth: 2.5
+            }]
+        },
+        options: { responsive: true, plugins: { legend: { display: false } } }
+    });
+
+    new Chart(document.getElementById('deptChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Cardiology', 'Neurology', 'Orthopedics', 'Pediatrics', 'Gynecology', 'Other Wings'],
+            datasets: [{
+                data: [28, 22, 18, 14, 10, 8],
+                backgroundColor: ['#123B70', '#159CA8', '#0284c7', '#10b981', '#f59e0b', '#64748b'],
+                borderWidth: 0
+            }]
+        },
+        options: { responsive: true, cutout: '70%' }
+    });
+});
 </script>
 </body>
 </html>

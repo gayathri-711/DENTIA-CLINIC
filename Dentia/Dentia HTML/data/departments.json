@@ -1,0 +1,14 @@
+[
+  {"id": 1, "name": "Cardiology", "slug": "cardiology", "code": "CARD", "icon": "fa-heart-pulse", "short_desc": "Cardiac diagnostics, cath lab, and angioplasty."},
+  {"id": 2, "name": "Neurology", "slug": "neurology", "code": "NEUR", "icon": "fa-brain", "short_desc": "Stroke thrombolysis, neurosurgery, and epilepsy."},
+  {"id": 3, "name": "Orthopedics", "slug": "orthopedics", "code": "ORTH", "icon": "fa-bone", "short_desc": "Robotic joint replacements and sports trauma."},
+  {"id": 4, "name": "Pediatrics", "slug": "pediatrics", "code": "PEDI", "icon": "fa-baby", "short_desc": "Child wellness, Level-III NICU, and pediatric surgery."},
+  {"id": 5, "name": "Gynecology", "slug": "gynecology", "code": "GYNE", "icon": "fa-venus", "short_desc": "Maternity care, fetal medicine, and laparoscopic surgery."},
+  {"id": 6, "name": "Dermatology", "slug": "dermatology", "code": "DERM", "icon": "fa-hand-dots", "short_desc": "Clinical skin pathology, psoriasis, and laser therapy."},
+  {"id": 7, "name": "Ophthalmology", "slug": "ophthalmology", "code": "OPHT", "icon": "fa-eye", "short_desc": "Micro-incision cataract surgery and LASIK."},
+  {"id": 8, "name": "Dental Care", "slug": "dental-care", "code": "DENT", "icon": "fa-tooth", "short_desc": "Titanium implants, orthodontics, and maxillofacial surgery."},
+  {"id": 9, "name": "Oncology", "slug": "oncology", "code": "ONCO", "icon": "fa-dna", "short_desc": "Medical oncology, immunotherapy, and chemotherapy suites."},
+  {"id": 10, "name": "General Medicine", "slug": "general-medicine", "code": "GENM", "icon": "fa-stethoscope", "short_desc": "Adult primary care, diabetes, and acute fevers."},
+  {"id": 11, "name": "Radiology", "slug": "radiology", "code": "RADI", "icon": "fa-x-ray", "short_desc": "3.0T MRI, 128-slice CT, and ultrasound."},
+  {"id": 12, "name": "Emergency Medicine", "slug": "emergency-medicine", "code": "EMER", "icon": "fa-truck-medical", "short_desc": "Level-I trauma center, resuscitation, and ambulances."}
+]

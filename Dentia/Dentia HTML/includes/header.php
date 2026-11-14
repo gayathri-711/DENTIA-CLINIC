@@ -1,168 +1,167 @@
 <?php
 /**
- * Doctor Dental Clinic Dentia - Global Header Component
+ * MEDINOVA Multi-Speciality Hospital Management System
+ * Global Responsive Public Header
  */
+
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/functions.php';
 
-$clinicSettings = get_clinic_settings();
-$isPatient = is_patient_logged_in();
-$patientData = get_logged_in_patient();
-$currentScript = basename($_SERVER['SCRIPT_NAME'] ?? '');
-$allServicesList = get_all_services();
+$settings = get_hospital_settings();
+$departmentsList = get_departments(true);
+$user = current_user();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title><?= isset($pageTitle) ? e($pageTitle) . ' — ' : '' ?><?= e($clinicSettings['clinic_name']) ?></title>
-    <link rel="icon" href="images/icon.webp" type="image/gif" sizes="16x16">
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Doctor Dental Clinic Dentia — Modern Dental Care & Management Platform" name="description">
-    <meta content="dentist, dental clinic, dental implants, teeth whitening, orthodontics, root canal, teeth cleaning" name="keywords">
-
-    <!-- CSS Files ================================================== -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
-    <link href="css/plugins.css" rel="stylesheet" type="text/css">
-    <link href="css/swiper.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link id="colors" href="css/colors/scheme-01.css" rel="stylesheet" type="text/css">
-    <!-- Modern Medical Theme -->
-    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= isset($pageTitle) ? e($pageTitle) . " - " : "" ?>MEDINOVA Multi-Speciality Hospital</title>
+    <meta name="description" content="MEDINOVA - Advanced Healthcare, Better Tomorrow. Tertiary Multi-Speciality Hospital offering 24/7 Emergency, Cardiology, Neurology, Orthopedics, and Comprehensive Surgical Care.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Frameworks -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/fontawesome6/css/all.min.css">
+    <link rel="stylesheet" href="css/plugins.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/medinova-theme.css">
 </head>
-
 <body>
-    <div id="wrapper">
-        <a href="#" id="back-to-top"></a>
 
-        <!-- Preloader begin -->
-        <div id="de-loader"></div>
-        <!-- Preloader end -->
-
-        <!-- Top Utility Bar -->
-        <div class="dentia-topbar d-none d-lg-block">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="d-flex align-items-center gap-4">
-                        <div><i class="fa fa-clock-o text-info me-2"></i><?= e($clinicSettings['opening_hours_weekday']) ?></div>
-                        <div><i class="fa fa-map-marker text-danger me-2"></i><?= e($clinicSettings['address']) ?></div>
-                    </div>
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="d-flex align-items-center">
-                            <span class="emergency-badge me-2"><i class="fa fa-phone me-1"></i> 24/7 EMERGENCY:</span>
-                            <a href="tel:<?= e($clinicSettings['emergency_phone']) ?>" class="fw-bold"><?= e($clinicSettings['emergency_phone']) ?></a>
-                        </div>
-                        <span class="text-white-50">|</span>
-                        <?php if ($isPatient): ?>
-                            <a href="patient-dashboard.php" class="text-white"><i class="fa fa-user-circle me-1"></i> Hello, <?= e($patientData['name']) ?></a>
-                            <a href="logout.php" class="text-white-50"><i class="fa fa-sign-out me-1"></i> Logout</a>
-                        <?php else: ?>
-                            <a href="login.php"><i class="fa fa-sign-in me-1"></i> Patient Login</a>
-                            <a href="register.php"><i class="fa fa-user-plus me-1"></i> Register</a>
-                        <?php endif; ?>
-                        <span class="text-white-50">|</span>
-                        <a href="admin/login.php" class="text-white-50"><i class="fa fa-lock me-1"></i> Admin</a>
-                    </div>
-                </div>
+<!-- Top Emergency & Utility Bar -->
+<div class="med-topbar d-none d-md-block">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-4">
+                <div><i class="fa fa-hospital me-2 text-info"></i><?= e($settings['address']) ?></div>
+                <div><i class="fa fa-clock me-2 text-info"></i>Outpatient: Mon - Sat 08:00 AM - 08:00 PM</div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="emergency-badge"><i class="fa fa-phone-volume me-1"></i> 24/7 ER: <?= e($settings['emergency_phone']) ?></span>
+                <span class="text-white-50">|</span>
+                <a href="tel:<?= e($settings['ambulance_phone']) ?>"><i class="fa fa-truck-medical me-1 text-danger"></i> Ambulance: <?= e($settings['ambulance_phone']) ?></a>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- Header begin -->
-        <header class="transparent scroll-light dentia-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="de-flex sm-pt10">
-                            <div class="de-flex-col">
-                                <!-- Logo begin -->
-                                <div id="logo">
-                                    <a href="index.php">
-                                        <img class="logo-main" src="images/logo-black.webp" alt="Dentia Dental Clinic">
-                                        <img class="logo-scroll" src="images/logo-black.webp" alt="Dentia Dental Clinic">
-                                        <img class="logo-mobile" src="images/logo-black.webp" alt="Dentia Dental Clinic">
-                                    </a>
-                                </div>
-                                <!-- Logo end -->
-                            </div>
-                            <div class="de-flex-col header-col-mid">
-                                <!-- Mainmenu begin -->
-                                <ul id="mainmenu">
-                                    <li>
-                                        <a class="menu-item <?= ($currentScript === 'index.php' || $currentScript === 'index.html' || $currentScript === '') ? 'active' : '' ?>" href="index.php">Home</a>
-                                    </li>
-                                    <li>
-                                        <a class="menu-item <?= (strpos($currentScript, 'service') !== false) ? 'active' : '' ?>" href="services.php">Services</a>
-                                        <ul>
-                                            <li><a href="service-general-dentistry.php">General Dentistry</a></li>
-                                            <li><a href="service-teeth-whitening.php">Teeth Whitening</a></li>
-                                            <li><a href="service-dental-implants.php">Dental Implants</a></li>
-                                            <li><a href="service-root-canal.php">Root Canal Treatment</a></li>
-                                            <li><a href="service-orthodontics.php">Orthodontics & Braces</a></li>
-                                            <li><a href="service-cosmetic-dentistry.php">Cosmetic Dentistry</a></li>
-                                            <li><a href="service-pediatric-dentistry.php">Pediatric Dentistry</a></li>
-                                            <li><a href="service-tooth-extraction.php">Tooth Extraction</a></li>
-                                            <li><a href="service-dental-cleaning.php">Dental Cleaning</a></li>
-                                            <li><a href="service-gum-treatment.php">Gum Treatment</a></li>
-                                            <li class="border-top"><a href="services.php" class="fw-bold text-primary"><i class="fa fa-th-large me-1"></i> View All Services</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a class="menu-item <?= ($currentScript === 'dentists.php') ? 'active' : '' ?>" href="dentists.php">Dentists</a>
-                                    </li>
-                                    <li>
-                                        <a class="menu-item <?= in_array($currentScript, ['about.php', 'faq.php', 'gallery.php', 'testimonials.php']) ? 'active' : '' ?>" href="#">About Us</a>
-                                        <ul>
-                                            <li><a href="about.php">About Clinic</a></li>
-                                            <li><a href="faq.php">Frequently Asked Questions</a></li>
-                                            <li><a href="gallery.php">Facilities & Clinic Tour</a></li>
-                                            <li><a href="testimonials.php">Patient Reviews</a></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <a class="menu-item <?= (strpos($currentScript, 'blog') !== false) ? 'active' : '' ?>" href="blog.php">Blog</a>
-                                    </li>
-                                    <li>
-                                        <a class="menu-item <?= ($currentScript === 'contact.php') ? 'active' : '' ?>" href="contact.php">Contact</a>
-                                    </li>
-                                    <?php if ($isPatient): ?>
-                                        <li class="d-lg-none">
-                                            <a class="menu-item text-primary" href="patient-dashboard.php"><i class="fa fa-user me-1"></i> Patient Dashboard</a>
-                                        </li>
-                                        <li class="d-lg-none">
-                                            <a class="menu-item text-danger" href="logout.php"><i class="fa fa-sign-out me-1"></i> Sign Out</a>
-                                        </li>
-                                    <?php else: ?>
-                                        <li class="d-lg-none">
-                                            <a class="menu-item text-primary" href="login.php"><i class="fa fa-sign-in me-1"></i> Patient Login</a>
-                                        </li>
-                                    <?php endif; ?>
-                                </ul>
-                                <!-- Mainmenu end -->
-                            </div>
-                            <div class="de-flex-col">
-                                <div class="menu_side_area d-flex align-items-center gap-3">
-                                    <?php if ($isPatient): ?>
-                                        <a href="patient-dashboard.php" class="user-account-btn d-none d-sm-inline-flex">
-                                            <i class="fa fa-user-circle me-2 fs-5"></i>
-                                            <span>Dashboard</span>
-                                        </a>
-                                    <?php endif; ?>
-                                    
-                                    <a href="booking.php" class="btn-main fx-slide">
-                                        <span><i class="fa fa-calendar-check-o me-2"></i>Book Appointment</span>
-                                    </a>
-                                    <span id="menu-btn"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!-- Main Navigation Bar -->
+<nav class="navbar navbar-expand-lg med-navbar">
+    <div class="container">
+        <!-- Brand Logo -->
+        <a class="med-logo" href="index.php">
+            <div class="med-logo-icon">
+                <i class="fa fa-heart-pulse"></i>
             </div>
-        </header>
-        <!-- Header end -->
+            <div>
+                <div class="med-logo-text">MEDINOVA</div>
+                <div class="med-logo-tagline">Advanced Healthcare</div>
+            </div>
+        </a>
 
-        <!-- Flash Notification Banners -->
-        <?= render_flash_messages() ?>
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#medinovaNav" aria-controls="medinovaNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="medinovaNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link med-nav-link <?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>" href="index.php">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link med-nav-link <?= basename($_SERVER['PHP_SELF']) == 'about.php' ? 'active' : '' ?>" href="about.php">About Us</a>
+                </li>
+                
+                <!-- Departments Dropdown (12 Specialities) -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link med-nav-link dropdown-toggle" href="departments.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Departments
+                    </a>
+                    <ul class="dropdown-menu border-0 shadow-lg p-3 rounded-3" style="min-width: 320px;">
+                        <li class="dropdown-header text-uppercase fw-bold text-primary mb-2">12 Clinical Specialities</li>
+                        <?php foreach (array_slice($departmentsList, 0, 8) as $dept): ?>
+                            <li>
+                                <a class="dropdown-item py-2 rounded-2 d-flex align-items-center" href="department-details.php?slug=<?= e($dept['slug']) ?>">
+                                    <i class="fa <?= e($dept['icon']) ?> me-2 text-primary" style="width: 20px;"></i>
+                                    <span><?= e($dept['name']) ?></span>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item fw-bold text-center text-primary" href="departments.php">
+                                View All 12 Departments <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link med-nav-link <?= basename($_SERVER['PHP_SELF']) == 'doctors.php' ? 'active' : '' ?>" href="doctors.php">Doctors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link med-nav-link <?= basename($_SERVER['PHP_SELF']) == 'facilities.php' ? 'active' : '' ?>" href="facilities.php">Facilities</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link med-nav-link <?= basename($_SERVER['PHP_SELF']) == 'contact.php' ? 'active' : '' ?>" href="contact.php">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Header Action CTAs -->
+            <div class="d-flex align-items-center gap-3">
+                <a href="booking.php" class="btn btn-med-primary d-none d-sm-inline-flex align-items-center">
+                    <i class="fa fa-calendar-check me-2"></i> Book Appointment
+                </a>
+
+                <?php if ($user): ?>
+                    <!-- Logged-in User Profile Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-med-outline dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+                            <i class="fa fa-user-circle fs-5"></i>
+                            <span><?= e($user['name']) ?></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg p-2 rounded-3">
+                            <li class="px-3 py-2 border-bottom">
+                                <small class="text-muted d-block">Signed in as</small>
+                                <strong class="text-capitalize"><?= e($user['role']) ?></strong>
+                            </li>
+                            <?php if ($user['role'] === 'admin' || $user['role'] === 'superadmin'): ?>
+                                <li><a class="dropdown-item py-2" href="admin/index.php"><i class="fa fa-gauge me-2 text-primary"></i> Admin Dashboard</a></li>
+                            <?php elseif ($user['role'] === 'doctor'): ?>
+                                <li><a class="dropdown-item py-2" href="doctor/index.php"><i class="fa fa-user-doctor me-2 text-primary"></i> Doctor Portal</a></li>
+                            <?php elseif ($user['role'] === 'receptionist'): ?>
+                                <li><a class="dropdown-item py-2" href="receptionist/index.php"><i class="fa fa-id-card me-2 text-primary"></i> Reception Desk</a></li>
+                            <?php elseif ($user['role'] === 'nurse'): ?>
+                                <li><a class="dropdown-item py-2" href="nurse/index.php"><i class="fa fa-user-nurse me-2 text-primary"></i> Nursing Portal</a></li>
+                            <?php elseif ($user['role'] === 'lab_technician'): ?>
+                                <li><a class="dropdown-item py-2" href="laboratory/index.php"><i class="fa fa-flask me-2 text-primary"></i> Lab Portal</a></li>
+                            <?php elseif ($user['role'] === 'pharmacist'): ?>
+                                <li><a class="dropdown-item py-2" href="pharmacy/index.php"><i class="fa fa-pills me-2 text-primary"></i> Pharmacy</a></li>
+                            <?php elseif ($user['role'] === 'billing'): ?>
+                                <li><a class="dropdown-item py-2" href="billing/index.php"><i class="fa fa-file-invoice me-2 text-primary"></i> Billing Portal</a></li>
+                            <?php else: ?>
+                                <li><a class="dropdown-item py-2" href="patient/dashboard.php"><i class="fa fa-chart-pie me-2 text-primary"></i> Patient Dashboard</a></li>
+                            <?php endif; ?>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item py-2 text-danger" href="logout.php"><i class="fa fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+                        </ul>
+                    </div>
+                <?php else: ?>
+                    <a href="login.php" class="btn btn-med-outline d-flex align-items-center">
+                        <i class="fa fa-arrow-right-to-bracket me-2"></i> Portals Login
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<?= render_flash_messages() ?>

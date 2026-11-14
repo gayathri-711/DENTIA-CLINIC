@@ -1,104 +1,51 @@
 <?php
 /**
- * Doctor Dental Clinic Dentia - Single Dental Blog Article View
+ * MEDINOVA Multi-Speciality Hospital Management System
+ * Single Health Blog Article
  */
-require_once __DIR__ . '/includes/db.php';
-require_once __DIR__ . '/includes/auth.php';
-require_once __DIR__ . '/includes/functions.php';
-
-$slug = isset($_GET['slug']) ? sanitize_input($_GET['slug']) : '';
-$post = null;
-
-global $pdo;
-if ($pdo && !empty($slug)) {
-    try {
-        $stmt = $pdo->prepare("SELECT * FROM blogs WHERE slug = ? LIMIT 1");
-        $stmt->execute([$slug]);
-        $post = $stmt->fetch();
-    } catch (Exception $e) {}
-}
-
-if (!$post) {
-    $recent = get_recent_blogs(1);
-    $post = $recent[0] ?? [
-        'title' => '5 Essential Tips for Healthy Teeth and Gums',
-        'slug' => '5-essential-tips-healthy-teeth',
-        'category' => 'Dental Care',
-        'author' => 'Dr. Sarah Bennett',
-        'published_at' => '2026-10-15',
-        'image' => 'images/blog/l1.webp',
-        'content' => '<p>Good oral hygiene is the foundation of overall wellness. Here are five simple yet crucial habits to adopt: brush twice daily with fluoride toothpaste, floss before bedtime to remove interdental food debris, rinse with an antimicrobial mouthwash, drink plenty of water, and never skip your bi-annual dental checkup.</p><p>Regular cleanings remove stubborn tartar that cannot be removed by daily brushing. If left unaddressed, tartar accumulation leads to gum inflammation (gingivitis) and potentially periodontal disease.</p>'
-    ];
-}
-
-$pageTitle = $post['title'];
+$pageTitle = "Medical Health Article";
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<div class="no-bottom no-top" id="content">
-    <div id="top"></div>
-
-    <section id="subheader" class="bg-color-op-1 text-center py-5" style="background: linear-gradient(135deg, #e8f2fc 0%, #d4e8fa 100%);">
-        <div class="container relative z-2">
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <span class="badge bg-primary text-white rounded-pill px-3 py-1 mb-2"><?= e($post['category']) ?></span>
-                    <h1 class="fw-bold mb-2"><?= e($post['title']) ?></h1>
-                    <div class="border-bottom my-3 mx-auto" style="width: 60px; border-width: 3px !important; border-color: var(--dentia-primary) !important;"></div>
-                    <ul class="crumb list-inline mb-0">
-                        <li class="list-inline-item"><a href="index.php" class="text-decoration-none text-muted">Home</a></li>
-                        <li class="list-inline-item">/</li>
-                        <li class="list-inline-item"><a href="blog.php" class="text-decoration-none text-muted">Blog</a></li>
-                        <li class="list-inline-item">/</li>
-                        <li class="list-inline-item active text-primary fw-bold">Article</li>
-                    </ul>
-                </div>
-            </div>
+<div class="py-5 bg-light border-bottom">
+    <div class="container" style="max-width: 860px;">
+        <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Cardiology &bull; Clinical Guide</span>
+        <h1 class="fw-bold text-primary mb-3">Early Warning Signs of Heart Disease You Shouldn’t Ignore</h1>
+        <div class="d-flex align-items-center gap-3 text-muted small">
+            <span>By <strong>Dr. Marcus Vance</strong> (MD, FACC)</span>
+            <span>&bull;</span>
+            <span>Published October 15, 2026</span>
+            <span>&bull;</span>
+            <span>5 Min Read</span>
         </div>
-    </section>
+    </div>
+</div>
 
-    <section class="py-5 bg-white">
-        <div class="container py-3">
-            <div class="row justify-content-center">
-                <div class="col-lg-9">
-                    
-                    <div class="mb-4">
-                        <img src="<?= e($post['image']) ?>" alt="<?= e($post['title']) ?>" class="img-fluid rounded-4 shadow-sm w-100" style="max-height: 440px; object-fit: cover;">
-                    </div>
+<div class="py-5">
+    <div class="container" style="max-width: 860px;">
+        <img src="images/blog/l1.webp" class="img-fluid rounded-4 shadow-sm w-100 mb-4" alt="Heart Disease Guidance" style="max-height: 420px; object-fit: cover;">
+        
+        <div class="fs-5 lh-lg text-muted mb-4">
+            <p>Cardiovascular disease remains the leading cause of mortality worldwide. Yet, with contemporary risk stratification and early therapeutic intervention, up to 80% of premature cardiac events are preventable.</p>
+            
+            <h3 class="fw-bold text-primary mt-4 mb-3">1. Exertional Angina and Chest Pressure</h3>
+            <p>Unlike movie depictions of crushing chest pain, myocardial ischemia frequently presents as a subtle heaviness, tightness, or burning sensation centered beneath the sternum. It often radiates to the left shoulder, neck, or jaw and typically subsides with resting.</p>
 
-                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom mb-4 text-muted small">
-                        <div>
-                            <i class="fa fa-user-md text-primary me-1"></i> Written by <strong><?= e($post['author']) ?></strong>
-                        </div>
-                        <div>
-                            <i class="fa fa-calendar text-primary me-1"></i> Published: <?= e($post['published_at']) ?>
-                        </div>
-                    </div>
+            <h3 class="fw-bold text-primary mt-4 mb-3">2. Unexplained Breathlessness</h3>
+            <p>If routine activities such as climbing a single flight of stairs or walking a short distance induce unexpected shortness of breath, it may indicate reduced cardiac output or left ventricular diastolic dysfunction.</p>
 
-                    <div class="blog-content lead text-dark mb-5" style="line-height: 1.9; font-size: 1.1rem;">
-                        <?= $post['content'] ?>
-                    </div>
-
-                    <!-- Callout: Book Appointment -->
-                    <div class="card border-0 bg-light rounded-4 p-4 p-md-5 text-center shadow-sm">
-                        <h4 class="fw-bold text-dark mb-2">Have Concerns About Your Teeth or Gums?</h4>
-                        <p class="text-muted small mb-4">Our experienced dentists in New York are ready to examine your smile and provide gentle, painless treatment.</p>
-                        <div class="d-flex justify-content-center gap-3">
-                            <a href="booking.php" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow">
-                                <i class="fa fa-calendar-check-o me-2"></i> Book Online Now
-                            </a>
-                            <a href="services.php" class="btn btn-outline-secondary rounded-pill px-4 py-2">
-                                Browse Procedures
-                            </a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <h3 class="fw-bold text-primary mt-4 mb-3">3. When to Seek Emergency Evaluation</h3>
+            <p>Any sudden chest discomfort accompanied by diaphoresis (cold sweats), lightheadedness, or nausea requires immediate emergency evaluation. Contact our 24/7 Level-I Emergency Cardiac Team directly without delay.</p>
         </div>
-    </section>
 
+        <div class="p-4 bg-light rounded-4 border d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="fw-bold text-primary mb-1">Concerned About Your Heart Health?</h5>
+                <p class="text-muted small mb-0">Consult Dr. Marcus Vance and our cardiology faculty today.</p>
+            </div>
+            <a href="booking.php?department_id=1" class="btn btn-med-primary px-4 fw-bold">Book Cardiac Checkup</a>
+        </div>
+    </div>
 </div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
-

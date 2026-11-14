@@ -1,273 +1,360 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Patient Portal — Doctor Dental Clinic Dentia</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="css/plugins.css" rel="stylesheet" type="text/css">
-    <link href="css/style.css" rel="stylesheet" type="text/css">
-    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
-    <link rel="icon" href="images/icon.webp" type="image/gif">
-    <style>
-        .badge-pending { background: #fef3c7; color: #b45309; }
-        .badge-confirmed { background: #d1fae5; color: #065f46; }
-        .badge-completed { background: #e0f2fe; color: #0369a1; }
-        .badge-cancelled { background: #fee2e2; color: #991b1b; }
-    </style>
+    <title>Patient Health Portal - MEDINOVA</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/fontawesome6/css/all.min.css">
+    <link rel="stylesheet" href="css/medinova-theme.css">
 </head>
 <body class="bg-light">
 
-    <!-- Navbar -->
-    <header class="bg-white border-bottom py-3 shadow-sm sticky-top">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="index.html" class="d-flex align-items-center text-decoration-none">
-                <img src="images/logo-black.webp" alt="Dentia" style="max-height: 40px;">
-            </a>
-
+<!-- Top Utility Bar -->
+<div class="med-topbar d-none d-md-block">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-4">
+                <div><i class="fa fa-hospital me-2 text-info"></i>750 Health Sciences Blvd, New York, NY</div>
+                <div><i class="fa fa-id-badge me-2 text-info"></i>Patient Portal: Active Session</div>
+            </div>
             <div class="d-flex align-items-center gap-3">
-                <div class="d-flex align-items-center gap-2">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:38px; height:38px;" id="avatar_initial">
-                        P
+                <span class="emergency-badge"><i class="fa fa-phone-volume me-1"></i> 24/7 ER: +1 (800) 555-9111</span>
+                <span class="text-white-50">|</span>
+                <a href="index.html"><i class="fa fa-globe me-1"></i> Hospital Website</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Nav -->
+<nav class="navbar navbar-expand-lg med-navbar">
+    <div class="container">
+        <a class="med-logo" href="index.html">
+            <div class="med-logo-icon">
+                <i class="fa fa-heart-pulse"></i>
+            </div>
+            <div>
+                <div class="med-logo-text">MEDINOVA</div>
+                <div class="med-logo-tagline">Advanced Healthcare</div>
+            </div>
+        </a>
+        <div class="d-flex align-items-center gap-3">
+            <a href="booking.html" class="btn btn-med-primary"><i class="fa fa-calendar-plus me-1"></i> Book New Appointment</a>
+            <a href="login.html" class="btn btn-outline-danger"><i class="fa fa-arrow-right-from-bracket me-1"></i> Sign Out</a>
+        </div>
+    </div>
+</nav>
+
+<div class="py-5">
+    <div class="container">
+        <!-- Patient Welcome Header -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fs-2" style="width: 64px; height: 64px;">
+                        <i class="fa fa-user"></i>
                     </div>
                     <div>
-                        <div class="fw-bold small text-dark leading-tight" id="header_patient_name">Patient</div>
-                        <div class="text-muted" style="font-size: 11px;" id="header_patient_email">user@example.com</div>
+                        <h3 class="fw-bold text-primary mb-1">Welcome back, John Doe!</h3>
+                        <div class="d-flex flex-wrap gap-3 text-muted small">
+                            <span><i class="fa fa-id-badge text-primary me-1"></i> Patient ID: <strong>MED-PAT-1001</strong></span>
+                            <span><i class="fa fa-droplet text-danger me-1"></i> Blood Group: <strong>O+</strong></span>
+                            <span><i class="fa fa-shield text-success me-1"></i> Insurance: <strong>BlueCross BlueShield</strong></span>
+                        </div>
                     </div>
                 </div>
-                <a href="booking.html" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold">
-                    <i class="fa fa-calendar-plus-o me-1"></i> Book Visit
-                </a>
-                <button onclick="handleLogout()" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-                    <i class="fa fa-sign-out me-1"></i> Sign Out
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Subheader -->
-    <section class="py-4 bg-primary text-white">
-        <div class="container">
-            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                <div>
-                    <h2 class="fw-bold text-white mb-1">Welcome, <span id="welcome_name">Patient</span></h2>
-                    <p class="small text-white-50 mb-0">Your Personal Dental Care Hub & Scheduled Appointments</p>
-                </div>
-                <div>
-                    <a href="booking.html" class="btn btn-light text-primary rounded-pill px-4 fw-bold shadow-sm">
-                        <i class="fa fa-plus-circle me-1"></i> Book New Procedure
-                    </a>
+                <div class="d-flex gap-2">
+                    <a href="booking.html" class="btn btn-med-primary"><i class="fa fa-calendar-plus me-2"></i> Book Consultation</a>
+                    <a href="login.html" class="btn btn-outline-danger"><i class="fa fa-arrow-right-from-bracket"></i></a>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Main Content -->
-    <main class="py-5">
-        <div class="container">
-
-            <div id="patient_alert" class="alert d-none rounded-3 shadow-sm mb-4"></div>
-
-            <!-- Stats Overview -->
-            <div class="row g-4 mb-4">
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
-                        <div>
-                            <div class="text-muted small fw-semibold">Upcoming Visits</div>
-                            <h2 class="fw-bold mb-0 text-primary" id="count_upcoming">0</h2>
-                        </div>
-                        <div class="stat-icon primary">
-                            <i class="fa fa-calendar-check-o fs-3"></i>
-                        </div>
+        <!-- Metric KPI Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Appointments</small>
+                        <h3 class="fw-bold text-primary mb-0 mt-1" id="dashTotalApps">2</h3>
                     </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
-                        <div>
-                            <div class="text-muted small fw-semibold">Completed Treatments</div>
-                            <h2 class="fw-bold mb-0 text-success" id="count_completed">0</h2>
-                        </div>
-                        <div class="stat-icon success">
-                            <i class="fa fa-check-circle fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
-                        <div>
-                            <div class="text-muted small fw-semibold">Total Scheduled</div>
-                            <h2 class="fw-bold mb-0 text-dark" id="count_total">0</h2>
-                        </div>
-                        <div class="stat-icon warning">
-                            <i class="fa fa-history fs-3"></i>
-                        </div>
+                    <div class="med-stat-icon bg-primary bg-opacity-10 text-primary">
+                        <i class="fa fa-calendar-check"></i>
                     </div>
                 </div>
             </div>
-
-            <!-- Appointment List Section -->
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
-                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-stethoscope text-primary me-2"></i> My Dental Appointments</h5>
-                    <span class="badge bg-light text-primary border rounded-pill px-3 py-1 small">Real-Time Sync</span>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Medical Records</small>
+                        <h3 class="fw-bold text-secondary mb-0 mt-1">1 Encounters</h3>
+                    </div>
+                    <div class="med-stat-icon bg-secondary bg-opacity-10 text-secondary">
+                        <i class="fa fa-notes-medical"></i>
+                    </div>
                 </div>
-                <div class="card-body p-0">
-                    <div class="table-responsive">
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Prescriptions</small>
+                        <h3 class="fw-bold text-success mb-0 mt-1">1 Active</h3>
+                    </div>
+                    <div class="med-stat-icon bg-success bg-opacity-10 text-success">
+                        <i class="fa fa-pills"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="med-stat-card">
+                    <div>
+                        <small class="text-muted fw-bold text-uppercase">Lab Reports</small>
+                        <h3 class="fw-bold text-warning mb-0 mt-1">2 Tests</h3>
+                    </div>
+                    <div class="med-stat-icon bg-warning bg-opacity-10 text-warning">
+                        <i class="fa fa-flask"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portal Tabs Navigation -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+            <div class="card-header bg-white border-bottom p-0">
+                <ul class="nav nav-tabs nav-fill border-0" id="portalTabs" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active py-3 fw-bold border-0 border-bottom border-3 border-primary" id="app-tab" data-bs-toggle="tab" data-bs-target="#appsPane" type="button">
+                            <i class="fa fa-calendar-check me-2"></i> My Appointments
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link py-3 fw-bold border-0 text-muted" id="mr-tab" data-bs-toggle="tab" data-bs-target="#mrPane" type="button">
+                            <i class="fa fa-file-medical me-2"></i> Medical History
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link py-3 fw-bold border-0 text-muted" id="rx-tab" data-bs-toggle="tab" data-bs-target="#rxPane" type="button">
+                            <i class="fa fa-pills me-2"></i> e-Prescriptions
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link py-3 fw-bold border-0 text-muted" id="lab-tab" data-bs-toggle="tab" data-bs-target="#labPane" type="button">
+                            <i class="fa fa-flask me-2"></i> Diagnostic Lab Tests
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link py-3 fw-bold border-0 text-muted" id="inv-tab" data-bs-toggle="tab" data-bs-target="#invPane" type="button">
+                            <i class="fa fa-file-invoice-dollar me-2"></i> Invoices & Receipts
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="tab-content">
+                    
+                    <!-- TAB 1: Appointments -->
+                    <div class="tab-pane fade show active" id="appsPane">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-primary mb-0">Scheduled Consultations</h5>
+                            <a href="booking.html" class="btn btn-sm btn-med-primary">+ Book Appointment</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Ref Code</th>
+                                        <th>Speciality & Doctor</th>
+                                        <th>Date & Time</th>
+                                        <th>Consultation Type</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patientAppsTableBody">
+                                    <tr>
+                                        <td><span class="badge bg-light text-primary border font-monospace">MED-2026-1001</span></td>
+                                        <td>
+                                            <strong class="text-dark d-block">Dr. Marcus Vance</strong>
+                                            <small class="text-muted">Cardiology &bull; Cath Lab Wing</small>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold">Tomorrow</div>
+                                            <small class="text-muted">10:00 AM</small>
+                                        </td>
+                                        <td>General Consultation</td>
+                                        <td><span class="badge badge-status badge-status-Approved">Approved</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-danger" onclick="alert('Appointment cancellation requested. Front desk notified.');">
+                                                Cancel
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-light text-primary border font-monospace">MED-2026-1002</span></td>
+                                        <td>
+                                            <strong class="text-dark d-block">Dr. Elena Rostova</strong>
+                                            <small class="text-muted">Neurology &bull; Room 204</small>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold">In 3 Days</div>
+                                            <small class="text-muted">11:00 AM</small>
+                                        </td>
+                                        <td>Diagnostic Review</td>
+                                        <td><span class="badge badge-status badge-status-Pending">Pending</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-danger" onclick="alert('Appointment cancellation requested.');">
+                                                Cancel
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Medical Records -->
+                    <div class="tab-pane fade" id="mrPane">
+                        <h5 class="fw-bold text-primary mb-3">Clinical Diagnoses & Physician Records</h5>
+                        <div class="card border rounded-3 p-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                <div>
+                                    <h6 class="fw-bold text-primary mb-0">Cardiology &bull; Dr. Marcus Vance</h6>
+                                    <small class="text-muted">Encounter Date: 10 Days Ago</small>
+                                </div>
+                                <span class="badge bg-light text-dark border">Encounter #1001</span>
+                            </div>
+                            <div class="row g-3 my-2 p-2 bg-light rounded-2 text-center">
+                                <div class="col-3"><small class="text-muted d-block">BP</small><strong>128/84 mmHg</strong></div>
+                                <div class="col-3"><small class="text-muted d-block">Pulse</small><strong>76 bpm</strong></div>
+                                <div class="col-3"><small class="text-muted d-block">Temp</small><strong>98.4 °F</strong></div>
+                                <div class="col-3"><small class="text-muted d-block">SpO2</small><strong>98%</strong></div>
+                            </div>
+                            <div class="mt-3">
+                                <strong class="text-dark d-block">Clinical Diagnosis:</strong>
+                                <p class="text-danger fw-semibold mb-2">Stage 1 Essential Hypertension; Hyperlipidemia; Stable Coronary Angina.</p>
+                                <strong class="text-dark d-block">Doctor's Clinical Notes:</strong>
+                                <p class="text-muted mb-0">Patient presented alert and oriented. Heart sounds regular. Resting ECG normal sinus rhythm. Prescribed lipid-lowering therapy and ordered Lipid Panel.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Prescriptions -->
+                    <div class="tab-pane fade" id="rxPane">
+                        <h5 class="fw-bold text-primary mb-3">Electronic Prescriptions</h5>
+                        <div class="card border rounded-3 p-4 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <div>
+                                    <strong class="text-primary font-monospace fs-6">RX-2026-8810</strong>
+                                    <small class="text-muted d-block">Prescribed by Dr. Marcus Vance &bull; Cardiology</small>
+                                </div>
+                                <span class="badge bg-success text-white px-3 py-2">Dispensed at Pharmacy</span>
+                            </div>
+                            <table class="table table-bordered mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Medicine Name</th>
+                                        <th>Dosage</th>
+                                        <th>Frequency</th>
+                                        <th>Duration</th>
+                                        <th>Instructions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Atorvastatin 20mg</strong></td>
+                                        <td>20mg</td>
+                                        <td>Once Daily (Night)</td>
+                                        <td>30 Days</td>
+                                        <td>Take orally after dinner with water.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Amlodipine 5mg</strong></td>
+                                        <td>5mg</td>
+                                        <td>Once Daily (Morning)</td>
+                                        <td>30 Days</td>
+                                        <td>Take with morning water.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Laboratory Tests -->
+                    <div class="tab-pane fade" id="labPane">
+                        <h5 class="fw-bold text-primary mb-3">Diagnostic Laboratory Reports</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Order Ref</th>
+                                        <th>Test Name & Discipline</th>
+                                        <th>Prescribed By</th>
+                                        <th>Status</th>
+                                        <th>Normal Reference</th>
+                                        <th>Report</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-light text-primary border font-monospace">LAB-ORD-9011</span></td>
+                                        <td><strong>Comprehensive Lipid Panel</strong></td>
+                                        <td>Dr. Marcus Vance</td>
+                                        <td><span class="badge bg-success">Completed & Verified</span></td>
+                                        <td>Total: &lt;200 mg/dL</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" onclick="alert('Lab Report Values:\nTotal Cholesterol: 215 mg/dL (High)\nLDL Direct: 135 mg/dL (High)\nHDL Good: 52 mg/dL (Normal)\nTriglycerides: 140 mg/dL (Normal)\nVerified by David Miller');">
+                                                <i class="fa fa-eye me-1"></i> View Values
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: Invoices -->
+                    <div class="tab-pane fade" id="invPane">
+                        <h5 class="fw-bold text-primary mb-3">Hospital Invoices & Receipts</h5>
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Booking Ref</th>
-                                    <th>Dental Procedure</th>
-                                    <th>Doctor</th>
-                                    <th>Appointment Date & Time</th>
+                                    <th>Invoice #</th>
+                                    <th>Billing Date</th>
+                                    <th>Total Amount</th>
+                                    <th>Paid Amount</th>
                                     <th>Status</th>
-                                    <th class="text-end">Manage</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="patient_appointments_body">
-                                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading your appointments...</td></tr>
+                            <tbody>
+                                <tr>
+                                    <td><strong class="font-monospace text-primary">MED-INV-2026-0891</strong></td>
+                                    <td>10 Days Ago</td>
+                                    <td>$280.00</td>
+                                    <td>$273.00 (Net)</td>
+                                    <td><span class="badge bg-success">Paid in Full</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="window.print();">
+                                            <i class="fa fa-print me-1"></i> Print Receipt
+                                        </button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
-
-            <!-- Need Help Section -->
-            <div class="emergency-callout-box">
-                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                    <div>
-                        <h4 class="text-white fw-bold mb-1">Have an Urgent Dental Emergency?</h4>
-                        <p class="text-white mb-0" style="opacity:0.9;">Our New York dental emergency specialists provide immediate same-day relief.</p>
-                    </div>
-                    <a href="tel:+18009113368" class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow">
-                        <i class="fa fa-phone me-2"></i> Emergency: +1 (800) 911-DENT
-                    </a>
-                </div>
-            </div>
-
         </div>
-    </main>
+    </div>
+</div>
 
-<script>
-let currentPatient = null;
-
-function checkAuth() {
-    const raw = localStorage.getItem('dentia_patient');
-    if (!raw) {
-        window.location.href = 'login.html';
-        return;
-    }
-    try {
-        currentPatient = JSON.parse(raw);
-        document.getElementById('header_patient_name').innerText = currentPatient.name || 'Patient';
-        document.getElementById('welcome_name').innerText = currentPatient.name || 'Patient';
-        document.getElementById('header_patient_email').innerText = currentPatient.email || '';
-        document.getElementById('avatar_initial').innerText = (currentPatient.name || 'P')[0].toUpperCase();
-    } catch (e) {
-        window.location.href = 'login.html';
-    }
-}
-
-async function loadPatientAppointments() {
-    if (!currentPatient) return;
-    const tbody = document.getElementById('patient_appointments_body');
-
-    try {
-        const res = await fetch(`/api/patient/appointments?email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
-        const list = res.appointments || [];
-
-        const upcoming = list.filter(a => a.status === 'Pending' || a.status === 'Confirmed');
-        const completed = list.filter(a => a.status === 'Completed');
-
-        document.getElementById('count_upcoming').innerText = upcoming.length;
-        document.getElementById('count_completed').innerText = completed.length;
-        document.getElementById('count_total').innerText = list.length;
-
-        if (list.length === 0) {
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="text-center py-5">
-                        <div class="text-muted mb-3" style="font-size: 48px;"><i class="fa fa-calendar-o"></i></div>
-                        <h5 class="fw-bold text-dark mb-2">No Appointments Scheduled</h5>
-                        <p class="text-muted small mb-3">You don't have any dental visits scheduled yet.</p>
-                        <a href="booking.html" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Book Your First Visit</a>
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-
-        tbody.innerHTML = list.map(app => {
-            const canCancel = app.status === 'Pending' || app.status === 'Confirmed';
-            return `
-                <tr>
-                    <td><strong class="font-monospace text-primary">${app.appointment_ref}</strong></td>
-                    <td>
-                        <div class="fw-bold text-dark">${app.service_name || 'Dental Service'}</div>
-                        <small class="text-muted">${app.message ? `"${app.message}"` : ''}</small>
-                    </td>
-                    <td>
-                        <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i> ${app.dentist_name || 'Doctor'}</div>
-                    </td>
-                    <td>
-                        <div class="fw-bold small"><i class="fa fa-calendar me-1 text-primary"></i> ${app.appointment_date}</div>
-                        <small class="text-muted"><i class="fa fa-clock-o me-1"></i> ${app.appointment_time}</small>
-                    </td>
-                    <td>
-                        <span class="badge badge-${(app.status || 'pending').toLowerCase()} px-3 py-1 rounded-pill fw-semibold">
-                            ${app.status === 'Confirmed' ? '<i class="fa fa-check-circle me-1"></i> Confirmed' : app.status}
-                        </span>
-                    </td>
-                    <td class="text-end">
-                        ${canCancel ? `
-                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="cancelAppointment(${app.id})">
-                                <i class="fa fa-times me-1"></i> Cancel
-                            </button>
-                        ` : `
-                            <span class="text-muted small">—</span>
-                        `}
-                    </td>
-                </tr>
-            `;
-        }).join('');
-
-    } catch (e) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error loading appointments.</td></tr>`;
-    }
-}
-
-async function cancelAppointment(id) {
-    if (!confirm('Are you sure you want to cancel this appointment?')) return;
-    try {
-        const res = await fetch('/api/appointments/status', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: id, status: 'Cancelled' })
-        }).then(r => r.json());
-
-        if (res.success) {
-            const alertEl = document.getElementById('patient_alert');
-            alertEl.className = 'alert alert-warning rounded-3 shadow-sm mb-4 d-block';
-            alertEl.innerHTML = '<i class="fa fa-info-circle me-2"></i> Your appointment has been cancelled.';
-            setTimeout(() => { alertEl.className = 'alert d-none'; }, 4000);
-            loadPatientAppointments();
-        }
-    } catch (e) {
-        alert('Server communication error');
-    }
-}
-
-function handleLogout() {
-    localStorage.removeItem('dentia_patient');
-    window.location.href = 'index.html';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    checkAuth();
-    loadPatientAppointments();
-});
-</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
