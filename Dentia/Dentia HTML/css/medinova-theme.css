@@ -388,3 +388,89 @@ body {
   color: var(--med-secondary);
 }
 
+/* ========================================================
+   Mobile & Tablet Responsiveness Enhancements
+   ======================================================== */
+
+@media (max-width: 991.98px) {
+  .med-hero {
+    padding: 60px 0 40px;
+    text-align: center;
+  }
+  .med-hero h1 {
+    font-size: 2.3rem;
+  }
+  .med-hero p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .med-hero .d-flex.flex-wrap {
+    justify-content: center;
+  }
+  .med-hero .border-top {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .med-navbar .navbar-collapse {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  .med-nav-link {
+    padding: 10px 12px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .med-topbar {
+    display: none !important;
+  }
+  .med-hero h1 {
+    font-size: 1.9rem;
+    line-height: 1.25;
+  }
+  .med-card {
+    padding: 20px;
+  }
+  .med-stat-card {
+    padding: 16px;
+  }
+  .med-stat-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 20px;
+  }
+  .table-responsive {
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .btn-lg {
+    font-size: 15px;
+    padding: 12px 24px !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .med-logo-text {
+    font-size: 20px;
+  }
+  .med-logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+  .med-hero h1 {
+    font-size: 1.65rem;
+  }
+  .card {
+    border-radius: 12px !important;
+  }
+  .p-md-5 {
+    padding: 1.25rem !important;
+  }
+}
+
+

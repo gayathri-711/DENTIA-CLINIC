@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Departments & Centres of Excellence - MEDINOVA Hospital</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- CSS Frameworks -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/fontawesome6/css/all.min.css">
+    <link rel="stylesheet" href="css/plugins.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/medinova-theme.css">
+</head>
+<body>
+
+<!-- Top Emergency & Utility Bar -->
+<div class="med-topbar d-none d-md-block">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-4">
+                <div><i class="fa fa-hospital me-2 text-info"></i>750 Health Sciences Blvd, New York, NY</div>
+                <div><i class="fa fa-clock me-2 text-info"></i>Outpatient: Mon - Sat 08:00 AM - 08:00 PM</div>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="emergency-badge"><i class="fa fa-phone-volume me-1"></i> 24/7 ER: +1 (800) 555-9111</span>
+                <span class="text-white-50">|</span>
+                <a href="tel:+18005559199"><i class="fa fa-truck-medical me-1 text-danger"></i> Ambulance: +1 (800) 555-9199</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Navigation Bar -->
+<nav class="navbar navbar-expand-lg med-navbar sticky-top">
+    <div class="container">
+        <a class="med-logo" href="index.html">
+            <div class="med-logo-icon">
+                <i class="fa fa-heart-pulse"></i>
+            </div>
+            <div>
+                <div class="med-logo-text">MEDINOVA</div>
+                <div class="med-logo-tagline">Advanced Healthcare</div>
+            </div>
+        </a>
+
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#medinovaNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="medinovaNav">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link med-nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link med-nav-link" href="about.html">About Us</a></li>
+                <li class="nav-item"><a class="nav-link med-nav-link active" href="departments.html">Departments</a></li>
+                <li class="nav-item"><a class="nav-link med-nav-link" href="doctors.html">Doctors</a></li>
+                <li class="nav-item"><a class="nav-link med-nav-link" href="facilities.html">Facilities</a></li>
+                <li class="nav-item"><a class="nav-link med-nav-link" href="contact.html">Contact</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-3">
+                <a href="booking.html" class="btn btn-med-primary d-none d-sm-inline-flex align-items-center">
+                    <i class="fa fa-calendar-check me-2"></i> Book Appointment
+                </a>
+                <a href="login.html" class="btn btn-med-outline d-flex align-items-center">
+                    <i class="fa fa-arrow-right-to-bracket me-2"></i> Portals
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Breadcrumb Header -->
+<div class="py-5 bg-light border-bottom">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Tertiary Care Specialities</span>
+                <h1 class="fw-bold text-primary mb-2">Our Medical Departments</h1>
+                <p class="text-muted mb-0">Delivering multidisciplinary clinical excellence across 12 world-class specialized divisions, state-of-the-art diagnostic suites, and compassionate patient care.</p>
+            </div>
+            <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                <a href="booking.html" class="btn btn-med-primary btn-lg rounded-pill"><i class="fa fa-calendar-check me-2"></i> Book an Appointment</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Department Grid Section -->
+<div class="py-5">
+    <div class="container">
+        <!-- Live Search Bar -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8">
+                <div class="input-group input-group-lg shadow-sm rounded-pill overflow-hidden border">
+                    <span class="input-group-text bg-white border-0 ps-4"><i class="fa fa-magnifying-glass text-muted"></i></span>
+                    <input type="text" id="deptSearchInput" class="form-control border-0 ps-2" placeholder="Search departments (e.g. Cardiology, Neurology, Ortho, Oncology)..." oninput="filterDepartments()">
+                    <button class="btn btn-med-secondary px-4 fw-bold" type="button" onclick="filterDepartments()">Search</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4" id="departmentsContainer">
+            <!-- 1. Cardiology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="cardiology heart pulse cath lab angioplasty ecg ptca">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-heart-pulse"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">CARD</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/cardiology.html" class="text-dark text-decoration-none">Cardiology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Advanced interventional cardiology, biplane cardiac cath lab, coronary angioplasty, and 24/7 primary PCI care.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/cardiology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=1" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Neurology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="neurology brain stroke thrombolysis epilepsy eeg spine">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-brain"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">NEUR</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/neurology.html" class="text-dark text-decoration-none">Neurology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Comprehensive neuroscience center providing stroke thrombolysis, neuro-critical ICU, neurosurgical oncology, and epilepsy telemetry.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/neurology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=2" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Orthopedics -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="orthopedics bone joint robotic knee hip replacement sports trauma">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-bone"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">ORTH</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/orthopedics.html" class="text-dark text-decoration-none">Orthopedics</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Minimally invasive joint preservation, Stryker Mako robotic total knee and hip replacements, and arthroscopic sports surgery.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/orthopedics.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=3" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Pediatrics -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="pediatrics baby child infant nicu wellness vaccination">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-baby"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">PEDI</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/pediatrics.html" class="text-dark text-decoration-none">Pediatrics</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Dedicated child wellness center featuring a Level-III Neonatal Intensive Care Unit (NICU), pediatric surgery, and developmental clinics.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/pediatrics.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=4" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Gynecology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="gynecology obstetrics maternity pregnancy labor women health fetal">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-venus"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">GYNE</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/gynecology.html" class="text-dark text-decoration-none">Gynecology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Comprehensive obstetrics, high-risk pregnancy monitoring, fetal echocardiography, painless labor suites, and 3D laparoscopic surgery.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/gynecology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=5" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Dermatology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="dermatology skin psoriasis eczema laser dermatosurgery allergy">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-hand-dots"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">DERM</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/dermatology.html" class="text-dark text-decoration-none">Dermatology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Evidence-based clinical dermatology, biological therapies for psoriasis, digital dermoscopy, phototherapy, and laser therapies.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/dermatology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=6" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Ophthalmology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="ophthalmology eye cataract lasik cornea retina glaucoma vision">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-eye"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">OPHT</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/ophthalmology.html" class="text-dark text-decoration-none">Ophthalmology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Advanced vitreoretinal surgery, Zeiss VisuMax femtosecond laser, micro-incision cataract surgery, and corneal transplantation.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/ophthalmology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=7" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Dental Care -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="dental care tooth teeth implants orthodontics maxillofacial cbct">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-tooth"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">DENT</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/dental-care.html" class="text-dark text-decoration-none">Dental Care</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Full-mouth rehabilitation, titanium implants, invisible orthodontic aligners, painless root canals, and maxillofacial reconstruction.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/dental-care.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=8" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Oncology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="oncology cancer chemotherapy immunotherapy radiation tumor linear accelerator">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-dna"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">ONCO</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/oncology.html" class="text-dark text-decoration-none">Oncology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Integrated medical, surgical, and radiation oncology featuring immunotherapy, targeted molecular chemotherapy, and tumor board reviews.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/oncology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=9" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. General Medicine -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="general medicine physician adult primary care diabetes hypertension fevers">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-stethoscope"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">GENM</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/general-medicine.html" class="text-dark text-decoration-none">General Medicine</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Comprehensive adult primary care, chronic disease management, diabetes and hypertension control, and acute fever stabilization.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/general-medicine.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=10" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Radiology -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="radiology mri ct scan x-ray ultrasound mammography imaging diagnostic">
+                <div class="med-card d-flex flex-column p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon"><i class="fa fa-x-ray"></i></div>
+                        <span class="badge bg-light text-primary border px-3 py-2 fw-bold">RADI</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/radiology.html" class="text-dark text-decoration-none">Radiology</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">24/7 digital cross-sectional imaging center with AI diagnostics, 3.0T MRI, 128-slice CT scans, and interventional ultrasound.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/radiology.html" class="text-primary fw-bold text-decoration-none">Overview <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="booking.html?department_id=11" class="btn btn-sm btn-outline-primary rounded-pill px-3">Book Doctor</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. Emergency Medicine -->
+            <div class="col-lg-4 col-md-6 dept-card-item" data-keywords="emergency medicine trauma ambulance resuscitation er 24/7 life support">
+                <div class="med-card d-flex flex-column p-4 border-danger">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="med-card-icon bg-danger bg-opacity-10 text-danger"><i class="fa fa-truck-medical"></i></div>
+                        <span class="badge bg-danger text-white px-3 py-2 fw-bold">EMER &bull; 24/7</span>
+                    </div>
+                    <h4 class="fw-bold mb-2"><a href="departments/emergency-medicine.html" class="text-dark text-decoration-none">Emergency Medicine</a></h4>
+                    <p class="text-muted flex-grow-1 mb-4">Level-I tertiary trauma center, dedicated resuscitation bays, mobile ICU ambulances, and instant triage care 24/7/365.</p>
+                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
+                        <a href="departments/emergency-medicine.html" class="text-danger fw-bold text-decoration-none">Trauma Unit <i class="fa fa-arrow-right ms-1"></i></a>
+                        <a href="tel:+18005559111" class="btn btn-sm btn-danger rounded-pill px-3">Call Hotline</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="med-footer">
+    <div class="container text-center py-4">
+        <small class="text-white-50">&copy; 2026 <strong>MEDINOVA Multi-Speciality Hospital</strong> &bull; Advanced Healthcare, Better Tomorrow &bull; All rights reserved.</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function filterDepartments() {
+    const query = document.getElementById('deptSearchInput').value.toLowerCase().trim();
+    const items = document.querySelectorAll('.dept-card-item');
+    items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        const keywords = item.getAttribute('data-keywords') || '';
+        if (text.includes(query) || keywords.includes(query)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+</script>
+</body>
+</html>

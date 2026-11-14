@@ -110,9 +110,13 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/' || pathname === '/index.php') pathname = '/index.html';
   if (pathname === '/about' || pathname === '/about.php') pathname = '/about.html';
   if (pathname === '/departments' || pathname === '/departments.php') pathname = '/departments.html';
-  if (pathname === '/doctors' || pathname === '/doctors.php' || pathname === '/dentists' || pathname === '/dentists.php') pathname = '/dentists.html';
-  if (pathname === '/facilities' || pathname === '/facilities.php' || pathname === '/services' || pathname === '/services.php') pathname = '/services.html';
+  if (pathname === '/doctors' || pathname === '/doctors.php' || pathname === '/dentists' || pathname === '/dentists.php') pathname = '/doctors.html';
+  if (pathname === '/facilities' || pathname === '/facilities.php' || pathname === '/services' || pathname === '/services.php') pathname = '/facilities.html';
   if (pathname === '/contact' || pathname === '/contact.php') pathname = '/contact.html';
+  if (pathname === '/gallery' || pathname === '/gallery.php') pathname = '/gallery.html';
+  if (pathname === '/faq' || pathname === '/faq.php') pathname = '/faq.html';
+  if (pathname === '/testimonials' || pathname === '/testimonials.php') pathname = '/testimonials.html';
+  if (pathname === '/emergency' || pathname === '/emergency.php') pathname = '/departments/emergency-medicine.html';
   if (pathname === '/login' || pathname === '/login.php') pathname = '/login.html';
   if (pathname === '/register' || pathname === '/register.php') pathname = '/register.html';
   if (pathname === '/booking' || pathname === '/booking.php') pathname = '/booking.html';

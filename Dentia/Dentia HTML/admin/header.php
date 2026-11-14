@@ -48,32 +48,32 @@ $admin = get_logged_in_admin();
         <ul class="admin-nav nav-pills flex-column mb-auto">
             <li>
                 <a href="index.php" class="<?= ($currentAdminScript === 'index.php') ? 'active' : '' ?>">
-                    <i class="fa fa-dashboard me-2"></i> Dashboard
+                    <i class="fa fa-gauge me-2"></i> Dashboard
                 </a>
             </li>
             <li>
                 <a href="appointments.php" class="<?= ($currentAdminScript === 'appointments.php') ? 'active' : '' ?>">
-                    <i class="fa fa-calendar-check-o me-2"></i> Appointments
+                    <i class="fa fa-calendar-check me-2"></i> Appointments
                 </a>
             </li>
             <li>
                 <a href="patients.php" class="<?= ($currentAdminScript === 'patients.php') ? 'active' : '' ?>">
-                    <i class="fa fa-users me-2"></i> Patients
+                    <i class="fa fa-users me-2"></i> Patients Roster
                 </a>
             </li>
             <li>
                 <a href="dentists.php" class="<?= ($currentAdminScript === 'dentists.php') ? 'active' : '' ?>">
-                    <i class="fa fa-user-md me-2"></i> Dentists & Staff
+                    <i class="fa fa-user-doctor me-2"></i> Medical Specialists
                 </a>
             </li>
             <li>
                 <a href="services.php" class="<?= ($currentAdminScript === 'services.php') ? 'active' : '' ?>">
-                    <i class="fa fa-stethoscope me-2"></i> Dental Services
+                    <i class="fa fa-hospital me-2"></i> Clinical Departments
                 </a>
             </li>
             <li>
                 <a href="settings.php" class="<?= ($currentAdminScript === 'settings.php') ? 'active' : '' ?>">
-                    <i class="fa fa-clock-o me-2"></i> Hours & Settings
+                    <i class="fa fa-clock me-2"></i> Hours & Settings
                 </a>
             </li>
             <li>
@@ -83,7 +83,7 @@ $admin = get_logged_in_admin();
             </li>
             <li>
                 <a href="messages.php" class="<?= ($currentAdminScript === 'messages.php') ? 'active' : '' ?>">
-                    <i class="fa fa-envelope-o me-2"></i> Contact Messages
+                    <i class="fa fa-envelope me-2"></i> Help Desk Messages
                 </a>
             </li>
         </ul>

@@ -2,7 +2,7 @@
 /**
  * Doctor Dental Clinic Dentia - Admin Manage Dentists & Staff
  */
-$adminPageTitle = "Manage Dentists & Staff";
+$adminPageTitle = "Manage Medical Specialists & Staff";
 require_once __DIR__ . '/header.php';
 
 global $pdo;
