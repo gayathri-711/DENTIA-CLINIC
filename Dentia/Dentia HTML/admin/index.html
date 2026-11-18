@@ -407,11 +407,19 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <div class="alert alert-info py-2 px-3 rounded-3 small mb-0">
-                                                <i class="fa fa-info-circle me-1"></i> <strong>How to get Gmail App Password:</strong><br>
-                                                1. Go to your <a href="https://myaccount.google.com/security" target="_blank" class="fw-bold">Google Account &rarr; Security</a>.<br>
-                                                2. Ensure 2-Step Verification is ON, then search for <strong>"App Passwords"</strong>.<br>
-                                                3. Create a password named <em>"Dentia Clinic"</em> and paste the 16 letters above.
+                                            <div class="alert alert-info py-3 px-3 rounded-3 small mb-0">
+                                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                                                    <strong><i class="fa fa-google me-1 text-danger"></i> How to get your 16-Letter Gmail App Password:</strong>
+                                                    <a href="https://myaccount.google.com/apppasswords" target="_blank" class="btn btn-sm btn-dark rounded-pill px-3 fw-bold">
+                                                        Open Google App Passwords <i class="fa fa-external-link ms-1"></i>
+                                                    </a>
+                                                </div>
+                                                <ol class="mb-0 ps-3">
+                                                    <li>Make sure <strong>2-Step Verification</strong> is ON in your Google Account.</li>
+                                                    <li>Click the button above to go directly to <strong>App Passwords</strong>.</li>
+                                                    <li>Type <em>"Dentia Clinic"</em> as the app name and click <strong>Create</strong>.</li>
+                                                    <li>Copy the <strong>16-letter code</strong> (e.g. <code>abcd efgh ijkl mnop</code>) and paste it into the password field above. <em>(Never use your normal Google account password!)</em></li>
+                                                </ol>
                                             </div>
                                         </div>
 
@@ -489,7 +497,7 @@
                                 </div>
 
                                 <div class="alert alert-warning py-2 px-3 rounded-3 small mb-4">
-                                    <i class="fa fa-shield me-1"></i> Without an API key, all SMS messages are safely recorded in real-time in the <strong>SMS & Email Logs</strong> and <strong>Patient Dashboard</strong> ledger!
+                                    <i class="fa fa-info-circle me-1"></i> <strong>Fast2SMS ₹100 Activation Rule:</strong> Fast2SMS requires an initial one-time recharge of ₹100 in your <a href="https://www.fast2sms.com" target="_blank" class="fw-bold">Fast2SMS Wallet</a> before their API route unlocks to send SMS to mobile towers. Alternatively, select Twilio for 100% free trial credits!
                                 </div>
 
                                 <button type="button" class="btn btn-dark rounded-pill px-4 fw-bold w-100 mb-4" onclick="saveGatewaySettings(event)">

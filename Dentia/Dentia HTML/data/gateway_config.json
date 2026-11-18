@@ -6,8 +6,8 @@
     "port": 465,
     "secure": true,
     "user": "",
-    "pass": "",
-    "from": "Doctor Dental Clinic Dentia <no-reply@dentiacare.com>"
+    "pass": "gayu2006gayu0711",
+    "from": "Doctor Dental Clinic Dentia <contact@dentiacare.com>"
   },
   "sms": {
     "enabled": true,
@@ -15,6 +15,6 @@
     "api_key": "V07ZAPI7arGOgTaHZ6jTXFM9ie3NppGrXrcNs6wzonMHeJvLVtpJUZGAECsC79YuVRpWBwhq11FtI670",
     "twilio_sid": "",
     "twilio_token": "",
-    "twilio_phone": ""
+    "twilio_from": ""
   }
 }
