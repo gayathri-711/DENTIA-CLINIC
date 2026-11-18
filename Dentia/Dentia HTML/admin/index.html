@@ -19,6 +19,28 @@
             background: #ffffff !important;
             margin: 0 !important;
         }
+        .admin-sidebar {
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            flex-shrink: 0 !important;
+            overflow-x: hidden !important;
+        }
+        .admin-sidebar .sidebar-bottom-actions {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+        .admin-sidebar .sidebar-bottom-actions .btn {
+            display: block !important;
+            width: 100% !important;
+            text-align: left !important;
+            white-space: normal !important;
+            margin: 0 !important;
+            padding: 8px 16px !important;
+            font-size: 13px !important;
+        }
         .admin-stat-box {
             background: #ffffff;
             border-radius: 16px;
@@ -110,14 +132,14 @@
 
         <hr class="border-secondary my-3">
 
-        <div class="px-2">
-            <a href="../index.html" class="btn btn-outline-info rounded-pill w-100 btn-sm mb-2 text-start px-3">
+        <div class="sidebar-bottom-actions px-1 d-flex flex-column gap-2">
+            <a href="../index.html" class="btn btn-outline-info rounded-pill w-100 btn-sm text-start px-3 d-block" style="display: block !important; width: 100% !important;">
                 <i class="fa fa-external-link me-2"></i> View Website
             </a>
-            <a href="../database-viewer.html" target="_blank" class="btn btn-outline-warning rounded-pill w-100 btn-sm mb-2 text-start px-3">
+            <a href="../database-viewer.html" target="_blank" class="btn btn-outline-warning rounded-pill w-100 btn-sm text-start px-3 d-block" style="display: block !important; width: 100% !important;">
                 <i class="fa fa-table me-2"></i> SQL Table Explorer
             </a>
-            <a href="javascript:void(0)" onclick="handleAdminLogout()" class="btn btn-outline-danger rounded-pill w-100 btn-sm text-start px-3">
+            <a href="javascript:void(0)" onclick="handleAdminLogout()" class="btn btn-outline-danger rounded-pill w-100 btn-sm text-start px-3 d-block" style="display: block !important; width: 100% !important;">
                 <i class="fa fa-sign-out me-2"></i> Sign Out
             </a>
         </div>
@@ -620,7 +642,7 @@
 
         </main>
 
-        <footer class="bg-white border-top py-3 px-4 text-muted small text-center">
+        <footer class="admin-footer bg-white border-top py-3 px-4 text-muted small text-center" style="width: 100% !important; clear: both !important; margin: 0 !important;">
             Doctor Dental Clinic Dentia Management Platform &copy; 2026. Live Administration Control Active.
         </footer>
     </div>
