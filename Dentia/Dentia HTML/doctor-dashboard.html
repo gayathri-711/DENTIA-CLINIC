@@ -203,8 +203,105 @@
                 </div>
             </div>
 
+            <!-- Patient Clinical Records & Prescriptions Card -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-folder-open text-primary me-2"></i> Patient Clinical Records & Prescriptions</h5>
+                        <small class="text-muted">Diagnostic assessments, treatment notes, and drug prescriptions updated by you</small>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 small" id="badge_records_count">
+                        0 Recorded
+                    </span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Ref / Date</th>
+                                    <th>Patient</th>
+                                    <th>Clinical Diagnosis</th>
+                                    <th>Treatment Provided</th>
+                                    <th>Prescription</th>
+                                    <th>Follow-up</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctor_records_body">
+                                <tr><td colspan="6" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading patient medical records...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
+
+    <!-- MODAL: UPDATE PATIENT CLINICAL RECORD -->
+    <div class="modal fade" id="patientMedicalRecordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold text-white"><i class="fa fa-stethoscope me-2"></i> Update Patient Clinical Record</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="med_record_form" onsubmit="savePatientMedicalRecord(event)">
+                    <div class="modal-body p-4">
+                        <input type="hidden" id="rec_app_id">
+                        <input type="hidden" id="rec_patient_id">
+                        <input type="hidden" id="rec_app_ref">
+
+                        <!-- Patient Info Bar -->
+                        <div class="alert alert-light border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-bold text-dark" id="rec_display_patient_name">Patient Name</div>
+                                <small class="text-muted" id="rec_display_patient_email">patient@example.com</small>
+                            </div>
+                            <span class="badge bg-primary rounded-pill px-3 py-1" id="rec_display_ref">DEN-REF</span>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Treatment Date *</label>
+                                <input type="date" id="rec_date" class="form-control rounded-3" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small">Recommended Follow-up Date</label>
+                                <input type="date" id="rec_followup" class="form-control rounded-3">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Clinical Diagnosis *</label>
+                                <textarea id="rec_diagnosis" class="form-control rounded-3" rows="2" placeholder="e.g. Mild gingival inflammation around lower premolars, moderate enamel plaque..." required></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Treatment Provided *</label>
+                                <textarea id="rec_treatment" class="form-control rounded-3" rows="2" placeholder="e.g. Ultrasonic scaling, root planing, and topical fluoridation treatment..." required></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Prescribed Medications / Dosage</label>
+                                <textarea id="rec_prescription" class="form-control rounded-3" rows="2" placeholder="e.g. Amoxicillin 500mg (1 capsule 3x daily for 5 days), Chlorhexidine 0.12% oral rinse twice daily..."></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold small">Doctor Advice & Patient Notes</label>
+                                <textarea id="rec_notes" class="form-control rounded-3" rows="2" placeholder="e.g. Patient advised to avoid cold acidic foods for 48 hours and switch to soft toothbrush."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light p-3">
+                        <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">
+                            <i class="fa fa-save me-1"></i> Save to Patient Database
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- MODAL: Clinical Notes & Complete Treatment -->
     <div class="modal fade" id="clinicalNotesModal" tabindex="-1" aria-hidden="true">
@@ -380,6 +477,10 @@ function renderAppointmentsTable() {
                             </button>
                         ` : ''}
 
+                        <button class="btn btn-sm btn-outline-info rounded-pill px-2 fw-semibold" onclick="openMedicalRecordModal(${app.id})" title="Update Patient Clinical Record">
+                            <i class="fa fa-file-text-o me-1"></i> Record
+                        </button>
+
                         ${app.status !== 'Cancelled' && !isCompleted ? `
                             <button class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="handleDoctorAction(${app.id}, 'Cancel')" title="Cancel Appointment">
                                 <i class="fa fa-times"></i>
@@ -445,6 +546,120 @@ async function saveCompletedTreatment() {
     }
 }
 
+function openMedicalRecordModal(appId) {
+    const app = doctorAppointments.find(a => a.id === appId);
+    if (!app) return;
+
+    document.getElementById('rec_app_id').value = app.id;
+    document.getElementById('rec_patient_id').value = app.patient_id || '0';
+    document.getElementById('rec_app_ref').value = app.appointment_ref || '';
+    document.getElementById('rec_display_patient_name').innerText = app.patient_name;
+    document.getElementById('rec_display_patient_email').innerText = (app.patient_email || '') + ' • ' + (app.patient_phone || '');
+    document.getElementById('rec_display_ref').innerText = app.appointment_ref || 'REF';
+    
+    // Default today's date
+    document.getElementById('rec_date').value = new Date().toISOString().split('T')[0];
+    document.getElementById('rec_diagnosis').value = '';
+    document.getElementById('rec_treatment').value = app.service_name || '';
+    document.getElementById('rec_prescription').value = '';
+    document.getElementById('rec_notes').value = '';
+    document.getElementById('rec_followup').value = '';
+
+    const modal = new bootstrap.Modal(document.getElementById('patientMedicalRecordModal'));
+    modal.show();
+}
+
+async function savePatientMedicalRecord(e) {
+    e.preventDefault();
+    if (!currentDoctor) return;
+
+    const appId = parseInt(document.getElementById('rec_app_id').value, 10);
+    const app = doctorAppointments.find(a => a.id === appId);
+
+    const recordData = {
+        appointment_id: appId,
+        appointment_ref: document.getElementById('rec_app_ref').value,
+        patient_id: parseInt(document.getElementById('rec_patient_id').value || '0', 10),
+        patient_name: app ? app.patient_name : '',
+        patient_email: app ? app.patient_email : '',
+        patient_phone: app ? app.patient_phone : '',
+        dentist_id: currentDoctor.id,
+        dentist_name: currentDoctor.name,
+        treatment_date: document.getElementById('rec_date').value,
+        diagnosis: document.getElementById('rec_diagnosis').value.trim(),
+        treatment_provided: document.getElementById('rec_treatment').value.trim(),
+        prescription: document.getElementById('rec_prescription').value.trim(),
+        doctor_notes: document.getElementById('rec_notes').value.trim(),
+        followup_date: document.getElementById('rec_followup').value
+    };
+
+    try {
+        const res = await fetch('/api/doctor/patient-record', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(recordData)
+        }).then(r => r.json());
+
+        if (res.success) {
+            const modalEl = document.getElementById('patientMedicalRecordModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+
+            showDoctorAlert(`Patient clinical record and prescription updated successfully! Notification sent to ${recordData.patient_name}.`);
+            loadDoctorAppointments();
+            loadDoctorMedicalRecords();
+        } else {
+            showDoctorAlert(res.message || 'Error saving record', 'danger');
+        }
+    } catch (err) {
+        showDoctorAlert('Server communication error', 'danger');
+    }
+}
+
+async function loadDoctorMedicalRecords() {
+    if (!currentDoctor) return;
+    const tbody = document.getElementById('doctor_records_body');
+    try {
+        const res = await fetch(`/api/medical-records?doctor_id=${currentDoctor.id}`).then(r => r.json());
+        const records = res.records || [];
+
+        document.getElementById('badge_records_count').innerText = `${records.length} Recorded`;
+
+        if (records.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No medical records saved yet. Click 'Record' on an appointment above to record patient diagnosis.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = records.map(r => `
+            <tr>
+                <td>
+                    <strong class="font-monospace text-primary small">${r.appointment_ref}</strong>
+                    <div class="small text-muted">${r.treatment_date}</div>
+                </td>
+                <td>
+                    <div class="fw-bold text-dark">${r.patient_name}</div>
+                    <small class="text-muted">${r.patient_email}</small>
+                </td>
+                <td>
+                    <div class="small text-dark fw-semibold">${r.diagnosis}</div>
+                </td>
+                <td>
+                    <div class="small text-muted">${r.treatment_provided}</div>
+                </td>
+                <td>
+                    <div class="small text-success font-monospace">${r.prescription || '<span class="text-muted">—</span>'}</div>
+                </td>
+                <td>
+                    <small class="badge bg-light text-dark border">${r.followup_date || 'No follow-up set'}</small>
+                </td>
+            </tr>
+        `).join('');
+
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-3 text-danger">Error loading records.</td></tr>`;
+    }
+}
+
 function handleDoctorLogout() {
     localStorage.removeItem('dentia_doctor');
     window.location.href = 'doctor-login.html';
@@ -453,6 +668,7 @@ function handleDoctorLogout() {
 document.addEventListener('DOMContentLoaded', () => {
     checkDoctorAuth();
     loadDoctorAppointments();
+    loadDoctorMedicalRecords();
 });
 </script>
 </body>

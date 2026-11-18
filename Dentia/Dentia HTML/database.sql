@@ -230,6 +230,33 @@ INSERT INTO `appointments` (`appointment_ref`, `patient_id`, `patient_name`, `pa
 ('DEN-2026-1004', NULL, 'Jessica Alba', 'jessica.alba@example.com', '+1 (555) 678-1234', 5, 3, DATE_SUB(CURRENT_DATE, INTERVAL 5 DAY), '03:00 PM', 'Braces adjustment and wire tightening.', 'Completed');
 
 -- --------------------------------------------------------
+-- Table: patient_medical_records
+-- --------------------------------------------------------
+DROP TABLE IF EXISTS `patient_medical_records`;
+CREATE TABLE `patient_medical_records` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `patient_id` INT NOT NULL,
+  `dentist_id` INT NOT NULL,
+  `appointment_id` INT NULL,
+  `appointment_ref` VARCHAR(30) NULL,
+  `treatment_date` DATE NOT NULL,
+  `diagnosis` TEXT NOT NULL,
+  `treatment_provided` TEXT NOT NULL,
+  `prescription` TEXT NULL,
+  `doctor_notes` TEXT NULL,
+  `followup_date` DATE NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_med_patient` (`patient_id`),
+  INDEX `idx_med_dentist` (`dentist_id`),
+  CONSTRAINT `fk_med_patient` FOREIGN KEY (`patient_id`) REFERENCES `patients`(`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_med_dentist` FOREIGN KEY (`dentist_id`) REFERENCES `dentists`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `patient_medical_records` (`patient_id`, `dentist_id`, `appointment_ref`, `treatment_date`, `diagnosis`, `treatment_provided`, `prescription`, `doctor_notes`, `followup_date`) VALUES
+(1, 1, 'DEN-2026-1001', CURRENT_DATE, 'Mild plaque accumulation and localized gingivitis on lower incisors.', 'Ultrasonic scaling and polishing with fluoride varnish application.', 'Chlorhexidine Gluconate 0.12% oral rinse - 15ml twice daily for 7 days.', 'Advised patient to practice daily flossing. Recommended soft-bristled brush.', DATE_ADD(CURRENT_DATE, INTERVAL 6 MONTH));
+
+-- --------------------------------------------------------
 -- Table: testimonials
 -- --------------------------------------------------------
 DROP TABLE IF EXISTS `testimonials`;

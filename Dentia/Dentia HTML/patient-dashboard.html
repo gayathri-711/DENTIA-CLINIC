@@ -107,11 +107,44 @@
                 </div>
             </div>
 
-            <!-- Appointment List Section -->
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+            <!-- 1. Current & Upcoming Appointments Section -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
                 <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
-                    <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-stethoscope text-primary me-2"></i> My Dental Appointments</h5>
-                    <span class="badge bg-light text-primary border rounded-pill px-3 py-1 small">Real-Time Sync</span>
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-calendar-check-o text-primary me-2"></i> Current & Upcoming Appointments</h5>
+                        <small class="text-muted">Active bookings awaiting treatment or confirmed by clinic</small>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 small" id="badge_upcoming_count">0 Active</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Dental Procedure</th>
+                                    <th>Assigned Doctor</th>
+                                    <th>Scheduled Date & Time</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient_upcoming_body">
+                                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading current appointments...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Previous Appointments & Past Visit History -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-history text-secondary me-2"></i> Previous Appointments & Past Visits</h5>
+                        <small class="text-muted">Historical completed visits and previous cancelled appointments</small>
+                    </div>
+                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1 small" id="badge_past_count">0 Past Visits</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -121,25 +154,57 @@
                                     <th>Booking Ref</th>
                                     <th>Dental Procedure</th>
                                     <th>Doctor</th>
-                                    <th>Appointment Date & Time</th>
+                                    <th>Visit Date & Time</th>
                                     <th>Status</th>
-                                    <th class="text-end">Manage</th>
+                                    <th>Doctor Notes</th>
                                 </tr>
                             </thead>
-                            <tbody id="patient_appointments_body">
-                                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading your appointments...</td></tr>
+                            <tbody id="patient_past_body">
+                                <tr><td colspan="6" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading past visit history...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Email & SMS Notifications Receipt Section -->
+            <!-- 3. My Clinical Diagnosis & Prescription Records -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-medkit text-success me-2"></i> My Dental Clinical Records & Prescriptions</h5>
+                        <small class="text-muted">Official diagnostic records, treatment summaries, and doctor prescriptions</small>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 small" id="badge_med_count">
+                        0 Records
+                    </span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Treatment Date</th>
+                                    <th>Attending Doctor</th>
+                                    <th>Clinical Diagnosis</th>
+                                    <th>Treatment Provided</th>
+                                    <th>Prescription</th>
+                                    <th>Follow-up</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient_records_body">
+                                <tr><td colspan="6" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading dental records...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Email & SMS Notifications Receipt Section -->
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
                 <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
                     <div>
                         <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-bell text-warning me-2"></i> My Email & SMS Notifications</h5>
-                        <small class="text-muted">Live log of all appointment confirmations, reminders, and timing alerts dispatched to you</small>
+                        <small class="text-muted">Live log of all appointment confirmations, regret alerts with doctor timings, and SMS alerts dispatched to you</small>
                     </div>
                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 small">
                         <i class="fa fa-check me-1"></i> SMS & Email Delivery Active
@@ -188,36 +253,38 @@ function checkAuth() {
 
 async function loadPatientAppointments() {
     if (!currentPatient) return;
-    const tbody = document.getElementById('patient_appointments_body');
+    const upcomingTbody = document.getElementById('patient_upcoming_body');
+    const pastTbody = document.getElementById('patient_past_body');
 
     try {
         const res = await fetch(`/api/patient/appointments?email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
         const list = res.appointments || [];
 
         const upcoming = list.filter(a => a.status === 'Pending' || a.status === 'Confirmed');
+        const past = list.filter(a => a.status === 'Completed' || a.status === 'Cancelled');
         const completed = list.filter(a => a.status === 'Completed');
 
         document.getElementById('count_upcoming').innerText = upcoming.length;
         document.getElementById('count_completed').innerText = completed.length;
         document.getElementById('count_total').innerText = list.length;
 
-        if (list.length === 0) {
-            tbody.innerHTML = `
+        document.getElementById('badge_upcoming_count').innerText = `${upcoming.length} Active`;
+        document.getElementById('badge_past_count').innerText = `${past.length} Past Visits`;
+
+        // Render 1: Current & Upcoming Appointments
+        if (upcoming.length === 0) {
+            upcomingTbody.innerHTML = `
                 <tr>
                     <td colspan="6" class="text-center py-5">
-                        <div class="text-muted mb-3" style="font-size: 48px;"><i class="fa fa-calendar-o"></i></div>
-                        <h5 class="fw-bold text-dark mb-2">No Appointments Scheduled</h5>
-                        <p class="text-muted small mb-3">You don't have any dental visits scheduled yet.</p>
-                        <a href="booking.html" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Book Your First Visit</a>
+                        <div class="text-muted mb-2" style="font-size: 38px;"><i class="fa fa-calendar-check-o text-muted"></i></div>
+                        <h6 class="fw-bold text-dark mb-1">No Active Upcoming Visits</h6>
+                        <p class="text-muted small mb-3">You don't have any appointments currently scheduled.</p>
+                        <a href="booking.html" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Book a New Visit</a>
                     </td>
                 </tr>
             `;
-            return;
-        }
-
-        tbody.innerHTML = list.map(app => {
-            const canCancel = app.status === 'Pending' || app.status === 'Confirmed';
-            return `
+        } else {
+            upcomingTbody.innerHTML = upcoming.map(app => `
                 <tr>
                     <td><strong class="font-monospace text-primary">${app.appointment_ref}</strong></td>
                     <td>
@@ -237,20 +304,97 @@ async function loadPatientAppointments() {
                         </span>
                     </td>
                     <td class="text-end">
-                        ${canCancel ? `
-                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="cancelAppointment(${app.id})">
-                                <i class="fa fa-times me-1"></i> Cancel
-                            </button>
-                        ` : `
-                            <span class="text-muted small">—</span>
-                        `}
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="cancelAppointment(${app.id})">
+                            <i class="fa fa-times me-1"></i> Cancel
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Render 2: Previous Appointments & Past Visits
+        if (past.length === 0) {
+            pastTbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted small">No past appointments or completed treatments recorded yet.</td></tr>`;
+        } else {
+            pastTbody.innerHTML = past.map(app => `
+                <tr>
+                    <td><strong class="font-monospace text-muted small">${app.appointment_ref}</strong></td>
+                    <td>
+                        <div class="fw-semibold text-dark">${app.service_name || 'Dental Service'}</div>
+                    </td>
+                    <td>
+                        <div class="small text-muted"><i class="fa fa-user-md me-1"></i> ${app.dentist_name || 'Doctor'}</div>
+                    </td>
+                    <td>
+                        <div class="small"><i class="fa fa-calendar me-1 text-muted"></i> ${app.appointment_date}</div>
+                        <small class="text-muted">${app.appointment_time}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-${(app.status || 'completed').toLowerCase()} px-3 py-1 rounded-pill small">
+                            ${app.status}
+                        </span>
+                    </td>
+                    <td>
+                        <small class="text-muted">${app.doctor_notes || '<span class="fst-italic opacity-75">No doctor notes</span>'}</small>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+    } catch (e) {
+        upcomingTbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error loading appointments.</td></tr>`;
+    }
+}
+
+async function loadPatientMedicalRecords() {
+    if (!currentPatient) return;
+    const tbody = document.getElementById('patient_records_body');
+
+    try {
+        const res = await fetch(`/api/medical-records?patient_email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
+        const records = res.records || [];
+
+        document.getElementById('badge_med_count').innerText = `${records.length} Records`;
+
+        if (records.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        <i class="fa fa-folder-open-o fs-3 d-block mb-2 text-muted"></i>
+                        No clinical treatment records or prescriptions entered yet by your doctor.
                     </td>
                 </tr>
             `;
-        }).join('');
+            return;
+        }
+
+        tbody.innerHTML = records.map(r => `
+            <tr>
+                <td>
+                    <div class="fw-bold text-dark small"><i class="fa fa-calendar text-primary me-1"></i> ${r.treatment_date}</div>
+                    <small class="font-monospace text-muted">${r.appointment_ref || ''}</small>
+                </td>
+                <td>
+                    <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i> ${r.dentist_name || 'Doctor'}</div>
+                </td>
+                <td>
+                    <div class="fw-semibold text-dark small">${r.diagnosis}</div>
+                    ${r.doctor_notes ? `<small class="text-muted d-block">${r.doctor_notes}</small>` : ''}
+                </td>
+                <td>
+                    <div class="small text-muted">${r.treatment_provided}</div>
+                </td>
+                <td>
+                    <div class="small text-success font-monospace fw-semibold">${r.prescription || '<span class="text-muted font-normal">—</span>'}</div>
+                </td>
+                <td>
+                    <small class="badge bg-light text-dark border">${r.followup_date || 'None set'}</small>
+                </td>
+            </tr>
+        `).join('');
 
     } catch (e) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error loading appointments.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-3 text-danger">Error loading medical records.</td></tr>`;
     }
 }
 
@@ -337,6 +481,7 @@ function handleLogout() {
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
     loadPatientAppointments();
+    loadPatientMedicalRecords();
     loadPatientNotifications();
 });
 </script>

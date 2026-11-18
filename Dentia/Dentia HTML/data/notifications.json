@@ -115,5 +115,57 @@
     "message": "Dentia Clinic: Dr. Sarah Bennett has CONFIRMED your appointment on 2026-11-25 at 10:00 AM. Ref: DEN-2026-6103.",
     "created_at": "2026-11-18T05:11:11.065Z",
     "status": "Delivered"
+  },
+  {
+    "id": 10,
+    "recipient_email": "priya.sharma@example.com",
+    "recipient_phone": "+919988776655",
+    "recipient_name": "Priya Sharma",
+    "appointment_ref": "REGRET-UNAVAILABLE",
+    "channel": "email",
+    "type": "slot_unavailable",
+    "subject": "Appointment Update: Regret Notice for 10:00 AM on 2026-11-25 - Dentia Clinic",
+    "message": "Dear Priya Sharma,\n\nWe regret to inform you that your requested appointment on 2026-11-25 at 10:00 AM with Dr. Sarah Bennett is not available, as this time slot was just booked by another patient.\n\n1. ALTERNATIVE AVAILABLE TIMINGS FOR DR. SARAH BENNETT ON 2026-11-25:\n09:00 AM, 11:00 AM, 12:00 PM, 02:00 PM, 03:00 PM, 04:00 PM, 05:00 PM, 06:00 PM\n\n2. OTHER DOCTORS AVAILABLE AT YOUR REQUESTED TIME (10:00 AM) ON 2026-11-25:\nDr. Emily Chen (Pediatric Dentistry & Gum Therapy), Dr. Alexander Vance (Periodontics & Advanced Implantology)\n\nPlease visit our appointment booking portal to confirm your preferred alternative.",
+    "created_at": "2026-11-18T05:32:37.976Z",
+    "status": "Delivered"
+  },
+  {
+    "id": 11,
+    "recipient_email": "priya.sharma@example.com",
+    "recipient_phone": "+919988776655",
+    "recipient_name": "Priya Sharma",
+    "appointment_ref": "REGRET-UNAVAILABLE",
+    "channel": "sms",
+    "type": "slot_unavailable",
+    "subject": "SMS Text Alert",
+    "message": "Dentia Clinic: Dear Priya Sharma, we regret that 10:00 AM on 2026-11-25 with Dr. Sarah Bennett is unavailable. Available times for Dr. Sarah Bennett: 09:00 AM, 11:00 AM, 12:00 PM. Other doctors free at 10:00 AM: Dr. Emily Chen.",
+    "created_at": "2026-11-18T05:32:37.976Z",
+    "status": "Delivered"
+  },
+  {
+    "id": 12,
+    "recipient_email": "john.doe@example.com",
+    "recipient_phone": "+1 (555) 234-5678",
+    "recipient_name": "John Doe",
+    "appointment_ref": "DEN-2026-1001",
+    "channel": "email",
+    "type": "medical_record_updated",
+    "subject": "Clinical Record & Prescription Updated by Dr. Sarah Bennett [DEN-2026-1001]",
+    "message": "Dear John Doe, your dental treatment records and prescription have been updated by Dr. Sarah Bennett. Diagnosis: Recurrent deep dentinal fissure on tooth #19 with localized pulp sensitivity.. Treatment: Biomimetic composite resin filling and high-viscosity dentin sealing.. Prescription: Acetaminophen 500mg (1 tablet every 6 hours PRN) & Fluoride rinse daily.. You can view the full record anytime in your Patient Dashboard.",
+    "created_at": "2026-11-18T05:32:37.995Z",
+    "status": "Delivered"
+  },
+  {
+    "id": 13,
+    "recipient_email": "john.doe@example.com",
+    "recipient_phone": "+1 (555) 234-5678",
+    "recipient_name": "John Doe",
+    "appointment_ref": "DEN-2026-1001",
+    "channel": "sms",
+    "type": "medical_record_updated",
+    "subject": "SMS Text Alert",
+    "message": "Dentia Clinic: Dr. Sarah Bennett updated your clinical treatment record & prescription for visit DEN-2026-1001. Log in to your portal to view.",
+    "created_at": "2026-11-18T05:32:37.995Z",
+    "status": "Delivered"
   }
 ]

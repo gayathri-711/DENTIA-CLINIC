@@ -79,7 +79,12 @@
             </li>
             <li>
                 <a href="#patients-section" onclick="switchSection('patients')">
-                    <i class="fa fa-users me-2"></i> Patients Directory
+                    <i class="fa fa-users me-2"></i> Patients & User Login Details
+                </a>
+            </li>
+            <li>
+                <a href="#notifications-section" onclick="switchSection('notifications')">
+                    <i class="fa fa-envelope-o me-2"></i> SMS & Email Logs
                 </a>
             </li>
         </ul>
@@ -253,12 +258,12 @@
                 </div>
             </div>
 
-            <!-- SECTION 3: PATIENTS DIRECTORY -->
+            <!-- SECTION 3: PATIENTS & USERS LOGIN DETAILS -->
             <div id="section_patients" class="d-none">
                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                     <div>
-                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-users text-primary me-2"></i> Registered Patient Accounts</h4>
-                        <small class="text-muted">User accounts created through registration and appointment scheduling</small>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-users text-primary me-2"></i> Patient Directory & User Login Details</h4>
+                        <small class="text-muted">Registered patient user accounts, login credentials, and scheduled visit metrics</small>
                     </div>
                 </div>
 
@@ -269,13 +274,46 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th>Patient Name</th>
-                                        <th>Email Address</th>
+                                        <th>Login Credential (Email)</th>
                                         <th>Phone Number</th>
-                                        <th>Address</th>
+                                        <th>Account Status</th>
+                                        <th>Total Bookings</th>
                                         <th>Registered Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="patients_table_body">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: SMS & EMAIL COMMUNICATION LOGS -->
+            <div id="section_notifications" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-envelope-open-o text-primary me-2"></i> Automated SMS & Email Communication Logs</h4>
+                        <small class="text-muted">Live delivery ledger of appointment confirmations, regret messages, and doctor notifications</small>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Channel / Ref</th>
+                                        <th>Recipient</th>
+                                        <th>Notification Subject</th>
+                                        <th>Message Body Preview</th>
+                                        <th>Status</th>
+                                        <th>Dispatched Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin_notifications_body">
                                     <!-- Loaded dynamically -->
                                 </tbody>
                             </table>
@@ -433,6 +471,7 @@ function switchSection(sec) {
     document.getElementById('section_appointments').classList.add('d-none');
     document.getElementById('section_doctors').classList.add('d-none');
     document.getElementById('section_patients').classList.add('d-none');
+    document.getElementById('section_notifications').classList.add('d-none');
 
     document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
 
@@ -447,25 +486,34 @@ function switchSection(sec) {
         document.getElementById('section_patients').classList.remove('d-none');
         document.querySelectorAll('.admin-nav a')[2].classList.add('active');
         renderPatients();
+    } else if (sec === 'notifications') {
+        document.getElementById('section_notifications').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[3].classList.add('active');
+        renderNotifications();
     }
 }
 
+let globalNotifications = [];
+
 async function loadAllData() {
     try {
-        const [appRes, docRes, patRes] = await Promise.all([
+        const [appRes, docRes, usersRes, notifRes] = await Promise.all([
             fetch('/api/appointments').then(r => r.json()),
             fetch('/api/dentists').then(r => r.json()),
-            fetch('/api/patients').then(r => r.json())
+            fetch('/api/admin/users').then(r => r.json()),
+            fetch('/api/notifications').then(r => r.json())
         ]);
 
         globalAppointments = appRes || [];
         globalDoctors = docRes || [];
-        globalPatients = patRes || [];
+        globalPatients = (usersRes && usersRes.users) ? usersRes.users : [];
+        globalNotifications = (notifRes && notifRes.notifications) ? notifRes.notifications : [];
 
         updateStats();
         renderAppointments();
         renderDoctors();
         renderPatients();
+        renderNotifications();
     } catch (e) {
         console.error('Error loading data:', e);
     }
@@ -760,7 +808,7 @@ async function deleteDoctor(id) {
 function renderPatients() {
     const tbody = document.getElementById('patients_table_body');
     if (globalPatients.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No patient accounts registered yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No patient accounts registered yet.</td></tr>`;
         return;
     }
 
@@ -771,15 +819,73 @@ function renderPatients() {
                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:34px; height:34px;">
                         ${(p.name || 'P')[0].toUpperCase()}
                     </div>
-                    <div class="fw-bold text-dark">${p.name}</div>
+                    <div>
+                        <div class="fw-bold text-dark">${p.name}</div>
+                        <small class="text-muted">${p.address || 'Address not set'}</small>
+                    </div>
                 </div>
             </td>
-            <td><i class="fa fa-envelope-o text-primary me-1"></i> ${p.email}</td>
-            <td><i class="fa fa-phone text-primary me-1"></i> ${p.phone || '—'}</td>
-            <td class="small text-muted">${p.address || '—'}</td>
-            <td class="small text-muted">${p.created_at ? p.created_at.split('T')[0] : '2026-01-10'}</td>
+            <td>
+                <span class="font-monospace text-primary fw-semibold"><i class="fa fa-user me-1"></i> ${p.email}</span>
+                <div class="small text-muted" style="font-size:11px;">Username: <strong>${p.email}</strong></div>
+            </td>
+            <td><i class="fa fa-phone text-muted me-1"></i> ${p.phone || '—'}</td>
+            <td>
+                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 small">
+                    <i class="fa fa-check-circle me-1"></i> ${p.account_status || 'Active'}
+                </span>
+            </td>
+            <td>
+                <span class="badge bg-light text-primary border rounded-pill px-3 py-1 fw-bold">
+                    ${p.total_visits || 0} Visits
+                </span>
+            </td>
+            <td class="small text-muted">
+                <i class="fa fa-calendar me-1"></i> ${p.registered_at ? p.registered_at.split('T')[0] : '2026-01-10'}
+            </td>
         </tr>
     `).join('');
+}
+
+function renderNotifications() {
+    const tbody = document.getElementById('admin_notifications_body');
+    if (!globalNotifications || globalNotifications.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No dispatched messages found in system ledger.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = globalNotifications.slice(0, 50).map(n => {
+        const isEmail = n.channel === 'email';
+        const isUnavailable = n.type === 'slot_unavailable';
+        return `
+            <tr>
+                <td>
+                    <span class="badge ${isEmail ? 'bg-primary' : 'bg-success'} rounded-pill px-2 py-1 small">
+                        <i class="fa fa-${isEmail ? 'envelope' : 'comment'} me-1"></i> ${isEmail ? 'EMAIL' : 'SMS'}
+                    </span>
+                    <div class="font-monospace text-muted small mt-1">${n.appointment_ref || ''}</div>
+                </td>
+                <td>
+                    <div class="fw-bold text-dark small">${n.recipient_name}</div>
+                    <small class="text-muted">${isEmail ? n.recipient_email : n.recipient_phone}</small>
+                </td>
+                <td>
+                    <div class="small fw-semibold ${isUnavailable ? 'text-warning' : 'text-dark'}">${n.subject || 'Alert'}</div>
+                </td>
+                <td style="max-width: 380px;">
+                    <p class="small text-muted mb-0" style="font-size:12px; line-height:1.4;">${n.message.substring(0, 160)}${n.message.length > 160 ? '...' : ''}</p>
+                </td>
+                <td>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1 small">
+                        <i class="fa fa-check me-1"></i> ${n.status || 'Delivered'}
+                    </span>
+                </td>
+                <td class="small text-muted">
+                    ${n.created_at ? n.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
 // Initial Load

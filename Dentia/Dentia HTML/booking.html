@@ -267,11 +267,22 @@
                                                 <i class="fa fa-bell text-warning me-1"></i> <strong>Notice:</strong> We have sent an email and SMS alert to your contact details with available timings.
                                             </div>
 
-                                            <div class="fw-bold small text-dark mb-2">Available Alternative Timings for <span id="alt_doctor_name">Doctor</span> on this date:</div>
+                                            <div class="fw-bold small text-dark mb-2">1. Alternative Available Timings for <span id="alt_doctor_name">Doctor</span> on this date:</div>
                                             <div id="alternative_slots_pills" class="d-flex flex-wrap gap-2 mb-3">
                                                 <!-- Clickable alternative pills -->
                                             </div>
-                                            <small class="text-primary fw-semibold"><i class="fa fa-hand-pointer-o me-1"></i> Click any available timing above to instantly pick a new time!</small>
+                                            <small class="text-primary fw-semibold"><i class="fa fa-hand-pointer-o me-1"></i> Click any timing above to choose an alternative time for this doctor.</small>
+
+                                            <!-- OTHER DOCTORS AVAILABLE AT REQUESTED TIME -->
+                                            <div id="other_doctors_section" class="mt-3 pt-3 border-top d-none">
+                                                <div class="fw-bold small text-dark mb-2">
+                                                    <i class="fa fa-user-md text-success me-1"></i> 2. Other Doctors Available at your requested time (<span id="alt_requested_time"></span>):
+                                                </div>
+                                                <div id="other_doctors_pills" class="d-flex flex-wrap gap-2 mb-2">
+                                                    <!-- Clickable other doctor options -->
+                                                </div>
+                                                <small class="text-success fw-semibold"><i class="fa fa-check-circle me-1"></i> Click any doctor above to instantly switch to that doctor for your requested time!</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -716,22 +727,41 @@
                 $('html, body').animate({ scrollTop: $('#booking_form_wrapper').offset().top - 80 }, 400);
 
             } else if (res.already_booked) {
-                // SECOND PATIENT: Slot was already booked! Provide alternative available timings.
+                // SECOND PATIENT: Slot was already booked! Provide alternative available timings & other available doctors
                 collisionBox.classList.remove('d-none');
                 document.getElementById('collision_message').innerText = res.message;
                 document.getElementById('alt_doctor_name').innerText = res.dentist_name || 'the doctor';
+                document.getElementById('alt_requested_time').innerText = res.attempted_time || 'requested time';
 
+                // 1. Populate alternative timings for chosen doctor
                 const altContainer = document.getElementById('alternative_slots_pills');
                 const altSlots = res.available_slots || [];
 
                 if (altSlots.length === 0) {
-                    altContainer.innerHTML = '<span class="text-danger small">No other slots remaining today. Please pick another date.</span>';
+                    altContainer.innerHTML = '<span class="text-danger small">No other slots remaining for this doctor today.</span>';
                 } else {
                     altContainer.innerHTML = altSlots.map(s => `
                         <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-1 fw-bold" onclick="pickAlternativeSlot('${s}')">
                             <i class="fa fa-clock-o me-1"></i> ${s}
                         </button>
                     `).join('');
+                }
+
+                // 2. Populate other doctors available at this requested time
+                const otherDocsSec = document.getElementById('other_doctors_section');
+                const otherDocsPills = document.getElementById('other_doctors_pills');
+                const otherDocs = res.other_available_doctors || [];
+
+                if (otherDocs.length > 0) {
+                    otherDocsSec.classList.remove('d-none');
+                    otherDocsPills.innerHTML = otherDocs.map(d => `
+                        <button type="button" class="btn btn-outline-success btn-sm rounded-pill px-3 py-2 fw-bold text-start d-flex align-items-center gap-2" onclick="pickOtherDoctor(${d.id}, '${d.name.replace(/'/g, "\\'")}')">
+                            <img src="${d.image || 'images/team/1.webp'}" style="width:26px; height:26px; border-radius:50%; object-fit:cover;">
+                            <span>${d.name} <span class="small opacity-75 fw-normal">(${d.specialization})</span></span>
+                        </button>
+                    `).join('');
+                } else {
+                    otherDocsSec.classList.add('d-none');
                 }
 
                 // Refresh slots in main grid
@@ -754,9 +784,20 @@
     function pickAlternativeSlot(slot) {
         selectTimeSlot(slot, null);
         document.getElementById('collision_notice_box').classList.add('d-none');
-        alertBox = document.getElementById('booking_alert_box');
+        const alertBox = document.getElementById('booking_alert_box');
         alertBox.className = 'alert alert-info rounded-4 p-3 mb-4 d-block';
-        alertBox.innerHTML = `<i class="fa fa-info-circle me-2"></i> Updated to alternative timing: <strong>${slot}</strong>. Click 'Confirm & Schedule Appointment' below to complete booking.`;
+        alertBox.innerHTML = `<i class="fa fa-info-circle me-2"></i> Updated timing to: <strong>${slot}</strong>. Click 'Confirm & Schedule Appointment' below to complete booking.`;
+        $('html, body').animate({ scrollTop: $('#submit').offset().top - 150 }, 400);
+    }
+
+    function pickOtherDoctor(docId, docName) {
+        document.getElementById('dentist_id').value = docId;
+        document.getElementById('collision_notice_box').classList.add('d-none');
+        const alertBox = document.getElementById('booking_alert_box');
+        const chosenTime = document.getElementById('selected_time_value').value;
+        alertBox.className = 'alert alert-success rounded-4 p-3 mb-4 d-block';
+        alertBox.innerHTML = `<i class="fa fa-check-circle me-2"></i> Switched to <strong>${docName}</strong> for your requested time (<strong>${chosenTime}</strong>)! Click 'Confirm & Schedule Appointment' below to schedule.`;
+        loadRealtimeSlots();
         $('html, body').animate({ scrollTop: $('#submit').offset().top - 150 }, 400);
     }
 

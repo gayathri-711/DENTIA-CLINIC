@@ -11,10 +11,8 @@
     "has_login": true,
     "phone": "+1 (800) 234-5671",
     "availability_days": "Monday - Friday",
-    "availability_hours": "09:00 AM - 05:00 PM",
-    "description": "Dr. Sarah Bennett leads our clinical practice with a focus on comprehensive preventive dentistry, painless procedures, and restorative prosthetics.",
-    "image": "images/team/1.webp",
-    "is_active": true
+    "availability_hours": "09:00 - 15:00",
+    "is_available": 1
   },
   {
     "id": 2,
@@ -28,10 +26,8 @@
     "has_login": true,
     "phone": "+1 (800) 234-5672",
     "availability_days": "Monday - Thursday",
-    "availability_hours": "10:00 AM - 06:00 PM",
-    "description": "Specializing in smile redesigns, porcelain veneers, and professional laser whitening treatments with artistic precision.",
-    "image": "images/team/2.webp",
-    "is_active": true
+    "availability_hours": "10:00 - 16:00",
+    "is_available": 1
   },
   {
     "id": 3,
@@ -45,10 +41,8 @@
     "has_login": true,
     "phone": "+1 (800) 234-5673",
     "availability_days": "Tuesday - Saturday",
-    "availability_hours": "09:00 AM - 04:00 PM",
-    "description": "Board-certified Orthodontist and Implantologist dedicated to invisible aligners, complex bite corrections, and titanium dental implants.",
-    "image": "images/team/3.webp",
-    "is_active": true
+    "availability_hours": "09:00 - 17:00",
+    "is_available": 1
   },
   {
     "id": 4,
