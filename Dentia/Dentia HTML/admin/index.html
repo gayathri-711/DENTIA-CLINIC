@@ -87,6 +87,11 @@
                     <i class="fa fa-envelope-o me-2"></i> SMS & Email Logs
                 </a>
             </li>
+            <li>
+                <a href="#gateway-section" onclick="switchSection('gateway')">
+                    <i class="fa fa-cogs me-2"></i> Email & SMS Gateway
+                </a>
+            </li>
         </ul>
 
         <hr class="border-secondary my-3">
@@ -290,33 +295,179 @@
                 </div>
             </div>
 
-            <!-- SECTION 4: SMS & EMAIL COMMUNICATION LOGS -->
+            <!-- SECTION 4: SMS & EMAIL LOGS -->
             <div id="section_notifications" class="d-none">
                 <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                     <div>
-                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-envelope-open-o text-primary me-2"></i> Automated SMS & Email Communication Logs</h4>
-                        <small class="text-muted">Live delivery ledger of appointment confirmations, regret messages, and doctor notifications</small>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-envelope-o text-primary me-2"></i> Automated SMS & Email Communication Logs</h4>
+                        <small class="text-muted">Live audit ledger of all appointment confirmations, regret & rescheduling alerts, and clinical notifications</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary rounded-pill px-3 btn-sm" onclick="switchSection('gateway')">
+                            <i class="fa fa-cogs me-1"></i> Configure Real SMTP Gateway
+                        </button>
+                        <button class="btn btn-outline-secondary rounded-pill px-3 btn-sm" onclick="loadAllData()">
+                            <i class="fa fa-refresh me-1"></i> Refresh Logs
+                        </button>
                     </div>
                 </div>
 
-                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
                     <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Channel / Ref</th>
+                                        <th>Channel & Ref</th>
                                         <th>Recipient</th>
-                                        <th>Notification Subject</th>
-                                        <th>Message Body Preview</th>
+                                        <th>Subject / Intent</th>
+                                        <th>Delivered Message</th>
                                         <th>Status</th>
-                                        <th>Dispatched Timestamp</th>
+                                        <th>Dispatched Time</th>
+                                        <th class="text-end">Preview</th>
                                     </tr>
                                 </thead>
                                 <tbody id="admin_notifications_body">
-                                    <!-- Loaded dynamically -->
+                                    <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading communication ledger...</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: REAL EMAIL & SMS GATEWAY CONFIGURATION -->
+            <div id="section_gateway" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-cogs text-primary me-2"></i> Real-World Email & SMS Gateway Integration</h4>
+                        <small class="text-muted">Connect your Gmail SMTP / Brevo and SMS API to deliver real emails to actual patient inboxes and real SMS to mobile phones</small>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- EMAIL SMTP CONFIGURATION -->
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                            <div class="card-header bg-primary text-white p-4">
+                                <h5 class="fw-bold text-white mb-1"><i class="fa fa-envelope-o me-2"></i> Real SMTP Email Transporter (Gmail / Custom)</h5>
+                                <small class="text-white-50">Delivers booking confirmations, regret messages, and doctor prescriptions directly to patient inboxes</small>
+                            </div>
+                            <div class="card-body p-4">
+                                <form id="gateway_email_form" onsubmit="saveGatewaySettings(event)">
+                                    <div class="form-check form-switch p-3 bg-light rounded-3 mb-3">
+                                        <input class="form-check-input ms-0 me-2" type="checkbox" id="gw_email_enabled">
+                                        <label class="form-check-label fw-bold text-dark small" for="gw_email_enabled">Enable Real-World Email Sending via SMTP</label>
+                                        <div class="text-muted" style="font-size:11px;">When enabled, the server dispatches real emails to patient addresses (e.g. cse.ritchennai.edu.in, gmail.com).</div>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Email Service Provider</label>
+                                            <select id="gw_email_provider" class="form-control rounded-3" onchange="toggleSmtpFields()">
+                                                <option value="gmail">Google Gmail SMTP</option>
+                                                <option value="custom">Custom SMTP Server (Brevo / SendGrid / AWS SES)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Sender Display Name</label>
+                                            <input type="text" id="gw_email_from" class="form-control rounded-3" placeholder="Doctor Dental Clinic Dentia">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Your Clinic Email Address *</label>
+                                            <input type="email" id="gw_email_user" class="form-control rounded-3" placeholder="your-email@gmail.com" required>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Gmail 16-Char App Password *</label>
+                                            <input type="password" id="gw_email_pass" class="form-control rounded-3" placeholder="xxxx xxxx xxxx xxxx">
+                                        </div>
+
+                                        <div class="col-12" id="custom_smtp_fields" style="display:none;">
+                                            <div class="row g-3">
+                                                <div class="col-md-8">
+                                                    <label class="form-label fw-semibold small">SMTP Host</label>
+                                                    <input type="text" id="gw_email_host" class="form-control rounded-3" value="smtp.gmail.com">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold small">SMTP Port</label>
+                                                    <input type="number" id="gw_email_port" class="form-control rounded-3" value="465">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="alert alert-info py-2 px-3 rounded-3 small mb-0">
+                                                <i class="fa fa-info-circle me-1"></i> <strong>How to get Gmail App Password:</strong><br>
+                                                1. Go to your <a href="https://myaccount.google.com/security" target="_blank" class="fw-bold">Google Account &rarr; Security</a>.<br>
+                                                2. Ensure 2-Step Verification is ON, then search for <strong>"App Passwords"</strong>.<br>
+                                                3. Create a password named <em>"Dentia Clinic"</em> and paste the 16 letters above.
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 pt-2">
+                                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                                <i class="fa fa-save me-1"></i> Save Gateway Configuration
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- SEND TEST EMAIL BOX -->
+                                <div class="mt-4 pt-4 border-top">
+                                    <h6 class="fw-bold text-dark mb-2"><i class="fa fa-paper-plane text-success me-1"></i> Test Real Email Delivery to Any Inbox</h6>
+                                    <p class="small text-muted mb-3">Send a live test verification email right now to verify that your inbox receives it:</p>
+                                    <div class="input-group">
+                                        <input type="email" id="test_email_recipient" class="form-control rounded-start-pill" placeholder="Enter recipient email (e.g. gayathri.240103@cse.ritchennai.edu.in)">
+                                        <button class="btn btn-success rounded-end-pill px-4 fw-bold" onclick="sendTestEmail()">
+                                            <i class="fa fa-send me-1"></i> Send Test Email
+                                        </button>
+                                    </div>
+                                    <div id="test_email_result" class="small mt-2"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SMS GATEWAY CONFIGURATION -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                            <div class="card-header bg-dark text-white p-4">
+                                <h5 class="fw-bold text-white mb-1"><i class="fa fa-commenting-o text-warning me-2"></i> Real SMS Gateway (Fast2SMS / Twilio)</h5>
+                                <small class="text-white-50">Delivers real SMS text messages to patient mobile numbers</small>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="form-check form-switch p-3 bg-light rounded-3 mb-3">
+                                    <input class="form-check-input ms-0 me-2" type="checkbox" id="gw_sms_enabled">
+                                    <label class="form-check-label fw-bold text-dark small" for="gw_sms_enabled">Enable Real SMS Dispatch</label>
+                                    <div class="text-muted" style="font-size:11px;">Sends live SMS text to patient phones (+91 and international).</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">SMS Gateway Provider</label>
+                                    <select id="gw_sms_provider" class="form-control rounded-3">
+                                        <option value="fast2sms">Fast2SMS (India - Free & Quick API)</option>
+                                        <option value="twilio">Twilio SMS (Global SMS Gateway)</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Fast2SMS Authorization API Key</label>
+                                    <input type="text" id="gw_sms_api_key" class="form-control rounded-3" placeholder="Enter Fast2SMS API key">
+                                    <small class="text-muted" style="font-size:11px;">Get free SMS credits at <a href="https://www.fast2sms.com" target="_blank">fast2sms.com</a></small>
+                                </div>
+
+                                <div class="alert alert-warning py-2 px-3 rounded-3 small mb-4">
+                                    <i class="fa fa-shield me-1"></i> Without an API key, all SMS messages are safely recorded in the live <strong>SMS & Email Logs</strong> and <strong>Patient Dashboard</strong> ledger!
+                                </div>
+
+                                <button type="button" class="btn btn-dark rounded-pill px-4 fw-bold w-100" onclick="saveGatewaySettings(event)">
+                                    <i class="fa fa-save me-1"></i> Save SMS Gateway Settings
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -453,6 +604,26 @@
     </div>
 </div>
 
+<!-- MODAL: PREVIEW DISPATCHED EMAIL / SMS -->
+<div class="modal fade" id="messagePreviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white p-3">
+                <h5 class="modal-title fw-bold text-white mb-0" id="msg_preview_title">
+                    <i class="fa fa-envelope-o text-primary me-2"></i> Dispatched Communication Preview
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light" id="msg_preview_body">
+                <!-- Injected dynamically -->
+            </div>
+            <div class="modal-footer bg-white p-3">
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close Preview</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="../js/plugins.js"></script>
 <script>
 let globalAppointments = [];
@@ -472,6 +643,7 @@ function switchSection(sec) {
     document.getElementById('section_doctors').classList.add('d-none');
     document.getElementById('section_patients').classList.add('d-none');
     document.getElementById('section_notifications').classList.add('d-none');
+    document.getElementById('section_gateway').classList.add('d-none');
 
     document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
 
@@ -490,6 +662,10 @@ function switchSection(sec) {
         document.getElementById('section_notifications').classList.remove('d-none');
         document.querySelectorAll('.admin-nav a')[3].classList.add('active');
         renderNotifications();
+    } else if (sec === 'gateway') {
+        document.getElementById('section_gateway').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[4].classList.add('active');
+        loadGatewaySettings();
     }
 }
 
@@ -849,14 +1025,16 @@ function renderPatients() {
 
 function renderNotifications() {
     const tbody = document.getElementById('admin_notifications_body');
+    if (!tbody) return;
     if (!globalNotifications || globalNotifications.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No dispatched messages found in system ledger.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No dispatched messages found in system ledger.</td></tr>`;
         return;
     }
 
     tbody.innerHTML = globalNotifications.slice(0, 50).map(n => {
         const isEmail = n.channel === 'email';
         const isUnavailable = n.type === 'slot_unavailable';
+        const isReal = (n.status || '').toLowerCase().includes('real inbox');
         return `
             <tr>
                 <td>
@@ -872,20 +1050,198 @@ function renderNotifications() {
                 <td>
                     <div class="small fw-semibold ${isUnavailable ? 'text-warning' : 'text-dark'}">${n.subject || 'Alert'}</div>
                 </td>
-                <td style="max-width: 380px;">
-                    <p class="small text-muted mb-0" style="font-size:12px; line-height:1.4;">${n.message.substring(0, 160)}${n.message.length > 160 ? '...' : ''}</p>
+                <td style="max-width: 320px;">
+                    <p class="small text-muted mb-0" style="font-size:12px; line-height:1.4;">${n.message.substring(0, 140)}${n.message.length > 140 ? '...' : ''}</p>
                 </td>
                 <td>
-                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1 small">
-                        <i class="fa fa-check me-1"></i> ${n.status || 'Delivered'}
+                    <span class="badge ${isReal ? 'bg-success' : 'bg-info-subtle text-info border'} rounded-pill px-2 py-1 small">
+                        <i class="fa fa-${isReal ? 'paper-plane' : 'database'} me-1"></i> ${isReal ? 'Real Inbox' : 'Clinic Ledger'}
                     </span>
                 </td>
                 <td class="small text-muted">
                     ${n.created_at ? n.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}
                 </td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="previewAdminNotification(${n.id})">
+                        <i class="fa fa-eye me-1"></i> Preview
+                    </button>
+                </td>
             </tr>
         `;
     }).join('');
+}
+
+function previewAdminNotification(id) {
+    const notif = globalNotifications.find(n => n.id === id);
+    if (!notif) return;
+
+    const titleEl = document.getElementById('msg_preview_title');
+    const bodyEl = document.getElementById('msg_preview_body');
+    const isEmail = notif.channel === 'email';
+
+    titleEl.innerHTML = `<i class="fa fa-${isEmail ? 'envelope' : 'commenting'} ${isEmail ? 'text-primary' : 'text-success'} me-2"></i> ${isEmail ? 'Dispatched Email Preview' : 'Dispatched Mobile SMS Preview'} &mdash; Ref ${notif.appointment_ref || ''}`;
+
+    if (isEmail) {
+        bodyEl.innerHTML = `
+            <div class="card border-0 shadow-sm rounded-4 mb-3 bg-white p-3">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <div>
+                        <div class="small text-muted">From: <strong>Doctor Dental Clinic Dentia &lt;no-reply@dentiacare.com&gt;</strong></div>
+                        <div class="small text-muted">To: <strong>${notif.recipient_name} &lt;${notif.recipient_email}&gt;</strong></div>
+                        <div class="fw-bold text-dark mt-1">Subject: ${notif.subject || 'Dentia Notification'}</div>
+                    </div>
+                    <span class="badge ${notif.status.toLowerCase().includes('real inbox') ? 'bg-success' : 'bg-info-subtle text-info border'} rounded-pill px-3 py-2 small">
+                        ${notif.status}
+                    </span>
+                </div>
+                <div class="border rounded-3 p-3 bg-white" style="max-height: 480px; overflow-y: auto;">
+                    ${notif.html || `<div class="p-3" style="white-space: pre-wrap; font-family: sans-serif; line-height: 1.6;">${notif.message}</div>`}
+                </div>
+            </div>
+        `;
+    } else {
+        bodyEl.innerHTML = `
+            <div class="d-flex justify-content-center py-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="max-width: 440px; width:100%;">
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:38px; height:38px;">
+                            <i class="fa fa-commenting"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-dark">Dentia Dental Clinic SMS Service</div>
+                            <small class="text-muted">Mobile Recipient: <strong>${notif.recipient_phone || 'Patient Phone'}</strong></small>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-4 bg-success-subtle text-dark border border-success-subtle mb-3" style="line-height:1.6; font-size:13px;">
+                        ${notif.message}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center text-muted small" style="font-size:11px;">
+                        <span>Status: <strong class="text-success">${notif.status}</strong></span>
+                        <span>${notif.created_at ? notif.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('messagePreviewModal'));
+    modal.show();
+}
+
+function toggleSmtpFields() {
+    const prov = document.getElementById('gw_email_provider').value;
+    const customFields = document.getElementById('custom_smtp_fields');
+    if (customFields) {
+        if (prov === 'custom') {
+            customFields.style.display = 'block';
+        } else {
+            customFields.style.display = 'none';
+            document.getElementById('gw_email_host').value = 'smtp.gmail.com';
+            document.getElementById('gw_email_port').value = '465';
+        }
+    }
+}
+
+async function loadGatewaySettings() {
+    try {
+        const res = await fetch('/api/admin/gateway').then(r => r.json());
+        if (res.success && res.config) {
+            const email = res.config.email || {};
+            const sms = res.config.sms || {};
+
+            document.getElementById('gw_email_enabled').checked = !!email.enabled;
+            document.getElementById('gw_email_provider').value = email.provider || 'gmail';
+            document.getElementById('gw_email_from').value = email.from || '';
+            document.getElementById('gw_email_user').value = email.user || '';
+            document.getElementById('gw_email_host').value = email.host || 'smtp.gmail.com';
+            document.getElementById('gw_email_port').value = email.port || 465;
+
+            document.getElementById('gw_sms_enabled').checked = !!sms.enabled;
+            document.getElementById('gw_sms_provider').value = sms.provider || 'fast2sms';
+            document.getElementById('gw_sms_api_key').value = sms.api_key || '';
+
+            toggleSmtpFields();
+        }
+    } catch (e) {
+        console.error('Error loading gateway settings:', e);
+    }
+}
+
+async function saveGatewaySettings(e) {
+    if (e) e.preventDefault();
+    const config = {
+        email: {
+            enabled: document.getElementById('gw_email_enabled').checked,
+            provider: document.getElementById('gw_email_provider').value,
+            host: document.getElementById('gw_email_host').value.trim(),
+            port: parseInt(document.getElementById('gw_email_port').value, 10) || 465,
+            secure: true,
+            user: document.getElementById('gw_email_user').value.trim(),
+            pass: document.getElementById('gw_email_pass').value.trim(),
+            from: document.getElementById('gw_email_from').value.trim()
+        },
+        sms: {
+            enabled: document.getElementById('gw_sms_enabled').checked,
+            provider: document.getElementById('gw_sms_provider').value,
+            api_key: document.getElementById('gw_sms_api_key').value.trim()
+        }
+    };
+
+    try {
+        const res = await fetch('/api/admin/gateway', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(config)
+        }).then(r => r.json());
+
+        if (res.success) {
+            showAlert('Gateway configuration saved! Real email delivery is ' + (config.email.enabled ? 'ACTIVE (Real Inboxes)' : 'INACTIVE (Clinic Ledger Mode)'));
+        } else {
+            showAlert(res.message || 'Error saving gateway configuration', 'danger');
+        }
+    } catch (err) {
+        showAlert('Server communication error', 'danger');
+    }
+}
+
+async function sendTestEmail() {
+    const recipient = (document.getElementById('test_email_recipient').value || '').trim();
+    const resultEl = document.getElementById('test_email_result');
+    if (!recipient) {
+        resultEl.innerHTML = '<span class="text-danger fw-semibold"><i class="fa fa-exclamation-circle me-1"></i> Please enter an email address first.</span>';
+        return;
+    }
+
+    resultEl.innerHTML = '<span class="text-primary fw-semibold"><i class="fa fa-spinner fa-spin me-1"></i> Connecting to SMTP server and dispatching test email to ' + recipient + '...</span>';
+
+    try {
+        const res = await fetch('/api/admin/gateway/test-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: recipient, recipient: recipient })
+        }).then(r => r.json());
+
+        if (res.success) {
+            resultEl.innerHTML = `
+                <div class="alert alert-success p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-check-circle me-1"></i> <strong>Real Email Delivered Successfully!</strong><br>
+                    ${res.message}<br>
+                    <span class="text-muted">Message ID: <code>${res.messageId || 'OK'}</code></span>
+                </div>
+            `;
+            loadAllData();
+        } else {
+            resultEl.innerHTML = `
+                <div class="alert alert-danger p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-times-circle me-1"></i> <strong>Email Delivery Unsuccessful:</strong><br>
+                    ${res.message || 'Error sending test email'}<br>
+                    <small class="text-muted mt-1 d-block">Make sure your Gmail App Password (16 characters) is saved in the form above.</small>
+                </div>
+            `;
+        }
+    } catch (err) {
+        resultEl.innerHTML = `<span class="text-danger fw-semibold"><i class="fa fa-times-circle me-1"></i> Communication error: ${err.message}</span>`;
+    }
 }
 
 // Initial Load

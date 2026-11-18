@@ -1,0 +1,25 @@
+{
+  "name": "dentistdentalclinicdentia",
+  "version": "1.0.0",
+  "description": "A modern, responsive, full-stack dental clinic management platform built with PHP, MySQL, Bootstrap 5, and JavaScript. This platform transforms the clinic website into a comprehensive clinical management solution featuring real-time appointment scheduling, duplicate booking prevention, patient self-service portal, and an administrative control panel.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gayathri-711/MEDINOVA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gayathri-711/MEDINOVA/issues"
+  },
+  "homepage": "https://github.com/gayathri-711/MEDINOVA#readme",
+  "dependencies": {
+    "nodemailer": "^10.6.0"
+  }
+}

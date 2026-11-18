@@ -167,5 +167,57 @@
     "message": "Dentia Clinic: Dr. Sarah Bennett updated your clinical treatment record & prescription for visit DEN-2026-1001. Log in to your portal to view.",
     "created_at": "2026-11-18T05:32:37.995Z",
     "status": "Delivered"
+  },
+  {
+    "id": 14,
+    "recipient_email": "gayatrisenthamarai@gmail.com",
+    "recipient_phone": "+917598092785",
+    "recipient_name": "Gayathri Dhanasekaran",
+    "appointment_ref": "DEN-2026-6830",
+    "channel": "email",
+    "type": "booking_received",
+    "subject": "Appointment Booking Request Received: [DEN-2026-6830] - Dentia Dental Clinic",
+    "message": "Dear Gayathri Dhanasekaran, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 09:00 AM has been received and scheduled (Ref: DEN-2026-6830). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.",
+    "created_at": "2026-11-18T05:39:31.386Z",
+    "status": "Delivered"
+  },
+  {
+    "id": 15,
+    "recipient_email": "gayatrisenthamarai@gmail.com",
+    "recipient_phone": "+917598092785",
+    "recipient_name": "Gayathri Dhanasekaran",
+    "appointment_ref": "DEN-2026-6830",
+    "channel": "sms",
+    "type": "booking_received",
+    "subject": "SMS Text Alert",
+    "message": "Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment request DEN-2026-6830 with Dr. Sarah Bennett on 2026-11-18 at 09:00 AM is received. We will send confirmation shortly!",
+    "created_at": "2026-11-18T05:39:31.386Z",
+    "status": "Delivered"
+  },
+  {
+    "id": 16,
+    "recipient_email": "gayatrisenthamarai@gmail.com",
+    "recipient_phone": "+917598092785",
+    "recipient_name": "Gayathri Dhanasekaran",
+    "appointment_ref": "DEN-2026-6830",
+    "channel": "email",
+    "type": "booking_confirmed",
+    "subject": "Appointment Confirmed! [DEN-2026-6830] - Dentia Dental Clinic",
+    "message": "Dear Gayathri Dhanasekaran, Great news! Your appointment for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 09:00 AM has been accepted and CONFIRMED. Clinic address: 100 S Main St, Suite 400, New York, NY. Please arrive 10 minutes before your slot.",
+    "created_at": "2026-11-18T05:40:31.770Z",
+    "status": "Delivered"
+  },
+  {
+    "id": 17,
+    "recipient_email": "gayatrisenthamarai@gmail.com",
+    "recipient_phone": "+917598092785",
+    "recipient_name": "Gayathri Dhanasekaran",
+    "appointment_ref": "DEN-2026-6830",
+    "channel": "sms",
+    "type": "booking_confirmed",
+    "subject": "SMS Text Alert",
+    "message": "Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment DEN-2026-6830 on 2026-11-18 at 09:00 AM with Dr. Sarah Bennett is CONFIRMED. Call (800) 234-5678 for queries.",
+    "created_at": "2026-11-18T05:40:31.770Z",
+    "status": "Delivered"
   }
 ]

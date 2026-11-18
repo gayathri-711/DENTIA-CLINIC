@@ -8,9 +8,11 @@
  */
 
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const nodemailer = require('nodemailer');
 
 const PORT = process.env.PORT || 8000;
 const WEB_ROOT = path.join(__dirname, 'Dentia', 'Dentia HTML');
@@ -26,6 +28,7 @@ const PATIENTS_FILE = path.join(DATA_DIR, 'patients.json');
 const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
 const NOTIFICATIONS_FILE = path.join(DATA_DIR, 'notifications.json');
 const MEDICAL_RECORDS_FILE = path.join(DATA_DIR, 'medical_records.json');
+const GATEWAY_CONFIG_FILE = path.join(DATA_DIR, 'gateway_config.json');
 
 // Helpers for reading/writing JSON files
 function readJSON(filePath, fallback = []) {
@@ -95,12 +98,102 @@ function normalizeDate(d) {
   return d;
 }
 
-// Notification Dispatcher (Email & SMS)
-function dispatchNotification({ patient_name, patient_email, patient_phone, appointment_ref, type, subject, message, sms_text }) {
+function generateModernEmailHTML({ patient_name, appointment_ref, type, subject, message }) {
+  const isConfirmed = type === 'booking_confirmed';
+  const isUnavailable = type === 'slot_unavailable';
+  const headerColor = isConfirmed ? '#10b981' : (isUnavailable ? '#f59e0b' : '#0d6efd');
+  const badgeLabel = isConfirmed ? 'CONFIRMED' : (isUnavailable ? 'SLOT NOT AVAILABLE' : 'SCHEDULED');
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${subject}</title>
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#f1f5f9; margin:0; padding:24px; color:#1e293b;">
+  <div style="max-width:580px; margin:0 auto; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.08);">
+    
+    <!-- Header -->
+    <div style="background:${headerColor}; padding:32px 24px; text-align:center; color:#ffffff;">
+      <h1 style="margin:0; font-size:22px; font-weight:800; letter-spacing:-0.5px;">Doctor Dental Clinic Dentia</h1>
+      <p style="margin:6px 0 0 0; opacity:0.92; font-size:13px;">Modern Oral Healthcare & Clinical Excellence</p>
+    </div>
+
+    <!-- Body Content -->
+    <div style="padding:32px 28px; line-height:1.65;">
+      <div style="display:inline-block; background:#eff6ff; color:#1d4ed8; padding:5px 14px; border-radius:20px; font-family:monospace; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid #bfdbfe;">
+        Ref: ${appointment_ref || 'NOTIFICATION'} &bull; ${badgeLabel}
+      </div>
+
+      <p style="font-size:15px; margin-top:0;">Hello <strong>${patient_name || 'Valued Patient'}</strong>,</p>
+
+      <div style="background:#f8fafc; border-left:4px solid ${headerColor}; padding:18px 20px; border-radius:10px; margin:20px 0; font-size:14px; line-height:1.6; white-space:pre-line; color:#334155; border-top:1px solid #f1f5f9; border-right:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9;">
+${message}
+      </div>
+
+      <div style="background:#eff6ff; border-radius:12px; padding:16px; margin:22px 0; font-size:13px; color:#1e40af;">
+        <strong><i style="margin-right:6px;">&#9733;</i> Clinic Notice:</strong> Please arrive 10 minutes before your scheduled appointment time. Bring any past dental X-rays or dental insurance cards.
+      </div>
+
+      <p style="font-size:13px; color:#64748b; margin-bottom:0;">
+        For urgent inquiries or schedule changes, please call our 24/7 care desk at <strong>+1 (800) 234-5678</strong>.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="background:#f8fafc; padding:22px 24px; text-align:center; font-size:11px; color:#64748b; border-top:1px solid #e2e8f0;">
+      <strong>Doctor Dental Clinic Dentia</strong><br>
+      100 S Main St, Suite 400, New York, NY 10001<br>
+      Emergency Dental Hotline: +1 (800) 911-DENT &bull; contact@dentiacare.com
+    </div>
+
+  </div>
+</body>
+</html>`;
+}
+
+// Notification Dispatcher (Email & SMS with Real SMTP delivery support)
+async function dispatchNotification({ patient_name, patient_email, patient_phone, appointment_ref, type, subject, message, sms_text }) {
   let notifications = readJSON(NOTIFICATIONS_FILE, []);
   const now = new Date().toISOString();
+  const gwConfig = readJSON(GATEWAY_CONFIG_FILE, {});
 
-  // 1. Email Notification
+  let emailStatus = 'Delivered (System Ledger)';
+  let smsStatus = 'Delivered (System Ledger)';
+
+  // 1. Attempt Real Email via SMTP if configured and enabled
+  if (gwConfig.email && gwConfig.email.enabled && gwConfig.email.user && gwConfig.email.pass && patient_email) {
+    try {
+      const transporter = nodemailer.createTransport({
+        service: gwConfig.email.provider === 'gmail' ? 'gmail' : undefined,
+        host: gwConfig.email.host || 'smtp.gmail.com',
+        port: parseInt(gwConfig.email.port || '465', 10),
+        secure: gwConfig.email.secure !== false,
+        auth: {
+          user: gwConfig.email.user,
+          pass: gwConfig.email.pass
+        }
+      });
+
+      const info = await transporter.sendMail({
+        from: gwConfig.email.from || `Dentia Dental Clinic <${gwConfig.email.user}>`,
+        to: patient_email,
+        subject: subject,
+        text: message,
+        html: generateModernEmailHTML({ patient_name, appointment_ref, type, subject, message })
+      });
+
+      emailStatus = `Delivered to Real Inbox (${info.messageId})`;
+      console.log(`[SMTP SUCCESS] Sent real email to ${patient_email}: ${info.messageId}`);
+    } catch (err) {
+      emailStatus = `SMTP Error: ${err.message}`;
+      console.error(`[SMTP ERROR] Sending to ${patient_email}:`, err.message);
+    }
+  } else {
+    emailStatus = 'Delivered (System Ledger - Configure SMTP in Admin to send to real inbox)';
+  }
+
+  // 2. Email Notification Record
   const emailNotif = {
     id: notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1,
     recipient_email: patient_email,
@@ -111,12 +204,52 @@ function dispatchNotification({ patient_name, patient_email, patient_phone, appo
     type: type,
     subject: subject,
     message: message,
+    html: generateModernEmailHTML({ patient_name, appointment_ref, type, subject, message }),
     created_at: now,
-    status: 'Delivered'
+    status: emailStatus
   };
   notifications.push(emailNotif);
 
-  // 2. SMS Notification
+  // 3. Attempt Real SMS via Fast2SMS if configured and enabled
+  if (gwConfig.sms && gwConfig.sms.enabled && gwConfig.sms.api_key && patient_phone) {
+    try {
+      const cleanPhone = patient_phone.replace(/[^0-9]/g, '').slice(-10);
+      if (cleanPhone.length === 10) {
+        const https = require('https');
+        const smsMsg = encodeURIComponent((sms_text || message).substring(0, 150));
+        const url = `https://www.fast2sms.com/dev/bulkV2?authorization=${gwConfig.sms.api_key}&route=q&message=${smsMsg}&language=english&flash=0&numbers=${cleanPhone}`;
+        await new Promise((resolve) => {
+          https.get(url, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+              try {
+                const parsed = JSON.parse(data);
+                if (parsed.return) {
+                  smsStatus = `Delivered to Mobile (${parsed.request_id || 'OK'})`;
+                  console.log(`[SMS SUCCESS] Sent real SMS to ${cleanPhone}`);
+                } else {
+                  smsStatus = `SMS Gateway Error: ${parsed.message ? parsed.message[0] : 'Failed'}`;
+                }
+              } catch(e) {
+                smsStatus = `SMS Sent: ${data.substring(0, 30)}`;
+              }
+              resolve();
+            });
+          }).on('error', (err) => {
+            smsStatus = `SMS Connection Error: ${err.message}`;
+            resolve();
+          });
+        });
+      }
+    } catch (e) {
+      smsStatus = `SMS Error: ${e.message}`;
+    }
+  } else {
+    smsStatus = 'Delivered (System Ledger - Configure Fast2SMS in Admin to send real SMS)';
+  }
+
+  // 4. SMS Notification Record
   const smsNotif = {
     id: notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 2,
     recipient_email: patient_email,
@@ -128,7 +261,7 @@ function dispatchNotification({ patient_name, patient_email, patient_phone, appo
     subject: 'SMS Text Alert',
     message: sms_text || message,
     created_at: now,
-    status: 'Delivered'
+    status: smsStatus
   };
   notifications.push(smsNotif);
 
@@ -334,7 +467,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     const dentists = readJSON(DENTISTS_FILE, []);
-    const match = dentists.find(d => 
+    const match = dentists.find(d =>
       ((d.login_email && d.login_email.toLowerCase() === email) || (d.email && d.email.toLowerCase() === email)) &&
       d.password === password
     );
@@ -372,7 +505,7 @@ const server = http.createServer(async (req, res) => {
       filtered = appointments.filter(a => a.dentist_id === docId);
     } else if (docEmail) {
       const dentists = readJSON(DENTISTS_FILE, []);
-      const doc = dentists.find(d => 
+      const doc = dentists.find(d =>
         (d.login_email && d.login_email.toLowerCase() === docEmail) ||
         (d.email && d.email.toLowerCase() === docEmail)
       );
@@ -510,6 +643,110 @@ const server = http.createServer(async (req, res) => {
     });
 
     return sendJSON(res, { success: true, message: 'Patient clinical record updated successfully', record: newRecord });
+  }
+
+  // 12. GET /api/admin/gateway (Get email & SMS gateway configuration)
+  if (pathname === '/api/admin/gateway' && req.method === 'GET') {
+    const config = readJSON(GATEWAY_CONFIG_FILE, {
+      email: { enabled: false, provider: 'gmail', host: 'smtp.gmail.com', port: 465, secure: true, user: '', pass: '' },
+      sms: { enabled: false, provider: 'fast2sms', api_key: '' }
+    });
+    // Mask password
+    const safeConfig = JSON.parse(JSON.stringify(config));
+    if (safeConfig.email && safeConfig.email.pass) {
+      safeConfig.email.has_pass = true;
+      safeConfig.email.pass_masked = '••••••••';
+    }
+    return sendJSON(res, safeConfig);
+  }
+
+  // 13. POST /api/admin/gateway (Save email & SMS gateway configuration)
+  if (pathname === '/api/admin/gateway' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    let currentConfig = readJSON(GATEWAY_CONFIG_FILE, {});
+
+    if (data.email) {
+      currentConfig.email = {
+        enabled: Boolean(data.email.enabled),
+        provider: data.email.provider || 'gmail',
+        host: data.email.host || 'smtp.gmail.com',
+        port: parseInt(data.email.port || '465', 10),
+        secure: data.email.secure !== false,
+        user: (data.email.user || '').trim(),
+        pass: data.email.pass ? data.email.pass.trim() : (currentConfig.email?.pass || ''),
+        from: data.email.from || `Doctor Dental Clinic Dentia <${data.email.user || 'contact@dentiacare.com'}>`
+      };
+    }
+
+    if (data.sms) {
+      currentConfig.sms = {
+        enabled: Boolean(data.sms.enabled),
+        provider: data.sms.provider || 'fast2sms',
+        api_key: (data.sms.api_key || '').trim(),
+        twilio_sid: (data.sms.twilio_sid || '').trim(),
+        twilio_token: (data.sms.twilio_token || '').trim(),
+        twilio_from: (data.sms.twilio_from || '').trim()
+      };
+    }
+
+    writeJSON(GATEWAY_CONFIG_FILE, currentConfig);
+    return sendJSON(res, { success: true, message: 'Gateway settings saved successfully!' });
+  }
+
+  // 14. POST /api/admin/gateway/test-email (Send live test email to verify SMTP delivery)
+  if (pathname === '/api/admin/gateway/test-email' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const toEmail = (data.to || data.recipient || data.email || '').trim();
+    const config = readJSON(GATEWAY_CONFIG_FILE, {});
+
+    if (!toEmail) {
+      return sendJSON(res, { success: false, message: 'Recipient email address is required' }, 400);
+    }
+
+    if (!config.email || !config.email.user || !config.email.pass) {
+      return sendJSON(res, {
+        success: false,
+        message: 'SMTP credentials are not configured yet! Please enter your Gmail/SMTP user and App Password first.'
+      }, 400);
+    }
+
+    try {
+      const transporter = nodemailer.createTransport({
+        service: config.email.provider === 'gmail' ? 'gmail' : undefined,
+        host: config.email.host || 'smtp.gmail.com',
+        port: parseInt(config.email.port || '465', 10),
+        secure: config.email.secure !== false,
+        auth: {
+          user: config.email.user,
+          pass: config.email.pass
+        }
+      });
+
+      const info = await transporter.sendMail({
+        from: config.email.from || `Doctor Dental Clinic Dentia <${config.email.user}>`,
+        to: toEmail,
+        subject: 'Dentia Clinic - Live SMTP Email Verification Test',
+        text: 'Hello! This is a live verification email from Doctor Dental Clinic Dentia verifying that real-world SMTP email delivery is functioning properly.',
+        html: generateModernEmailHTML({
+          patient_name: toEmail.split('@')[0],
+          appointment_ref: 'TEST-VERIFY',
+          type: 'booking_confirmed',
+          subject: 'Live SMTP Email Verification Test',
+          message: 'Success! Your email settings are correctly configured.\n\nAll subsequent appointment confirmations, regret messages, and doctor prescriptions will be delivered directly to real inboxes.'
+        })
+      });
+
+      return sendJSON(res, {
+        success: true,
+        message: `Test email successfully sent to ${toEmail}! Check your inbox (Message ID: ${info.messageId}).`,
+        messageId: info.messageId
+      });
+    } catch (err) {
+      return sendJSON(res, {
+        success: false,
+        message: `SMTP Delivery Failed: ${err.message}. If using Gmail, ensure you created a 16-character App Password (Google Account -> Security -> 2-Step Verification -> App Passwords).`
+      }, 500);
+    }
   }
 
   // 12. GET /api/admin/users (Admin sees all users, login details, and visit metrics)

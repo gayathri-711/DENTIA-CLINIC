@@ -1,0 +1,20 @@
+{
+  "email": {
+    "enabled": false,
+    "provider": "gmail",
+    "host": "smtp.gmail.com",
+    "port": 465,
+    "secure": true,
+    "user": "",
+    "pass": "",
+    "from": "Doctor Dental Clinic Dentia <no-reply@dentiacare.com>"
+  },
+  "sms": {
+    "enabled": false,
+    "provider": "fast2sms",
+    "api_key": "",
+    "twilio_sid": "",
+    "twilio_token": "",
+    "twilio_from": ""
+  }
+}

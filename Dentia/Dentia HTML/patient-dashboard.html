@@ -231,6 +231,26 @@
         </div>
     </main>
 
+    <!-- MODAL: PATIENT MESSAGE PREVIEW -->
+    <div class="modal fade" id="patientMessageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white p-3">
+                    <h5 class="modal-title fw-bold text-white mb-0" id="pat_msg_title">
+                        <i class="fa fa-envelope-o me-2"></i> Official Clinic Correspondence
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light" id="pat_msg_body">
+                    <!-- Loaded dynamically -->
+                </div>
+                <div class="modal-footer bg-white p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script>
 let currentPatient = null;
 
@@ -420,12 +440,15 @@ async function cancelAppointment(id) {
     }
 }
 
+let cachedPatientNotifications = [];
+
 async function loadPatientNotifications() {
     if (!currentPatient) return;
     const container = document.getElementById('notifications_container');
     try {
         const res = await fetch(`/api/notifications?email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
         const list = res.notifications || [];
+        cachedPatientNotifications = list;
 
         if (list.length === 0) {
             container.innerHTML = `
@@ -438,28 +461,42 @@ async function loadPatientNotifications() {
         }
 
         container.innerHTML = `
+            <div class="alert alert-info py-2 px-3 rounded-3 small mb-3 border-0 bg-info-subtle text-info-emphasis d-flex align-items-center gap-2">
+                <i class="fa fa-info-circle fs-5"></i>
+                <div>
+                    All official booking confirmations and appointment alerts are archived in your patient portal below. You can click <strong>View Full Message</strong> anytime to view the official clinic letter or mobile SMS preview.
+                </div>
+            </div>
             <div class="row g-3">
                 ${list.map(n => {
                     const isEmail = n.channel === 'email';
                     const isConfirmed = n.type === 'booking_confirmed';
                     const isUnavailable = n.type === 'slot_unavailable';
+                    const isReal = (n.status || '').toLowerCase().includes('real inbox');
 
                     return `
                         <div class="col-md-6">
-                            <div class="p-3 rounded-4 border ${isUnavailable ? 'border-warning bg-warning-subtle' : 'border-light bg-light'} h-100 shadow-sm">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="badge ${isEmail ? 'bg-primary' : 'bg-success'} rounded-pill px-3 py-1">
-                                        <i class="fa fa-${isEmail ? 'envelope' : 'comment'} me-1"></i> ${isEmail ? 'Email Sent' : 'SMS Alert Sent'}
-                                    </span>
-                                    <span class="badge bg-white text-success border rounded-pill px-2 py-1 small">
-                                        <i class="fa fa-check-circle me-1"></i> Delivered
-                                    </span>
+                            <div class="p-3 rounded-4 border ${isUnavailable ? 'border-warning bg-warning-subtle' : 'border-light bg-light'} h-100 shadow-sm d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge ${isEmail ? 'bg-primary' : 'bg-success'} rounded-pill px-3 py-1">
+                                            <i class="fa fa-${isEmail ? 'envelope' : 'comment'} me-1"></i> ${isEmail ? 'Official Email' : 'Mobile SMS Alert'}
+                                        </span>
+                                        <span class="badge ${isReal ? 'bg-success text-white' : 'bg-white text-primary border'} rounded-pill px-2 py-1 small">
+                                            <i class="fa fa-${isReal ? 'check-circle' : 'database'} me-1"></i> ${isReal ? 'Real Inbox' : 'Clinic Ledger'}
+                                        </span>
+                                    </div>
+                                    <div class="fw-bold text-dark small mb-1">${n.subject || 'Dentia Notification'}</div>
+                                    <p class="small text-muted mb-2" style="font-size:12px; line-height:1.5;">${n.message.substring(0, 160)}${n.message.length > 160 ? '...' : ''}</p>
                                 </div>
-                                <div class="fw-bold text-dark small mb-1">${n.subject || 'Dentia Notification'}</div>
-                                <p class="small text-muted mb-2" style="font-size:12px; line-height:1.5;">${n.message}</p>
-                                <div class="d-flex justify-content-between text-muted" style="font-size:11px;">
-                                    <span>Ref: <strong>${n.appointment_ref}</strong></span>
-                                    <span>${n.created_at ? n.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                                <div class="pt-2 border-top">
+                                    <div class="d-flex justify-content-between align-items-center text-muted mb-2" style="font-size:11px;">
+                                        <span>Ref: <strong class="text-primary font-monospace">${n.appointment_ref}</strong></span>
+                                        <span>${n.created_at ? n.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-semibold" onclick="previewPatientNotification(${n.id})">
+                                        <i class="fa fa-eye me-1"></i> View Full ${isEmail ? 'Formatted Email' : 'SMS Message'}
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -471,6 +508,58 @@ async function loadPatientNotifications() {
     } catch (e) {
         container.innerHTML = `<div class="text-danger small">Error loading notifications.</div>`;
     }
+}
+
+function previewPatientNotification(id) {
+    const notif = cachedPatientNotifications.find(n => n.id === id);
+    if (!notif) return;
+
+    const titleEl = document.getElementById('pat_msg_title');
+    const bodyEl = document.getElementById('pat_msg_body');
+    const isEmail = notif.channel === 'email';
+
+    titleEl.innerHTML = `<i class="fa fa-${isEmail ? 'envelope' : 'commenting'} me-2"></i> ${isEmail ? 'Official Dental Clinic Email' : 'Mobile SMS Text Alert'} &mdash; Ref: ${notif.appointment_ref}`;
+
+    if (isEmail) {
+        bodyEl.innerHTML = `
+            <div class="card border-0 shadow-sm rounded-4 mb-2 bg-white p-3">
+                <div class="border-bottom pb-2 mb-3">
+                    <div class="small text-muted">From: <strong>Doctor Dental Clinic Dentia &lt;no-reply@dentiacare.com&gt;</strong></div>
+                    <div class="small text-muted">To: <strong>${notif.recipient_name} &lt;${notif.recipient_email}&gt;</strong></div>
+                    <div class="fw-bold text-dark mt-1">Subject: ${notif.subject || 'Dentia Notification'}</div>
+                </div>
+                <div class="border rounded-3 p-3 bg-white" style="max-height: 480px; overflow-y: auto;">
+                    ${notif.html || `<div class="p-3" style="white-space: pre-wrap; font-family: sans-serif; line-height: 1.6;">${notif.message}</div>`}
+                </div>
+            </div>
+        `;
+    } else {
+        bodyEl.innerHTML = `
+            <div class="d-flex justify-content-center py-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="max-width: 440px; width:100%;">
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:38px; height:38px;">
+                            <i class="fa fa-commenting"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-dark">Dentia Dental Clinic SMS Service</div>
+                            <small class="text-muted">Mobile Number: <strong>${notif.recipient_phone || 'Registered Phone'}</strong></small>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-4 bg-success-subtle text-dark border border-success-subtle mb-3" style="line-height:1.6; font-size:13px;">
+                        ${notif.message}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center text-muted small" style="font-size:11px;">
+                        <span>Status: <strong class="text-success">${notif.status}</strong></span>
+                        <span>${notif.created_at ? notif.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('patientMessageModal'));
+    modal.show();
 }
 
 function handleLogout() {
