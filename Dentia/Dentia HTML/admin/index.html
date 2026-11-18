@@ -10,6 +10,15 @@
     <link href="../css/custom-modern.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="../images/icon.webp" type="image/gif">
     <style>
+        header, .admin-topbar {
+            position: relative !important;
+            width: 100% !important;
+            left: auto !important;
+            top: auto !important;
+            z-index: 10 !important;
+            background: #ffffff !important;
+            margin: 0 !important;
+        }
         .admin-stat-box {
             background: #ffffff;
             border-radius: 16px;
@@ -118,17 +127,17 @@
     <div class="flex-grow-1 min-vh-100 d-flex flex-column" style="overflow-x: hidden;">
         
         <!-- Topbar -->
-        <header class="bg-white border-bottom py-3 px-4 d-flex justify-content-between align-items-center shadow-sm">
+        <nav class="admin-topbar bg-white border-bottom py-2 px-4 d-flex justify-content-between align-items-center shadow-sm" style="position: relative !important; left: auto !important; width: 100% !important; z-index: 10 !important;">
             <div>
-                <h4 class="fw-bold mb-0 text-dark">Dentia Clinic Administration</h4>
-                <small class="text-muted">Accept appointment requests, manage doctors, and monitor patient care</small>
+                <h5 class="fw-bold mb-0 text-dark">Dentia Clinic Administration</h5>
+                <small class="text-muted" style="font-size: 12px;">Accept appointment requests, manage doctors, and monitor patient care</small>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <span class="badge bg-primary text-white rounded-pill px-3 py-2 small fw-semibold">
+                <span class="badge bg-primary text-white rounded-pill px-3 py-1 small fw-semibold">
                     <i class="fa fa-shield me-1"></i> Chief Medical Admin
                 </span>
                 <div class="d-flex align-items-center gap-2">
-                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px; font-size: 14px;">
                         A
                     </div>
                     <div class="d-none d-sm-block">
@@ -137,7 +146,7 @@
                     </div>
                 </div>
             </div>
-        </header>
+        </nav>
 
         <!-- Main Body -->
         <main class="p-4 flex-grow-1">

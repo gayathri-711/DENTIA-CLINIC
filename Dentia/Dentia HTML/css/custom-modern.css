@@ -437,4 +437,17 @@ header:not(.transparent) .btn-portal-nav:hover {
   color: #1463b8;
 }
 
+/* --- Dashboard & Admin Topbar Alignment (Prevent Absolute Overlay Collisions) --- */
+.admin-topbar,
+header.dashboard-header,
+header.sticky-top {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: 100% !important;
+  z-index: 100 !important;
+  background-color: #ffffff !important;
+  margin: 0 !important;
+}
+
 
