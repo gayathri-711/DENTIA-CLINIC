@@ -17,6 +17,7 @@
     <link href="css/style.css" rel="stylesheet" type="text/css" >
     <!-- color scheme -->
     <link id="colors" href="css/colors/scheme-01.css" rel="stylesheet" type="text/css" >
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
 
 </head>
 
@@ -274,7 +275,7 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <div class="h-100 rounded-1 relative" data-bgimage="url(images/misc/s4.webp) center">
+                            <div class="h-100 rounded-4 relative shadow-sm overflow-hidden" style="min-height: 320px;" data-bgimage="url(images/misc/s4.webp) center">
                                 <div class="bg-blur text-light shadow-1 abs start-10 bottom-10 p-4 rounded-1 overflow-hidden z-2" data-wow-delay=".5s">
                                     <div class="d-flex justify-content-center">
                                         <i class="fs-60 text-white icon_clock"></i>
@@ -709,6 +710,32 @@
             if (Array.isArray(res) && res.length > 0) {
                 const select = document.getElementById('dentist_id');
                 select.innerHTML = res.map(d => `<option value="${d.id}">${d.name} (${d.specialization})</option>`).join('');
+            }
+        } catch (e) {}
+
+        // Pre-select service or doctor from URL parameters if present
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const reqService = urlParams.get('service');
+            if (reqService) {
+                const serviceSelect = document.getElementById('service');
+                for (let i = 0; i < serviceSelect.options.length; i++) {
+                    if (serviceSelect.options[i].value.toLowerCase().includes(reqService.toLowerCase()) ||
+                        reqService.toLowerCase().includes(serviceSelect.options[i].value.toLowerCase())) {
+                        serviceSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            const reqDoctor = urlParams.get('doctor');
+            if (reqDoctor) {
+                const docSelect = document.getElementById('dentist_id');
+                for (let i = 0; i < docSelect.options.length; i++) {
+                    if (docSelect.options[i].text.toLowerCase().includes(reqDoctor.toLowerCase())) {
+                        docSelect.selectedIndex = i;
+                        break;
+                    }
+                }
             }
         } catch (e) {}
 

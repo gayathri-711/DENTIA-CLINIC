@@ -1219,6 +1219,14 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
     });
   }
 
+  // 18.5 POST /contact.php (Contact Form Submission)
+  if (pathname === '/contact.php' && req.method === 'POST') {
+    const postData = await parsePostData(req);
+    console.log('[CONTACT MESSAGE RECEIVED]', postData);
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    return res.end('sent');
+  }
+
   // 19. POST /api/book-appointment.php or /booking.php
   if ((pathname === '/api/book-appointment.php' || pathname === '/booking.php') && req.method === 'POST') {
     const postData = await parsePostData(req);

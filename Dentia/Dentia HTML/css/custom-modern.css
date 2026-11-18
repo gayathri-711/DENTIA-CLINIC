@@ -450,4 +450,284 @@ header.sticky-top {
   margin: 0 !important;
 }
 
+/* ========================================================
+   COMPREHENSIVE MOBILE RESPONSIVE UI RULES
+   ======================================================== */
+
+@media (max-width: 991px) {
+  /* Hide desktop utility topbar on mobile/tablets */
+  .dentia-topbar {
+    display: none !important;
+  }
+
+  /* Header adjustments on mobile */
+  header {
+    background: #ffffff !important;
+    position: relative !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+    padding: 10px 0 !important;
+  }
+  header.transparent {
+    background: #ffffff !important;
+  }
+  header #logo img.logo-main,
+  header #logo img.logo-scroll,
+  header #logo img.logo-mobile {
+    max-height: 38px !important;
+  }
+
+  /* Header action buttons layout on mobile */
+  .menu_side_area {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  .menu_side_area .btn-portal-nav {
+    padding: 7px 12px !important;
+    font-size: 12.5px !important;
+    border-radius: 20px !important;
+    border-color: #1463b8 !important;
+    color: #1463b8 !important;
+    background: #eef6ff !important;
+  }
+  .menu_side_area .btn-portal-nav span {
+    display: inline !important;
+  }
+  .menu_side_area .btn-main {
+    padding: 7px 14px !important;
+    font-size: 12px !important;
+    border-radius: 20px !important;
+    white-space: nowrap !important;
+  }
+  #menu-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 8px !important;
+    background: #f1f5f9 !important;
+    cursor: pointer !important;
+    margin-left: 4px !important;
+  }
+
+  /* Clean mobile drawer when opened */
+  header.menu-open #mainmenu {
+    display: block !important;
+    background: #ffffff !important;
+    padding: 15px 20px 25px 20px !important;
+    border-top: 1px solid #e2e8f0 !important;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+  }
+  #mainmenu li {
+    display: block !important;
+    border-bottom: 1px solid #f8fafc !important;
+  }
+  #mainmenu li a {
+    display: block !important;
+    padding: 12px 6px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+  }
+  #mainmenu li a:hover,
+  #mainmenu li a.active {
+    color: #1463b8 !important;
+  }
+  #mainmenu li ul {
+    position: static !important;
+    box-shadow: none !important;
+    padding-left: 15px !important;
+    background: #f8fafc !important;
+    border-radius: 10px !important;
+    margin: 4px 0 10px 0 !important;
+  }
+  #mainmenu li ul li a {
+    padding: 8px 10px !important;
+    font-size: 13.5px !important;
+    color: #64748b !important;
+    font-weight: 500 !important;
+  }
+  #mainmenu li ul li a:hover,
+  #mainmenu li ul li a.active {
+    color: #1463b8 !important;
+    font-weight: 700 !important;
+  }
+}
+
+/* Extra small mobile phone screens (<= 576px) */
+@media (max-width: 576px) {
+  /* Navigation header compact on small phones */
+  .menu_side_area .btn-portal-nav span {
+    display: none !important; /* show icon only on small screens */
+  }
+  .menu_side_area .btn-portal-nav {
+    padding: 7px 10px !important;
+    min-width: 36px !important;
+    justify-content: center !important;
+  }
+  .menu_side_area .btn-main {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+  }
+  .menu_side_area .btn-main span {
+    font-size: 11px !important;
+  }
+
+  /* Subheader banner titles */
+  #subheader {
+    padding: 75px 0 35px 0 !important;
+    text-align: center !important;
+  }
+  #subheader h1 {
+    font-size: 26px !important;
+    line-height: 1.25 !important;
+  }
+  #subheader .crumb {
+    font-size: 12px !important;
+    margin-top: 8px !important;
+  }
+
+  /* General section spacing */
+  section {
+    padding: 40px 0 !important;
+  }
+  .container {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  /* Cards and content boxes */
+  .p-40 {
+    padding: 22px 18px !important;
+  }
+  .p-5 {
+    padding: 20px 16px !important;
+  }
+  .fs-150 {
+    display: none !important; /* Hide massive 150px numbers that block mobile text */
+  }
+
+  /* Service modern cards on phones */
+  .service-card-modern {
+    padding: 22px 18px !important;
+    margin-bottom: 15px !important;
+  }
+  .service-icon-box {
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Doctor / Dentist cards on phones */
+  .dentist-card-modern .row > div:first-child img,
+  #dentists-list img {
+    max-height: 260px !important;
+    border-radius: 12px 12px 0 0 !important;
+  }
+
+  /* Booking screen interactive slots */
+  #slots_container {
+    padding: 12px !important;
+    gap: 8px !important;
+  }
+  .slot-pill {
+    padding: 8px 6px !important;
+    font-size: 12px !important;
+    min-width: 74px !important;
+  }
+  #booking_form {
+    padding: 10px 0 !important;
+  }
+
+  /* FAQ Tabs on phones */
+  .d-tab-nav {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    padding-bottom: 12px !important;
+  }
+  .d-tab-nav li {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 20px !important;
+    background: #f1f5f9 !important;
+    margin-right: 0 !important;
+    cursor: pointer !important;
+  }
+  .d-tab-nav li.active-tab {
+    background: #1463b8 !important;
+    color: #ffffff !important;
+  }
+  .accordion-section-title {
+    padding: 14px 16px !important;
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+  .accordion-section-content {
+    padding: 14px 16px !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Gallery filter buttons */
+  #filters {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+  #filters li a {
+    padding: 6px 14px !important;
+    font-size: 12px !important;
+    border-radius: 20px !important;
+  }
+
+  /* Testimonials */
+  #gallery .item .p-40 {
+    padding: 20px 16px !important;
+  }
+
+  /* Auth cards (login & register) */
+  .portal-auth-card {
+    border-radius: 16px !important;
+    margin: 8px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  }
+  .portal-form-pane {
+    padding: 24px 18px !important;
+  }
+  .role-btn {
+    font-size: 12px !important;
+    padding: 7px 10px !important;
+    gap: 4px !important;
+  }
+
+  /* Patient & Doctor dashboards */
+  .dashboard-header .container-fluid {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  .doctor-sidebar-profile {
+    padding: 20px 16px !important;
+  }
+  .dashboard-stat-card {
+    padding: 16px !important;
+  }
+  .stat-icon {
+    width: 46px !important;
+    height: 46px !important;
+    font-size: 20px !important;
+  }
+
+  /* Footer styling on mobile */
+  footer.section-dark {
+    padding: 40px 0 20px 0 !important;
+  }
+  footer.section-dark .widget {
+    margin-bottom: 25px !important;
+  }
+}
+
+
 
