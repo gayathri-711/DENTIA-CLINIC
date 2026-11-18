@@ -108,7 +108,7 @@
             <a href="../database-viewer.html" target="_blank" class="btn btn-outline-warning rounded-pill w-100 btn-sm mb-2 text-start px-3">
                 <i class="fa fa-table me-2"></i> SQL Table Explorer
             </a>
-            <a href="../login.html" class="btn btn-outline-danger rounded-pill w-100 btn-sm text-start px-3">
+            <a href="javascript:void(0)" onclick="handleAdminLogout()" class="btn btn-outline-danger rounded-pill w-100 btn-sm text-start px-3">
                 <i class="fa fa-sign-out me-2"></i> Sign Out
             </a>
         </div>
@@ -721,6 +721,20 @@
 
 <script src="../js/plugins.js"></script>
 <script>
+// Admin Authentication Guard
+(function checkAdminAuth() {
+    const session = sessionStorage.getItem('dentia_admin') || localStorage.getItem('dentia_admin');
+    if (!session) {
+        window.location.replace('../login.html?role=admin');
+    }
+})();
+
+function handleAdminLogout() {
+    sessionStorage.removeItem('dentia_admin');
+    localStorage.removeItem('dentia_admin');
+    window.location.href = '../login.html?role=admin';
+}
+
 let globalAppointments = [];
 let globalDoctors = [];
 let globalPatients = [];

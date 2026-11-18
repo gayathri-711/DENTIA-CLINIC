@@ -940,6 +940,27 @@ const server = http.createServer(async (req, res) => {
     return sendJSON(res, { success: false, message: 'Invalid email or password' }, 401);
   }
 
+  // POST /api/admin/login (Admin authentication against SQLite database)
+  if ((pathname === '/api/admin/login' || pathname === '/api/auth/admin-login') && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+    const password = data.password || '';
+
+    let admin = null;
+    if (database.isAvailable()) {
+      admin = await database.get('SELECT * FROM admins WHERE LOWER(email) = ? AND password = ?', [email, password]);
+    }
+    if (!admin && email === 'admin@dentia.com' && password === 'admin123') {
+      admin = { id: 1, name: 'Chief Medical Admin', email: 'admin@dentia.com', role: 'superadmin' };
+    }
+
+    if (admin) {
+      const safeAdmin = { id: admin.id, name: admin.name, email: admin.email, role: admin.role || 'superadmin' };
+      return sendJSON(res, { success: true, message: 'Admin authenticated successfully', admin: safeAdmin });
+    }
+    return sendJSON(res, { success: false, message: 'Invalid administrator email or password' }, 401);
+  }
+
   // 16. GET /api/patient/appointments (Get specific patient visits)
   if (pathname === '/api/patient/appointments' && req.method === 'GET') {
     const email = (parsedUrl.query.email || '').trim().toLowerCase();

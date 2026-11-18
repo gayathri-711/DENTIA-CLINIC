@@ -411,16 +411,40 @@ async function handlePortalLogin(e) {
         }
 
     } else if (currentRole === 'admin') {
-        if (email.toLowerCase() === 'admin@dentia.com' && pass === 'admin123') {
-            sessionStorage.setItem('dentia_admin', JSON.stringify({ name: 'Chief Medical Admin', email: email }));
-            alertEl.className = 'alert alert-success rounded-3 mb-4';
-            alertEl.innerHTML = `<i class="fa fa-check-circle me-2"></i> Chief Administrator verified! Redirecting to Administration Portal...`;
-            setTimeout(() => { window.location.href = 'admin/index.html'; }, 700);
-        } else {
-            alertEl.className = 'alert alert-danger rounded-3 mb-4';
-            alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> Invalid administrator credentials. (Default: <code>admin@dentia.com</code> / <code>admin123</code>)`;
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i class="fa fa-sign-in me-2"></i> ${roleConfigs[currentRole].submitText}`;
+        try {
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: pass })
+            });
+            const data = await res.json();
+            if (data.success && data.admin) {
+                const adminObj = JSON.stringify(data.admin);
+                sessionStorage.setItem('dentia_admin', adminObj);
+                localStorage.setItem('dentia_admin', adminObj);
+                alertEl.className = 'alert alert-success rounded-3 mb-4';
+                alertEl.innerHTML = `<i class="fa fa-check-circle me-2"></i> Administrator verified! Redirecting to Administration Portal...`;
+                setTimeout(() => { window.location.href = 'admin/index.html'; }, 600);
+            } else {
+                alertEl.className = 'alert alert-danger rounded-3 mb-4';
+                alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> ${data.message || 'Invalid administrator credentials.'} (Default: <code>admin@dentia.com</code> / <code>admin123</code>)`;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa fa-sign-in me-2"></i> ${roleConfigs[currentRole].submitText}`;
+            }
+        } catch (e) {
+            if (email.toLowerCase() === 'admin@dentia.com' && pass === 'admin123') {
+                const adminObj = JSON.stringify({ name: 'Chief Medical Admin', email: email, role: 'superadmin' });
+                sessionStorage.setItem('dentia_admin', adminObj);
+                localStorage.setItem('dentia_admin', adminObj);
+                alertEl.className = 'alert alert-success rounded-3 mb-4';
+                alertEl.innerHTML = `<i class="fa fa-check-circle me-2"></i> Administrator verified! Redirecting to Administration Portal...`;
+                setTimeout(() => { window.location.href = 'admin/index.html'; }, 600);
+            } else {
+                alertEl.className = 'alert alert-danger rounded-3 mb-4';
+                alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> Invalid administrator credentials. (Default: <code>admin@dentia.com</code> / <code>admin123</code>)`;
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa fa-sign-in me-2"></i> ${roleConfigs[currentRole].submitText}`;
+            }
         }
     }
 }
