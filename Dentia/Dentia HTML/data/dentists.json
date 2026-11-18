@@ -12,7 +12,10 @@
     "phone": "+1 (800) 234-5671",
     "availability_days": "Monday - Friday",
     "availability_hours": "09:00 - 15:00",
-    "is_available": 1
+    "description": "Lead dental practitioner with 12+ years of clinical excellence in cosmetic smile makeovers, dental restorations, and patient-first oral healthcare.",
+    "image": "images/team/1.webp",
+    "is_available": 1,
+    "is_active": true
   },
   {
     "id": 2,
@@ -27,7 +30,10 @@
     "phone": "+1 (800) 234-5672",
     "availability_days": "Monday - Thursday",
     "availability_hours": "10:00 - 16:00",
-    "is_available": 1
+    "description": "Specialist in cosmetic smile aesthetics, porcelain veneers, teeth whitening, and precision restorative dental solutions.",
+    "image": "images/team/2.webp",
+    "is_available": 1,
+    "is_active": true
   },
   {
     "id": 3,
@@ -42,7 +48,10 @@
     "phone": "+1 (800) 234-5673",
     "availability_days": "Tuesday - Saturday",
     "availability_hours": "09:00 - 17:00",
-    "is_available": 1
+    "description": "Board-certified orthodontic specialist focused on invisible aligners, complex bite corrections, and advanced dental implant rehabilitation.",
+    "image": "images/team/3.webp",
+    "is_available": 1,
+    "is_active": true
   },
   {
     "id": 4,
@@ -70,7 +79,7 @@
     "email": "alexander.vance@dentiacare.com",
     "login_email": "alexander.vance@dentiacare.com",
     "password": "doctor123",
-    "has_login": false,
+    "has_login": true,
     "phone": "+1 (800) 234-5678",
     "availability_days": "Monday - Friday",
     "availability_hours": "09:00 AM - 05:00 PM",

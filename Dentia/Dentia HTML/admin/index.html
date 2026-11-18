@@ -707,9 +707,28 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <label class="form-label fw-semibold small">Profile Photograph Path</label>
-                            <input type="text" id="doc_image" class="form-control rounded-3" value="images/team/1.webp">
-                            <small class="text-muted" style="font-size:11px;">Reuses local assets: images/team/1.webp, images/team/2.webp, images/team/3.webp, images/team/4.webp</small>
+                            <label class="form-label fw-semibold small text-primary"><i class="fa fa-camera me-1"></i> Doctor Profile Photograph *</label>
+                            <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row align-items-center gap-3">
+                                <div class="position-relative flex-shrink-0">
+                                    <img id="doc_photo_preview" src="../images/team/1.webp" alt="Doctor Preview" class="rounded-circle shadow-sm" style="width: 82px; height: 82px; object-fit: cover; border: 3px solid #0d6efd;">
+                                </div>
+                                <div class="flex-grow-1 w-100">
+                                    <div class="mb-2">
+                                        <label for="doc_photo_file" class="form-label small fw-semibold text-dark mb-1">
+                                            <i class="fa fa-upload me-1"></i> Upload Doctor Photo (JPG, PNG, WEBP)
+                                        </label>
+                                        <input type="file" id="doc_photo_file" class="form-control form-control-sm rounded-3" accept="image/*" onchange="handleDoctorPhotoUpload(event, 'doc_photo_preview', 'doc_image')">
+                                    </div>
+                                    <input type="hidden" id="doc_image" value="images/team/1.webp">
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <span class="small text-muted" style="font-size:11px;">Or select quick preset avatar:</span>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/1.webp', 'doc_photo_preview', 'doc_image')">Doctor 1</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/2.webp', 'doc_photo_preview', 'doc_image')">Doctor 2</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/3.webp', 'doc_photo_preview', 'doc_image')">Doctor 3</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/4.webp', 'doc_photo_preview', 'doc_image')">Doctor 4</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-12">
                             <label class="form-label fw-semibold small">Doctor Biography</label>
@@ -731,16 +750,31 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4 border-0">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title fw-bold text-white"><i class="fa fa-key text-warning me-2"></i> Doctor Login Credentials</h5>
+                <h5 class="modal-title fw-bold text-white"><i class="fa fa-key text-warning me-2"></i> Doctor Credentials & Profile Photo</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="doc_credentials_form" onsubmit="saveDoctorCredentials(event)">
                 <div class="modal-body p-4">
                     <input type="hidden" id="cred_doc_id">
+                    <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded-3 border">
+                        <img id="cred_doc_photo_preview" src="../images/team/1.webp" alt="Doctor Photo" class="rounded-circle shadow-sm" style="width: 70px; height: 70px; object-fit: cover; border: 3px solid #0d6efd;">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold fs-5 text-dark" id="cred_doc_name">Dr. Name</div>
+                            <div class="small text-primary fw-semibold" id="cred_doc_spec">Specialization</div>
+                        </div>
+                    </div>
+
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small text-muted">Doctor Profile</label>
-                        <div class="fw-bold fs-5 text-dark" id="cred_doc_name">Dr. Name</div>
-                        <div class="small text-primary" id="cred_doc_spec">Specialization</div>
+                        <label class="form-label fw-semibold small text-primary"><i class="fa fa-camera me-1"></i> Update Doctor Profile Photo</label>
+                        <input type="file" id="cred_doc_photo_file" class="form-control form-control-sm rounded-3" accept="image/*" onchange="handleDoctorPhotoUpload(event, 'cred_doc_photo_preview', 'cred_doc_image')">
+                        <input type="hidden" id="cred_doc_image" value="">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+                            <span class="small text-muted" style="font-size:11px;">Or preset:</span>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/1.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 1</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/2.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 2</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/3.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 3</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/4.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 4</button>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -764,7 +798,7 @@
                 </div>
                 <div class="modal-footer bg-light p-3">
                     <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Update Credentials</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Update Credentials & Photo</button>
                 </div>
             </form>
         </div>
@@ -1008,6 +1042,48 @@ async function updateAppointmentStatus(appId, newStatus) {
     }
 }
 
+function getDoctorImgSrc(img) {
+    if (!img) return '../images/team/1.webp';
+    if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) {
+        return img;
+    }
+    return '../' + img.replace(/^\/+/, '');
+}
+
+function handleDoctorPhotoUpload(event, previewImgId, targetInputId) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+        showAlert('Photo is too large. Please select an image under 8MB.', 'warning');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Data = e.target.result;
+        const previewEl = document.getElementById(previewImgId);
+        if (previewEl) previewEl.src = base64Data;
+        const targetInput = document.getElementById(targetInputId);
+        if (targetInput) targetInput.value = base64Data;
+    };
+    reader.readAsDataURL(file);
+}
+
+function selectDoctorPresetPhoto(presetPath, previewImgId, targetInputId) {
+    const previewEl = document.getElementById(previewImgId);
+    if (previewEl) previewEl.src = '../' + presetPath;
+    const targetInput = document.getElementById(targetInputId);
+    if (targetInput) targetInput.value = presetPath;
+    if (previewImgId === 'doc_photo_preview') {
+        const fileInput = document.getElementById('doc_photo_file');
+        if (fileInput) fileInput.value = '';
+    } else if (previewImgId === 'cred_doc_photo_preview') {
+        const fileInput = document.getElementById('cred_doc_photo_file');
+        if (fileInput) fileInput.value = '';
+    }
+}
+
 function renderDoctors() {
     const container = document.getElementById('doctors_container');
     container.innerHTML = globalDoctors.map(d => `
@@ -1015,7 +1091,7 @@ function renderDoctors() {
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
                 <div class="row g-0 h-100">
                     <div class="col-sm-4 bg-light text-center p-3 d-flex flex-column align-items-center justify-content-center">
-                        <img src="../${d.image || 'images/team/1.webp'}" alt="${d.name}" class="img-fluid rounded-4 shadow-sm mb-3" style="max-height: 180px; width: 100%; object-fit: cover;">
+                        <img src="${getDoctorImgSrc(d.image)}" alt="${d.name}" class="img-fluid rounded-4 shadow-sm mb-3" style="max-height: 180px; width: 100%; object-fit: cover;">
                         <span class="badge ${d.is_active ? 'bg-success' : 'bg-secondary'} rounded-pill px-3 py-1 mb-2">
                             ${d.is_active ? 'Active Doctor' : 'Inactive'}
                         </span>
@@ -1037,7 +1113,7 @@ function renderDoctors() {
                         
                         <div class="d-flex justify-content-end gap-2 mt-auto pt-2 border-top">
                             <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold" onclick="openDoctorCredentialsModal(${d.id})">
-                                <i class="fa fa-key me-1"></i> Credentials
+                                <i class="fa fa-key me-1"></i> Credentials & Photo
                             </button>
                             <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="deleteDoctor(${d.id})">
                                 <i class="fa fa-trash me-1"></i> Remove
@@ -1061,6 +1137,12 @@ function openDoctorCredentialsModal(docId) {
     document.getElementById('cred_doc_password').value = doc.password || 'doctor123';
     document.getElementById('cred_doc_has_login').checked = Boolean(doc.has_login);
 
+    // Doctor photo preview and state
+    document.getElementById('cred_doc_photo_preview').src = getDoctorImgSrc(doc.image);
+    document.getElementById('cred_doc_image').value = doc.image || 'images/team/1.webp';
+    const credFileInput = document.getElementById('cred_doc_photo_file');
+    if (credFileInput) credFileInput.value = '';
+
     const modal = new bootstrap.Modal(document.getElementById('doctorCredentialsModal'));
     modal.show();
 }
@@ -1080,6 +1162,7 @@ async function saveDoctorCredentials(e) {
     const loginEmail = document.getElementById('cred_doc_email').value.trim();
     const password = document.getElementById('cred_doc_password').value.trim();
     const hasLogin = document.getElementById('cred_doc_has_login').checked;
+    const image = document.getElementById('cred_doc_image').value.trim();
 
     try {
         const res = await fetch('/api/admin/doctor/credentials', {
@@ -1089,7 +1172,8 @@ async function saveDoctorCredentials(e) {
                 id: docId,
                 login_email: loginEmail,
                 password: password,
-                has_login: hasLogin
+                has_login: hasLogin,
+                image: image
             })
         }).then(r => r.json());
 
@@ -1122,7 +1206,7 @@ async function submitNewDoctor(e) {
         login_email: document.getElementById('doc_login_email').value.trim(),
         password: document.getElementById('doc_password').value.trim(),
         has_login: document.getElementById('doc_enable_login').checked,
-        image: document.getElementById('doc_image').value.trim(),
+        image: document.getElementById('doc_image').value.trim() || 'images/team/1.webp',
         description: document.getElementById('doc_description').value.trim()
     };
 
@@ -1139,8 +1223,12 @@ async function submitNewDoctor(e) {
             const modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) modal.hide();
             document.getElementById('add_doctor_form').reset();
+            document.getElementById('doc_photo_preview').src = '../images/team/1.webp';
+            document.getElementById('doc_image').value = 'images/team/1.webp';
+            const newDocFileInput = document.getElementById('doc_photo_file');
+            if (newDocFileInput) newDocFileInput.value = '';
 
-            showAlert(`Doctor ${docData.name} has been added successfully with login access ${docData.has_login ? 'ENABLED' : 'DISABLED'}!`);
+            showAlert(`Doctor ${docData.name} has been added successfully with profile photo and login access ${docData.has_login ? 'ENABLED' : 'DISABLED'}!`);
             loadAllData();
         } else {
             showAlert(res.message || 'Error saving doctor', 'danger');

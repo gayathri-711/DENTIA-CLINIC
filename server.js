@@ -454,6 +454,35 @@ const server = http.createServer(async (req, res) => {
     return sendJSON(res, safeDentists);
   }
 
+// Helper to save uploaded doctor base64 image to images/team/
+function saveDoctorPhotoIfBase64(imageData, docId) {
+  if (!imageData || typeof imageData !== 'string' || !imageData.startsWith('data:image/')) {
+    return imageData || 'images/team/1.webp';
+  }
+  try {
+    const matches = imageData.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      return imageData;
+    }
+    let ext = matches[1].toLowerCase();
+    if (ext === 'jpeg') ext = 'jpg';
+    const base64Data = matches[2];
+    const buffer = Buffer.from(base64Data, 'base64');
+    const filename = `doctor_${docId || Date.now()}_${Date.now()}.${ext}`;
+    const uploadDir = path.join(__dirname, 'Dentia', 'Dentia HTML', 'images', 'team');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    const filePath = path.join(uploadDir, filename);
+    fs.writeFileSync(filePath, buffer);
+    console.log(`[PHOTO UPLOAD] Saved doctor photo: images/team/${filename}`);
+    return `images/team/${filename}`;
+  } catch (err) {
+    console.error('[PHOTO UPLOAD ERROR]', err.message);
+    return imageData;
+  }
+}
+
   // 4. POST /api/dentists (Add new doctor by Admin)
   if (pathname === '/api/dentists' && req.method === 'POST') {
     const data = await parsePostData(req);
@@ -466,9 +495,11 @@ const server = http.createServer(async (req, res) => {
     const loginEmail = (data.login_email || docEmail).trim().toLowerCase();
     const password = data.password ? data.password.trim() : 'doctor123';
     const hasLogin = data.has_login !== undefined ? Boolean(data.has_login) : Boolean(data.password || data.enable_login);
+    const newDocId = dentists.length > 0 ? Math.max(...dentists.map(d => d.id)) + 1 : 1;
+    const finalPhoto = saveDoctorPhotoIfBase64(data.image, newDocId);
 
     const newDoctor = {
-      id: dentists.length > 0 ? Math.max(...dentists.map(d => d.id)) + 1 : 1,
+      id: newDocId,
       name: data.name.trim(),
       qualification: data.qualification || 'Doctor of Dental Surgery (DDS)',
       specialization: data.specialization.trim(),
@@ -481,18 +512,12 @@ const server = http.createServer(async (req, res) => {
       availability_days: data.availability_days || 'Monday - Friday',
       availability_hours: data.availability_hours || '09:00 AM - 05:00 PM',
       description: data.description || 'Experienced dental professional dedicated to comprehensive oral care and patient comfort.',
-      image: data.image || 'images/team/1.webp',
+      image: finalPhoto,
       is_active: true
     };
 
     dentists.push(newDoctor);
     writeJSON(DENTISTS_FILE, dentists);
-
-    // Sync credentials to SQLite database
-    database.run(
-      `UPDATE dentists SET login_email = ?, password = ?, has_login = ? WHERE id = ?`,
-      [dentists[idx].login_email, dentists[idx].password, dentists[idx].has_login ? 1 : 0, docId]
-    ).catch(e => console.error('[DB ERROR] Update dentist credentials:', e.message));
 
     // Save doctor into SQLite database
     database.run(
@@ -500,10 +525,10 @@ const server = http.createServer(async (req, res) => {
       [newDoctor.id, newDoctor.name, newDoctor.qualification, newDoctor.specialization, newDoctor.experience, newDoctor.email, newDoctor.login_email, newDoctor.password, newDoctor.has_login ? 1 : 0, newDoctor.phone, newDoctor.description, newDoctor.image, newDoctor.availability_days, newDoctor.availability_hours, 1]
     ).catch(e => console.error('[DB ERROR] Insert dentist:', e.message));
 
-    return sendJSON(res, { success: true, message: 'Doctor added successfully', doctor: newDoctor });
+    return sendJSON(res, { success: true, message: 'Doctor added successfully with photo and credentials', doctor: newDoctor });
   }
 
-  // 5. POST /api/admin/doctor/credentials (Admin sets/edits doctor login credentials)
+  // 5. POST /api/admin/doctor/credentials (Admin sets/edits doctor login credentials & photo)
   if (pathname === '/api/admin/doctor/credentials' && req.method === 'POST') {
     const data = await parsePostData(req);
     const docId = parseInt(data.id || '0', 10);
@@ -525,6 +550,14 @@ const server = http.createServer(async (req, res) => {
     } else {
       dentists[idx].has_login = true;
     }
+    if (data.image) {
+      const updatedPhoto = saveDoctorPhotoIfBase64(data.image, docId);
+      dentists[idx].image = updatedPhoto;
+      database.run(
+        `UPDATE dentists SET image = ? WHERE id = ?`,
+        [updatedPhoto, docId]
+      ).catch(e => console.error('[DB ERROR] Update dentist photo:', e.message));
+    }
 
     writeJSON(DENTISTS_FILE, dentists);
 
@@ -533,9 +566,10 @@ const server = http.createServer(async (req, res) => {
       `UPDATE dentists SET login_email = ?, password = ?, has_login = ? WHERE id = ?`,
       [dentists[idx].login_email, dentists[idx].password, dentists[idx].has_login ? 1 : 0, docId]
     ).catch(e => console.error('[DB ERROR] Update dentist credentials:', e.message));
+
     return sendJSON(res, {
       success: true,
-      message: `Login credentials updated for ${dentists[idx].name}. Login access is now ${dentists[idx].has_login ? 'ENABLED' : 'DISABLED'}.`,
+      message: `Login credentials and profile updated for ${dentists[idx].name}. Login access is now ${dentists[idx].has_login ? 'ENABLED' : 'DISABLED'}.`,
       doctor: dentists[idx]
     });
   }
@@ -548,11 +582,11 @@ const server = http.createServer(async (req, res) => {
     dentists = dentists.filter(d => d.id !== docId);
     writeJSON(DENTISTS_FILE, dentists);
 
-    // Sync credentials to SQLite database
+    // Sync delete to SQLite database
     database.run(
-      `UPDATE dentists SET login_email = ?, password = ?, has_login = ? WHERE id = ?`,
-      [dentists[idx].login_email, dentists[idx].password, dentists[idx].has_login ? 1 : 0, docId]
-    ).catch(e => console.error('[DB ERROR] Update dentist credentials:', e.message));
+      `DELETE FROM dentists WHERE id = ?`,
+      [docId]
+    ).catch(e => console.error('[DB ERROR] Delete dentist:', e.message));
     return sendJSON(res, { success: true, message: 'Doctor removed' });
   }
 

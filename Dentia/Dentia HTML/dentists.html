@@ -161,7 +161,7 @@
             
             <section>
                 <div class="container">
-                    <div class="row g-4 gy-5">
+                    <div class="row g-4 gy-5" id="dentists-list">
                         <div class="col-md-12">
                             <div class="bg-light rounded-1 relative overflow-hidden">
                                 <div class="abs end-0 bottom-0 p-5 fs-150 fw-bold op-1 lh-1 id-color">1
@@ -467,6 +467,55 @@
     <script src="js/swiper.js"></script>
     <script src="js/custom-swiper-1.js"></script>
     <script src="js/custom-marquee.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const dentists = await fetch('/api/dentists').then(r => r.json());
+            if (Array.isArray(dentists) && dentists.length > 0) {
+                const listEl = document.getElementById('dentists-list');
+                if (listEl) {
+                    listEl.innerHTML = dentists.map((d, idx) => `
+                        <div class="col-md-12">
+                            <div class="bg-light rounded-1 relative overflow-hidden shadow-sm">
+                                <div class="abs end-0 bottom-0 p-5 fs-150 fw-bold op-1 lh-1 id-color">${idx + 1}</div>
+                                <div class="row g-0 align-items-center">
+                                    <div class="col-md-4">
+                                        <img src="${d.image || 'images/team/1.webp'}" class="w-100 rounded" style="object-fit:cover; max-height:360px;" alt="${d.name}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="h-100 p-40">
+                                            <h3 class="mb-0">${d.name}</h3>
+                                            <p class="id-color fw-semibold mb-2">${d.specialization}</p>
+                                            <p class="text-muted small mb-3"><i class="fa fa-clock-o text-primary me-1"></i> ${d.availability_days || 'Monday - Friday'} &bull; ${d.availability_hours || '09:00 AM - 05:00 PM'}</p>
+                                            
+                                            <h4>Qualification</h4>
+                                            <p>${d.qualification || 'Doctor of Dental Surgery (DDS)'}</p>
+
+                                            <h4>Experience & Profile</h4>
+                                            <p>${d.description || d.experience || 'Experienced dental professional dedicated to comprehensive oral care and patient comfort.'}</p>
+
+                                            <div class="d-flex align-items-center gap-3 mt-4">
+                                                <a href="booking.html" class="btn-main">Book Appointment</a>
+                                                <div class="sc-icons">
+                                                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                                                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        } catch(err) {
+            console.warn('Using static doctor list fallback', err);
+        }
+    });
+    </script>
 
 </body>
 
