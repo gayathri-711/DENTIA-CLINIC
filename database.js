@@ -322,9 +322,42 @@ async function syncDataFromJSON() {
       await run(`INSERT OR IGNORE INTO clinic_settings (setting_key, setting_value) VALUES (?, ?)`, [k, v]);
     }
 
+    // Export human-readable CSV table files
+    await exportTablesToCSV();
+
     console.log('[DATABASE] Data synchronization completed successfully.');
   } catch (err) {
     console.error('[DATABASE SYNC ERROR]:', err.message);
+  }
+}
+
+// Export human-readable CSV table files into data/tables/ for instant viewing in VS Code & Excel
+async function exportTablesToCSV() {
+  const tablesDir = path.join(DATA_DIR, 'tables');
+  if (!fs.existsSync(tablesDir)) {
+    fs.mkdirSync(tablesDir, { recursive: true });
+  }
+
+  const tables = ['patients', 'dentists', 'services', 'appointments', 'patient_medical_records', 'notifications', 'admins', 'clinic_settings'];
+  for (const t of tables) {
+    try {
+      const rows = await all(`SELECT * FROM ${t} ORDER BY id ASC`);
+      if (rows && rows.length > 0) {
+        const headers = Object.keys(rows[0]);
+        const csvRows = [
+          headers.join(','),
+          ...rows.map(r => headers.map(h => {
+            let val = r[h];
+            if (val === null || val === undefined) return '""';
+            val = String(val).replace(/"/g, '""');
+            return `"${val}"`;
+          }).join(','))
+        ];
+        fs.writeFileSync(path.join(tablesDir, `${t}.csv`), csvRows.join('\r\n'), 'utf8');
+      }
+    } catch (e) {
+      console.error(`Error exporting table ${t} to CSV:`, e.message);
+    }
   }
 }
 
@@ -366,6 +399,7 @@ module.exports = {
   get,
   all,
   getDatabaseStats,
+  exportTablesToCSV,
   initDatabase,
   DB_PATH
 };

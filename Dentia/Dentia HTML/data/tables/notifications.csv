@@ -1,0 +1,122 @@
+id,recipient_email,recipient_phone,recipient_name,appointment_ref,channel,type,subject,message,preview_url,html,status,created_at
+"1","john.doe@example.com","+1 (555) 234-5678","John Doe","DEN-2026-1001","email","booking_confirmed","Appointment Confirmed: DEN-2026-1001 - Dentia Dental Clinic","Dear John Doe, your appointment with Dr. Sarah Bennett for General Dentistry on 2026-11-20 at 10:00 AM has been confirmed by our clinic. We look forward to seeing you at 100 S Main St, Suite 400, NY.","","","Delivered","2026-11-14T08:05:00.000Z"
+"2","john.doe@example.com","+1 (555) 234-5678","John Doe","DEN-2026-1001","sms","booking_confirmed","SMS Confirmation","Dentia Clinic: Hello John, your appointment DEN-2026-1001 on Nov 20 at 10:00 AM with Dr. Sarah Bennett is CONFIRMED. Call (800) 234-5678 for changes.","","","Delivered","2026-11-14T08:05:05.000Z"
+"3","emily.watson@example.com","+1 (555) 987-6543","Emily Watson","DEN-2026-1002","email","booking_confirmed","Appointment Confirmed: DEN-2026-1002 - Teeth Whitening","Dear Emily Watson, your appointment with Dr. Maya Lin on 2026-11-21 at 11:00 AM has been confirmed. Please arrive 10 minutes prior for preparation.","","","Delivered","2026-11-14T08:03:02.000Z"
+"4","gayathri.240103@cse.ritchennai.edu.in","+917598092785","Gayathri Dhanasekaran","DEN-2026-6103","email","booking_received","Appointment Booking Request Received: [DEN-2026-6103] - Dentia Dental Clinic","Dear Gayathri Dhanasekaran, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for Teeth Whitening with Dr. Sarah Bennett on 2026-11-25 at 10:00 AM has been received and scheduled (Ref: DEN-2026-6103). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.","","","Delivered","2026-11-18T05:11:11.039Z"
+"5","gayathri.240103@cse.ritchennai.edu.in","+917598092785","Gayathri Dhanasekaran","DEN-2026-6103","sms","booking_received","SMS Text Alert","Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment request DEN-2026-6103 with Dr. Sarah Bennett on 2026-11-25 at 10:00 AM is received. We will send confirmation shortly!","","","Delivered","2026-11-18T05:11:11.039Z"
+"6","arun.k@example.com","+919876543210","Arun Kumar","UNAVAILABLE","email","slot_unavailable","Appointment Update: 10:00 AM on 2026-11-25 Already Reserved - Dentia Clinic","Dear Arun Kumar, We regret to inform you that your requested appointment on 2026-11-25 at 10:00 AM with Dr. Sarah Bennett could not be confirmed because another patient just reserved this time slot. Available alternative timings for Dr. Sarah Bennett on this date are: 09:00 AM, 11:00 AM, 12:00 PM, 02:00 PM, 03:00 PM, 04:00 PM, 05:00 PM, 06:00 PM. Please select another timing to confirm your visit.","","","Delivered","2026-11-18T05:11:11.052Z"
+"7","arun.k@example.com","+919876543210","Arun Kumar","UNAVAILABLE","sms","slot_unavailable","SMS Text Alert","Dentia Clinic: Dear Arun Kumar, your booking on 2026-11-25 at 10:00 AM was NOT confirmed (slot just booked by another patient). Available slots with Dr. Sarah Bennett: 09:00 AM, 11:00 AM, 12:00 PM, 02:00 PM. Please choose another time.","","","Delivered","2026-11-18T05:11:11.052Z"
+"8","gayathri.240103@cse.ritchennai.edu.in","+917598092785","Gayathri Dhanasekaran","DEN-2026-6103","email","booking_confirmed","Appointment Confirmed by Dr. Sarah Bennett! [DEN-2026-6103]","Dear Gayathri Dhanasekaran, Dr. Sarah Bennett has reviewed and CONFIRMED your dental appointment for Teeth Whitening on 2026-11-25 at 10:00 AM. Please arrive promptly at our clinic (100 S Main St, Suite 400, NY).","","","Delivered","2026-11-18T05:11:11.065Z"
+"9","gayathri.240103@cse.ritchennai.edu.in","+917598092785","Gayathri Dhanasekaran","DEN-2026-6103","sms","booking_confirmed","SMS Text Alert","Dentia Clinic: Dr. Sarah Bennett has CONFIRMED your appointment on 2026-11-25 at 10:00 AM. Ref: DEN-2026-6103.","","","Delivered","2026-11-18T05:11:11.065Z"
+"10","priya.sharma@example.com","+919988776655","Priya Sharma","REGRET-UNAVAILABLE","email","slot_unavailable","Appointment Update: Regret Notice for 10:00 AM on 2026-11-25 - Dentia Clinic","Dear Priya Sharma,
+
+We regret to inform you that your requested appointment on 2026-11-25 at 10:00 AM with Dr. Sarah Bennett is not available, as this time slot was just booked by another patient.
+
+1. ALTERNATIVE AVAILABLE TIMINGS FOR DR. SARAH BENNETT ON 2026-11-25:
+09:00 AM, 11:00 AM, 12:00 PM, 02:00 PM, 03:00 PM, 04:00 PM, 05:00 PM, 06:00 PM
+
+2. OTHER DOCTORS AVAILABLE AT YOUR REQUESTED TIME (10:00 AM) ON 2026-11-25:
+Dr. Emily Chen (Pediatric Dentistry & Gum Therapy), Dr. Alexander Vance (Periodontics & Advanced Implantology)
+
+Please visit our appointment booking portal to confirm your preferred alternative.","","","Delivered","2026-11-18T05:32:37.976Z"
+"11","priya.sharma@example.com","+919988776655","Priya Sharma","REGRET-UNAVAILABLE","sms","slot_unavailable","SMS Text Alert","Dentia Clinic: Dear Priya Sharma, we regret that 10:00 AM on 2026-11-25 with Dr. Sarah Bennett is unavailable. Available times for Dr. Sarah Bennett: 09:00 AM, 11:00 AM, 12:00 PM. Other doctors free at 10:00 AM: Dr. Emily Chen.","","","Delivered","2026-11-18T05:32:37.976Z"
+"12","john.doe@example.com","+1 (555) 234-5678","John Doe","DEN-2026-1001","email","medical_record_updated","Clinical Record & Prescription Updated by Dr. Sarah Bennett [DEN-2026-1001]","Dear John Doe, your dental treatment records and prescription have been updated by Dr. Sarah Bennett. Diagnosis: Recurrent deep dentinal fissure on tooth #19 with localized pulp sensitivity.. Treatment: Biomimetic composite resin filling and high-viscosity dentin sealing.. Prescription: Acetaminophen 500mg (1 tablet every 6 hours PRN) & Fluoride rinse daily.. You can view the full record anytime in your Patient Dashboard.","","","Delivered","2026-11-18T05:32:37.995Z"
+"13","john.doe@example.com","+1 (555) 234-5678","John Doe","DEN-2026-1001","sms","medical_record_updated","SMS Text Alert","Dentia Clinic: Dr. Sarah Bennett updated your clinical treatment record & prescription for visit DEN-2026-1001. Log in to your portal to view.","","","Delivered","2026-11-18T05:32:37.995Z"
+"14","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-6830","email","booking_received","Appointment Booking Request Received: [DEN-2026-6830] - Dentia Dental Clinic","Dear Gayathri Dhanasekaran, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 09:00 AM has been received and scheduled (Ref: DEN-2026-6830). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.","","","Delivered","2026-11-18T05:39:31.386Z"
+"15","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-6830","sms","booking_received","SMS Text Alert","Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment request DEN-2026-6830 with Dr. Sarah Bennett on 2026-11-18 at 09:00 AM is received. We will send confirmation shortly!","","","Delivered","2026-11-18T05:39:31.386Z"
+"16","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-6830","email","booking_confirmed","Appointment Confirmed! [DEN-2026-6830] - Dentia Dental Clinic","Dear Gayathri Dhanasekaran, Great news! Your appointment for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 09:00 AM has been accepted and CONFIRMED. Clinic address: 100 S Main St, Suite 400, New York, NY. Please arrive 10 minutes before your slot.","","","Delivered","2026-11-18T05:40:31.770Z"
+"17","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-6830","sms","booking_confirmed","SMS Text Alert","Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment DEN-2026-6830 on 2026-11-18 at 09:00 AM with Dr. Sarah Bennett is CONFIRMED. Call (800) 234-5678 for queries.","","","Delivered","2026-11-18T05:40:31.770Z"
+"18","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-3684","email","booking_received","Appointment Booking Request Received: [DEN-2026-3684] - Dentia Dental Clinic","Dear Gayathri Dhanasekaran, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 10:00 AM has been received and scheduled (Ref: DEN-2026-3684). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.","","<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=""utf-8"">
+  <title>Appointment Booking Request Received: [DEN-2026-3684] - Dentia Dental Clinic</title>
+</head>
+<body style=""font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#f1f5f9; margin:0; padding:24px; color:#1e293b;"">
+  <div style=""max-width:580px; margin:0 auto; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.08);"">
+    
+    <!-- Header -->
+    <div style=""background:#0d6efd; padding:32px 24px; text-align:center; color:#ffffff;"">
+      <h1 style=""margin:0; font-size:22px; font-weight:800; letter-spacing:-0.5px;"">Doctor Dental Clinic Dentia</h1>
+      <p style=""margin:6px 0 0 0; opacity:0.92; font-size:13px;"">Modern Oral Healthcare & Clinical Excellence</p>
+    </div>
+
+    <!-- Body Content -->
+    <div style=""padding:32px 28px; line-height:1.65;"">
+      <div style=""display:inline-block; background:#eff6ff; color:#1d4ed8; padding:5px 14px; border-radius:20px; font-family:monospace; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid #bfdbfe;"">
+        Ref: DEN-2026-3684 &bull; SCHEDULED
+      </div>
+
+      <p style=""font-size:15px; margin-top:0;"">Hello <strong>Gayathri Dhanasekaran</strong>,</p>
+
+      <div style=""background:#f8fafc; border-left:4px solid #0d6efd; padding:18px 20px; border-radius:10px; margin:20px 0; font-size:14px; line-height:1.6; white-space:pre-line; color:#334155; border-top:1px solid #f1f5f9; border-right:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9;"">
+Dear Gayathri Dhanasekaran, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 10:00 AM has been received and scheduled (Ref: DEN-2026-3684). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.
+      </div>
+
+      <div style=""background:#eff6ff; border-radius:12px; padding:16px; margin:22px 0; font-size:13px; color:#1e40af;"">
+        <strong><i style=""margin-right:6px;"">&#9733;</i> Clinic Notice:</strong> Please arrive 10 minutes before your scheduled appointment time. Bring any past dental X-rays or dental insurance cards.
+      </div>
+
+      <p style=""font-size:13px; color:#64748b; margin-bottom:0;"">
+        For urgent inquiries or schedule changes, please call our 24/7 care desk at <strong>+1 (800) 234-5678</strong>.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style=""background:#f8fafc; padding:22px 24px; text-align:center; font-size:11px; color:#64748b; border-top:1px solid #e2e8f0;"">
+      <strong>Doctor Dental Clinic Dentia</strong><br>
+      100 S Main St, Suite 400, New York, NY 10001<br>
+      Emergency Dental Hotline: +1 (800) 911-DENT &bull; contact@dentiacare.com
+    </div>
+
+  </div>
+</body>
+</html>","Delivered (System Ledger - Configure SMTP in Admin to send to real inbox)","2026-11-18T06:02:37.514Z"
+"19","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-3684","sms","booking_received","SMS Text Alert","Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment request DEN-2026-3684 with Dr. Sarah Bennett on 2026-11-18 at 10:00 AM is received. We will send confirmation shortly!","","","Delivered (System Ledger - Configure Fast2SMS in Admin to send real SMS)","2026-11-18T06:02:37.514Z"
+"20","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-3684","email","booking_confirmed","Appointment Confirmed! [DEN-2026-3684] - Dentia Dental Clinic","Dear Gayathri Dhanasekaran, Great news! Your appointment for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 10:00 AM has been accepted and CONFIRMED. Clinic address: 100 S Main St, Suite 400, New York, NY. Please arrive 10 minutes before your slot.","","<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=""utf-8"">
+  <title>Appointment Confirmed! [DEN-2026-3684] - Dentia Dental Clinic</title>
+</head>
+<body style=""font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:#f1f5f9; margin:0; padding:24px; color:#1e293b;"">
+  <div style=""max-width:580px; margin:0 auto; background:#ffffff; border-radius:18px; overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,0.08);"">
+    
+    <!-- Header -->
+    <div style=""background:#10b981; padding:32px 24px; text-align:center; color:#ffffff;"">
+      <h1 style=""margin:0; font-size:22px; font-weight:800; letter-spacing:-0.5px;"">Doctor Dental Clinic Dentia</h1>
+      <p style=""margin:6px 0 0 0; opacity:0.92; font-size:13px;"">Modern Oral Healthcare & Clinical Excellence</p>
+    </div>
+
+    <!-- Body Content -->
+    <div style=""padding:32px 28px; line-height:1.65;"">
+      <div style=""display:inline-block; background:#eff6ff; color:#1d4ed8; padding:5px 14px; border-radius:20px; font-family:monospace; font-size:12px; font-weight:700; margin-bottom:18px; border:1px solid #bfdbfe;"">
+        Ref: DEN-2026-3684 &bull; CONFIRMED
+      </div>
+
+      <p style=""font-size:15px; margin-top:0;"">Hello <strong>Gayathri Dhanasekaran</strong>,</p>
+
+      <div style=""background:#f8fafc; border-left:4px solid #10b981; padding:18px 20px; border-radius:10px; margin:20px 0; font-size:14px; line-height:1.6; white-space:pre-line; color:#334155; border-top:1px solid #f1f5f9; border-right:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9;"">
+Dear Gayathri Dhanasekaran, Great news! Your appointment for General Dentistry with Dr. Sarah Bennett on 2026-11-18 at 10:00 AM has been accepted and CONFIRMED. Clinic address: 100 S Main St, Suite 400, New York, NY. Please arrive 10 minutes before your slot.
+      </div>
+
+      <div style=""background:#eff6ff; border-radius:12px; padding:16px; margin:22px 0; font-size:13px; color:#1e40af;"">
+        <strong><i style=""margin-right:6px;"">&#9733;</i> Clinic Notice:</strong> Please arrive 10 minutes before your scheduled appointment time. Bring any past dental X-rays or dental insurance cards.
+      </div>
+
+      <p style=""font-size:13px; color:#64748b; margin-bottom:0;"">
+        For urgent inquiries or schedule changes, please call our 24/7 care desk at <strong>+1 (800) 234-5678</strong>.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style=""background:#f8fafc; padding:22px 24px; text-align:center; font-size:11px; color:#64748b; border-top:1px solid #e2e8f0;"">
+      <strong>Doctor Dental Clinic Dentia</strong><br>
+      100 S Main St, Suite 400, New York, NY 10001<br>
+      Emergency Dental Hotline: +1 (800) 911-DENT &bull; contact@dentiacare.com
+    </div>
+
+  </div>
+</body>
+</html>","Delivered (System Ledger - Configure SMTP in Admin to send to real inbox)","2026-11-18T06:03:12.703Z"
+"21","gayatrisenthamarai@gmail.com","+917598092785","Gayathri Dhanasekaran","DEN-2026-3684","sms","booking_confirmed","SMS Text Alert","Dentia Clinic: Hello Gayathri Dhanasekaran, your appointment DEN-2026-3684 on 2026-11-18 at 10:00 AM with Dr. Sarah Bennett is CONFIRMED. Call (800) 234-5678 for queries.","","","Delivered (System Ledger - Configure Fast2SMS in Admin to send real SMS)","2026-11-18T06:03:12.703Z"

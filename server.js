@@ -232,7 +232,7 @@ async function dispatchNotification({ patient_name, patient_email, patient_phone
                 } else {
                   smsStatus = `SMS Gateway Error: ${parsed.message ? parsed.message[0] : 'Failed'}`;
                 }
-              } catch(e) {
+              } catch (e) {
                 smsStatus = `SMS Sent: ${data.substring(0, 30)}`;
               }
               resolve();
