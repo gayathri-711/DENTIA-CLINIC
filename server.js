@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 const nodemailer = require('nodemailer');
+const database = require('./database');
 
 const PORT = process.env.PORT || 8000;
 const WEB_ROOT = path.join(__dirname, 'Dentia', 'Dentia HTML');
@@ -266,6 +267,21 @@ async function dispatchNotification({ patient_name, patient_email, patient_phone
   notifications.push(smsNotif);
 
   writeJSON(NOTIFICATIONS_FILE, notifications);
+
+  // Persist directly into SQLite database
+  try {
+    database.run(
+      `INSERT OR REPLACE INTO notifications (id, recipient_email, recipient_phone, recipient_name, appointment_ref, channel, type, subject, message, preview_url, html, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [emailNotif.id, emailNotif.recipient_email, emailNotif.recipient_phone || '', emailNotif.recipient_name, emailNotif.appointment_ref || '', emailNotif.channel, emailNotif.type, emailNotif.subject, emailNotif.message, emailNotif.preview_url || '', emailNotif.html || '', emailNotif.status, emailNotif.created_at]
+    );
+    database.run(
+      `INSERT OR REPLACE INTO notifications (id, recipient_email, recipient_phone, recipient_name, appointment_ref, channel, type, subject, message, preview_url, html, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [smsNotif.id, smsNotif.recipient_email, smsNotif.recipient_phone || '', smsNotif.recipient_name, smsNotif.appointment_ref || '', smsNotif.channel, smsNotif.type, smsNotif.subject, smsNotif.message, '', '', smsNotif.status, smsNotif.created_at]
+    );
+  } catch (dbErr) {
+    console.error('[DB SYNC ERROR] Notifications:', dbErr.message);
+  }
+
   return { email: emailNotif, sms: smsNotif };
 }
 
@@ -412,6 +428,19 @@ const server = http.createServer(async (req, res) => {
 
     dentists.push(newDoctor);
     writeJSON(DENTISTS_FILE, dentists);
+
+    // Sync credentials to SQLite database
+    database.run(
+      `UPDATE dentists SET login_email = ?, password = ?, has_login = ? WHERE id = ?`,
+      [dentists[idx].login_email, dentists[idx].password, dentists[idx].has_login ? 1 : 0, docId]
+    ).catch(e => console.error('[DB ERROR] Update dentist credentials:', e.message));
+
+    // Save doctor into SQLite database
+    database.run(
+      `INSERT OR REPLACE INTO dentists (id, name, qualification, specialization, experience, email, login_email, password, has_login, phone, description, image, availability_days, availability_hours, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [newDoctor.id, newDoctor.name, newDoctor.qualification, newDoctor.specialization, newDoctor.experience, newDoctor.email, newDoctor.login_email, newDoctor.password, newDoctor.has_login ? 1 : 0, newDoctor.phone, newDoctor.description, newDoctor.image, newDoctor.availability_days, newDoctor.availability_hours, 1]
+    ).catch(e => console.error('[DB ERROR] Insert dentist:', e.message));
+
     return sendJSON(res, { success: true, message: 'Doctor added successfully', doctor: newDoctor });
   }
 
@@ -439,6 +468,12 @@ const server = http.createServer(async (req, res) => {
     }
 
     writeJSON(DENTISTS_FILE, dentists);
+
+    // Sync credentials to SQLite database
+    database.run(
+      `UPDATE dentists SET login_email = ?, password = ?, has_login = ? WHERE id = ?`,
+      [dentists[idx].login_email, dentists[idx].password, dentists[idx].has_login ? 1 : 0, docId]
+    ).catch(e => console.error('[DB ERROR] Update dentist credentials:', e.message));
     return sendJSON(res, {
       success: true,
       message: `Login credentials updated for ${dentists[idx].name}. Login access is now ${dentists[idx].has_login ? 'ENABLED' : 'DISABLED'}.`,
@@ -453,6 +488,12 @@ const server = http.createServer(async (req, res) => {
     let dentists = readJSON(DENTISTS_FILE, []);
     dentists = dentists.filter(d => d.id !== docId);
     writeJSON(DENTISTS_FILE, dentists);
+
+    // Sync credentials to SQLite database
+    database.run(
+      `UPDATE dentists SET login_email = ?, password = ?, has_login = ? WHERE id = ?`,
+      [dentists[idx].login_email, dentists[idx].password, dentists[idx].has_login ? 1 : 0, docId]
+    ).catch(e => console.error('[DB ERROR] Update dentist credentials:', e.message));
     return sendJSON(res, { success: true, message: 'Doctor removed' });
   }
 
@@ -566,6 +607,8 @@ const server = http.createServer(async (req, res) => {
     app.updated_at = new Date().toISOString();
 
     writeJSON(APPOINTMENTS_FILE, appointments);
+    database.run(`UPDATE appointments SET status = ?, updated_at = ? WHERE id = ?`, [app.status, app.updated_at, app.id])
+      .catch(e => console.error('[DB ERROR] Update status:', e.message));
     return sendJSON(res, { success: true, message: `Appointment status updated to ${app.status}`, appointment: app });
   }
 
@@ -617,6 +660,11 @@ const server = http.createServer(async (req, res) => {
 
     records.push(newRecord);
     writeJSON(MEDICAL_RECORDS_FILE, records);
+
+    database.run(
+      `INSERT OR REPLACE INTO patient_medical_records (id, patient_email, patient_name, dentist_id, dentist_name, appointment_ref, treatment_date, diagnosis, treatment_provided, prescription, doctor_notes, followup_date, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [newRecord.id, newRecord.patient_email, newRecord.patient_name, newRecord.dentist_id, newRecord.dentist_name, newRecord.appointment_ref, newRecord.treatment_date, newRecord.diagnosis, newRecord.treatment_provided, newRecord.prescription, newRecord.doctor_notes, newRecord.followup_date, newRecord.created_at]
+    ).catch(e => console.error('[DB ERROR] Insert medical record:', e.message));
 
     // Update appointment if appointment_id provided
     if (data.appointment_id) {
@@ -749,6 +797,58 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // 15. Database Management Endpoints
+  // GET /api/admin/database/stats (Table counts, database size, and engine health)
+  if (pathname === '/api/admin/database/stats' && req.method === 'GET') {
+    const stats = await database.getDatabaseStats();
+    return sendJSON(res, stats);
+  }
+
+  // GET /api/admin/database/table (Query and inspect live rows from any SQL table)
+  if (pathname === '/api/admin/database/table' && req.method === 'GET') {
+    const tableName = (parsedUrl.query.name || 'patients').toLowerCase().trim();
+    const allowed = ['patients', 'dentists', 'services', 'appointments', 'patient_medical_records', 'notifications', 'admins', 'clinic_settings'];
+    if (!allowed.includes(tableName)) {
+      return sendJSON(res, { success: false, message: 'Invalid or restricted table name' }, 400);
+    }
+    try {
+      const rows = await database.all(`SELECT * FROM ${tableName} ORDER BY id DESC LIMIT 100`);
+      return sendJSON(res, { success: true, table: tableName, count: rows.length, rows: rows });
+    } catch (e) {
+      return sendJSON(res, { success: false, message: e.message }, 500);
+    }
+  }
+
+  // GET /api/admin/database/download-sql (Download complete MySQL schema and seed data)
+  if (pathname === '/api/admin/database/download-sql' && req.method === 'GET') {
+    const sqlPath = path.join(__dirname, 'database.sql');
+    if (!fs.existsSync(sqlPath)) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      return res.end('database.sql not found');
+    }
+    res.writeHead(200, {
+      'Content-Type': 'application/sql',
+      'Content-Disposition': 'attachment; filename="database.sql"'
+    });
+    fs.createReadStream(sqlPath).pipe(res);
+    return;
+  }
+
+  // GET /api/admin/database/download-sqlite (Download real SQLite database file)
+  if (pathname === '/api/admin/database/download-sqlite' && req.method === 'GET') {
+    const dbPath = database.DB_PATH;
+    if (!fs.existsSync(dbPath)) {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      return res.end('dentia.sqlite not found');
+    }
+    res.writeHead(200, {
+      'Content-Type': 'application/x-sqlite3',
+      'Content-Disposition': 'attachment; filename="dentia.sqlite"'
+    });
+    fs.createReadStream(dbPath).pipe(res);
+    return;
+  }
+
   // 12. GET /api/admin/users (Admin sees all users, login details, and visit metrics)
   if (pathname === '/api/admin/users' && req.method === 'GET') {
     const patients = readJSON(PATIENTS_FILE, []);
@@ -811,6 +911,12 @@ const server = http.createServer(async (req, res) => {
 
     patients.push(newPatient);
     writeJSON(PATIENTS_FILE, patients);
+
+    // Save to SQLite database
+    database.run(
+      `INSERT OR REPLACE INTO patients (id, name, email, phone, password, dob, gender, address, total_visits, registered_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [newPatient.id, newPatient.name, newPatient.email, newPatient.phone, newPatient.password, newPatient.dob, newPatient.gender, newPatient.address, 0, newPatient.created_at]
+    ).catch(e => console.error('[DB ERROR] Insert patient:', e.message));
 
     const safePatient = { ...newPatient };
     delete safePatient.password;
@@ -954,8 +1060,8 @@ const server = http.createServer(async (req, res) => {
       // 2) Find ANY OTHER DOCTORS who ARE available at this exact requested time on this date!
       const otherAvailableDoctors = dentists.filter(d => {
         if (d.id === dentistId || !d.is_active) return false;
-        const hasClash = appointments.some(a => 
-          a.dentist_id === d.id && 
+        const hasClash = appointments.some(a =>
+          a.dentist_id === d.id &&
           (normalizeDate(a.appointment_date) === date || a.appointment_date === rawDate) &&
           normalizeTime(a.appointment_time) === time &&
           a.status !== 'Cancelled'
@@ -1032,6 +1138,10 @@ const server = http.createServer(async (req, res) => {
       };
       patients.push(patientRecord);
       writeJSON(PATIENTS_FILE, patients);
+      database.run(
+        `INSERT OR REPLACE INTO patients (id, name, email, phone, password, address, total_visits, registered_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [patientRecord.id, patientRecord.name, patientRecord.email, patientRecord.phone, patientRecord.password, '', 0, patientRecord.created_at]
+      ).catch(e => console.error('[DB ERROR] Insert patient:', e.message));
     }
 
     const newAppointment = {
@@ -1054,6 +1164,12 @@ const server = http.createServer(async (req, res) => {
 
     appointments.push(newAppointment);
     writeJSON(APPOINTMENTS_FILE, appointments);
+
+    // Save to SQLite database
+    database.run(
+      `INSERT OR REPLACE INTO appointments (id, appointment_ref, patient_id, patient_name, patient_email, patient_phone, service_id, service_name, dentist_id, dentist_name, appointment_date, appointment_time, message, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [newAppointment.id, newAppointment.appointment_ref, newAppointment.patient_id, newAppointment.patient_name, newAppointment.patient_email, newAppointment.patient_phone, newAppointment.service_id, newAppointment.service_name, newAppointment.dentist_id, newAppointment.dentist_name, newAppointment.appointment_date, newAppointment.appointment_time, newAppointment.message, newAppointment.status, newAppointment.created_at]
+    ).catch(e => console.error('[DB ERROR] Insert appointment:', e.message));
 
     // Dispatch Confirmation Email & SMS for the booked appointment
     const notifs = dispatchNotification({

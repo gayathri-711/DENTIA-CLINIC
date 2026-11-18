@@ -92,6 +92,11 @@
                     <i class="fa fa-cogs me-2"></i> Email & SMS Gateway
                 </a>
             </li>
+            <li>
+                <a href="#database-section" onclick="switchSection('database')">
+                    <i class="fa fa-database me-2"></i> Database & Storage
+                </a>
+            </li>
         </ul>
 
         <hr class="border-secondary my-3">
@@ -473,6 +478,93 @@
                 </div>
             </div>
 
+            <!-- SECTION 6: RELATIONAL DATABASE & STORAGE -->
+            <div id="section_database" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-database text-primary me-2"></i> Relational Database & Table Storage</h4>
+                        <small class="text-muted">Permanent SQLite 3 database storage engine and MySQL schema synchronized in real-time</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/api/admin/database/download-sqlite" class="btn btn-outline-primary rounded-pill btn-sm px-3 shadow-sm">
+                            <i class="fa fa-download me-1"></i> Download dentia.sqlite
+                        </a>
+                        <a href="/api/admin/database/download-sql" class="btn btn-outline-dark rounded-pill btn-sm px-3 shadow-sm">
+                            <i class="fa fa-file-code-o me-1"></i> Download MySQL database.sql
+                        </a>
+                        <button class="btn btn-primary rounded-pill btn-sm px-3 shadow-sm" onclick="loadDatabaseStats()">
+                            <i class="fa fa-refresh me-1"></i> Refresh Stats
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Database Metrics Banner -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3">
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-2">
+                                    <i class="fa fa-check-circle me-1"></i> Engine Online & Active
+                                </span>
+                                <h5 class="fw-bold text-dark mb-0" id="db_engine_name">SQLite 3 Relational</h5>
+                                <small class="text-muted" id="db_file_name">dentia.sqlite</small>
+                            </div>
+                            <div class="col-md-3 border-start">
+                                <div class="text-muted small">Database Storage Size</div>
+                                <h3 class="fw-bold text-primary mb-0" id="db_size_formatted">Loading...</h3>
+                                <small class="text-muted">Direct binary file persistence</small>
+                            </div>
+                            <div class="col-md-3 border-start">
+                                <div class="text-muted small">Total Relational Records</div>
+                                <h3 class="fw-bold text-dark mb-0" id="db_total_records">0</h3>
+                                <small class="text-muted">Across 7 synchronized tables</small>
+                            </div>
+                            <div class="col-md-3 border-start">
+                                <div class="text-muted small">MySQL Compatibility</div>
+                                <h6 class="fw-bold text-success mb-0"><i class="fa fa-check-square me-1"></i> 100% Export Ready</h6>
+                                <small class="text-muted">Ready for phpMyAdmin & Cloud MySQL</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Table Metrics Cards -->
+                <div class="row g-3 mb-4" id="db_table_metrics_container">
+                    <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Interactive SQL Table Browser -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                    <div class="card-header bg-white p-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-table text-primary me-2"></i> SQL Table Browser</h5>
+                            <select id="db_table_selector" class="form-select form-select-sm rounded-pill" style="width: 240px;" onchange="browseTable(this.value)">
+                                <option value="patients">patients (User accounts)</option>
+                                <option value="appointments">appointments (Bookings)</option>
+                                <option value="dentists">dentists (Specialists)</option>
+                                <option value="patient_medical_records">patient_medical_records</option>
+                                <option value="notifications">notifications (Email & SMS)</option>
+                                <option value="services">services (Dental procedures)</option>
+                                <option value="admins">admins (Staff credentials)</option>
+                            </select>
+                        </div>
+                        <div class="small text-muted" id="db_table_status_text">Showing live rows from table</div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                            <table class="table table-hover align-middle mb-0 font-monospace small" id="db_browser_table">
+                                <thead class="table-light sticky-top" id="db_browser_thead">
+                                    <!-- Table headers -->
+                                </thead>
+                                <tbody id="db_browser_tbody">
+                                    <!-- Table rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
 
         <footer class="bg-white border-top py-3 px-4 text-muted small text-center">
@@ -644,6 +736,7 @@ function switchSection(sec) {
     document.getElementById('section_patients').classList.add('d-none');
     document.getElementById('section_notifications').classList.add('d-none');
     document.getElementById('section_gateway').classList.add('d-none');
+    document.getElementById('section_database').classList.add('d-none');
 
     document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
 
@@ -666,6 +759,11 @@ function switchSection(sec) {
         document.getElementById('section_gateway').classList.remove('d-none');
         document.querySelectorAll('.admin-nav a')[4].classList.add('active');
         loadGatewaySettings();
+    } else if (sec === 'database') {
+        document.getElementById('section_database').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[5].classList.add('active');
+        loadDatabaseStats();
+        browseTable('patients');
     }
 }
 
@@ -1241,6 +1339,97 @@ async function sendTestEmail() {
         }
     } catch (err) {
         resultEl.innerHTML = `<span class="text-danger fw-semibold"><i class="fa fa-times-circle me-1"></i> Communication error: ${err.message}</span>`;
+    }
+}
+
+async function loadDatabaseStats() {
+    try {
+        const res = await fetch('/api/admin/database/stats').then(r => r.json());
+        if (res.success) {
+            document.getElementById('db_engine_name').innerText = res.engine || 'SQLite 3';
+            document.getElementById('db_file_name').innerText = res.database_file || 'dentia.sqlite';
+            document.getElementById('db_size_formatted').innerText = res.size_formatted || '90 KB';
+
+            const tables = res.tables || {};
+            let total = 0;
+            const container = document.getElementById('db_table_metrics_container');
+            const tableNames = Object.keys(tables);
+            
+            tableNames.forEach(t => total += (tables[t] || 0));
+            document.getElementById('db_total_records').innerText = total;
+
+            const tableIcons = {
+                patients: 'users',
+                dentists: 'user-md',
+                appointments: 'calendar-check-o',
+                patient_medical_records: 'stethoscope',
+                notifications: 'envelope-o',
+                services: 'list',
+                admins: 'shield'
+            };
+
+            container.innerHTML = tableNames.map(t => `
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100" style="cursor:pointer;" onclick="browseTable('${t}')">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small fw-semibold">${t}</div>
+                                <h3 class="fw-bold mb-0 text-dark">${tables[t]}</h3>
+                                <small class="text-primary fw-semibold"><i class="fa fa-arrow-right me-1"></i> Browse table</small>
+                            </div>
+                            <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width:42px; height:42px;">
+                                <i class="fa fa-${tableIcons[t] || 'database'} fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        console.error('Error loading database stats:', e);
+    }
+}
+
+async function browseTable(tableName) {
+    if (!tableName) tableName = 'patients';
+    document.getElementById('db_table_selector').value = tableName;
+    const thead = document.getElementById('db_browser_thead');
+    const tbody = document.getElementById('db_browser_tbody');
+    const statusText = document.getElementById('db_table_status_text');
+
+    statusText.innerText = `Loading live records from table '${tableName}'...`;
+    thead.innerHTML = '';
+    tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Querying table ${tableName}...</td></tr>`;
+
+    try {
+        const res = await fetch(`/api/admin/database/table?name=${encodeURIComponent(tableName)}`).then(r => r.json());
+        if (res.success && res.rows) {
+            const rows = res.rows;
+            statusText.innerText = `Showing ${rows.length} rows from table '${tableName}' (Sorted DESC by id)`;
+
+            if (rows.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted">Table '${tableName}' is currently empty.</td></tr>`;
+                return;
+            }
+
+            const columns = Object.keys(rows[0]);
+            thead.innerHTML = `<tr>${columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+
+            tbody.innerHTML = rows.map(r => `
+                <tr>
+                    ${columns.map(c => {
+                        let val = r[c];
+                        if (val === null || val === undefined) val = '<span class="text-muted">NULL</span>';
+                        else if (typeof val === 'string' && val.length > 50) val = val.substring(0, 50) + '...';
+                        return `<td>${val}</td>`;
+                    }).join('')}
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = `<tr><td colspan="10" class="text-danger py-4 text-center">${res.message || 'Error querying table'}</td></tr>`;
+        }
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="10" class="text-danger py-4 text-center">Network error loading table</td></tr>`;
     }
 }
 

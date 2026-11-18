@@ -118,5 +118,23 @@
     "status": "Confirmed",
     "created_at": "2026-11-18T05:39:31.384Z",
     "updated_at": "2026-11-18T05:40:31.768Z"
+  },
+  {
+    "id": 8,
+    "appointment_ref": "DEN-2026-3684",
+    "patient_id": 4,
+    "patient_name": "Gayathri Dhanasekaran",
+    "patient_email": "gayatrisenthamarai@gmail.com",
+    "patient_phone": "+917598092785",
+    "service_id": 1,
+    "service_name": "General Dentistry",
+    "dentist_id": 1,
+    "dentist_name": "Dr. Sarah Bennett",
+    "appointment_date": "2026-11-18",
+    "appointment_time": "10:00 AM",
+    "message": "",
+    "status": "Confirmed",
+    "created_at": "2026-11-18T06:02:37.508Z",
+    "updated_at": "2026-11-18T06:03:12.702Z"
   }
 ]

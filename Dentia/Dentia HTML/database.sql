@@ -111,7 +111,9 @@ CREATE TABLE `notifications` (
   `type` VARCHAR(50) NOT NULL,
   `subject` VARCHAR(255) NOT NULL,
   `message` TEXT NOT NULL,
-  `status` VARCHAR(30) DEFAULT 'Delivered',
+  `preview_url` VARCHAR(255) NULL,
+  `html` MEDIUMTEXT NULL,
+  `status` VARCHAR(100) DEFAULT 'Delivered',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
