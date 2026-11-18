@@ -338,7 +338,7 @@ let currentFilter = 'All';
 function checkDoctorAuth() {
     const raw = localStorage.getItem('dentia_doctor');
     if (!raw) {
-        window.location.href = 'doctor-login.html';
+        window.location.href = 'login.html?role=doctor';
         return;
     }
     try {
@@ -359,7 +359,7 @@ function checkDoctorAuth() {
             document.getElementById('banner_doctor_img').src = currentDoctor.image;
         }
     } catch (e) {
-        window.location.href = 'doctor-login.html';
+        window.location.href = 'login.html?role=doctor';
     }
 }
 
@@ -662,7 +662,7 @@ async function loadDoctorMedicalRecords() {
 
 function handleDoctorLogout() {
     localStorage.removeItem('dentia_doctor');
-    window.location.href = 'doctor-login.html';
+    window.location.href = 'login.html?role=doctor';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

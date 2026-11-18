@@ -338,3 +338,103 @@ header.dentia-header {
   box-shadow: var(--dentia-shadow-lg);
 }
 
+/* --- Professional Portal Nav & Sign-In Buttons --- */
+.btn-portal-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(8px);
+}
+.btn-portal-nav:hover {
+  background: #ffffff !important;
+  color: #0b2545 !important;
+  border-color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.18);
+}
+/* When header scrolls and background turns solid white */
+header.scroll-light.smaller .btn-portal-nav,
+header:not(.transparent) .btn-portal-nav {
+  border-color: #1463b8 !important;
+  color: #1463b8 !important;
+  background: #f0f7ff !important;
+}
+header.scroll-light.smaller .btn-portal-nav:hover,
+header:not(.transparent) .btn-portal-nav:hover {
+  background: #1463b8 !important;
+  color: #ffffff !important;
+  border-color: #1463b8 !important;
+}
+
+/* --- Luxury Unified Sign-In Portal Styling --- */
+.portal-auth-wrapper {
+  min-height: 100vh;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 15px;
+}
+.portal-auth-card {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(11, 37, 69, 0.18);
+  max-width: 1040px;
+  width: 100%;
+}
+.portal-hero-pane {
+  background: linear-gradient(135deg, rgba(11, 37, 69, 0.94) 0%, rgba(20, 99, 184, 0.88) 100%), url('../images/misc/l1.webp');
+  background-size: cover;
+  background-position: center;
+  color: #ffffff;
+  padding: 45px 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.portal-form-pane {
+  padding: 45px 40px;
+}
+.role-nav-pill {
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.role-nav-pill:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+.role-nav-pill.active {
+  background: #1463b8;
+  color: #ffffff;
+  border-color: #1463b8;
+  box-shadow: 0 4px 12px rgba(20, 99, 184, 0.25);
+}
+.auth-input-group .form-control {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+.auth-input-group .input-group-text {
+  border-radius: 12px 0 0 12px;
+  background: #f8fafc;
+  color: #1463b8;
+}
+
+
