@@ -10,11 +10,11 @@
     "from": "Doctor Dental Clinic Dentia <no-reply@dentiacare.com>"
   },
   "sms": {
-    "enabled": false,
+    "enabled": true,
     "provider": "fast2sms",
-    "api_key": "",
+    "api_key": "V07ZAPI7arGOgTaHZ6jTXFM9ie3NppGrXrcNs6wzonMHeJvLVtpJUZGAECsC79YuVRpWBwhq11FtI670",
     "twilio_sid": "",
     "twilio_token": "",
-    "twilio_from": ""
+    "twilio_phone": ""
   }
 }

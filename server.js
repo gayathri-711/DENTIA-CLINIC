@@ -282,7 +282,9 @@ async function dispatchNotification({ patient_name, patient_email, patient_phone
                     smsStatus = `Delivered via Fast2SMS (${parsed.request_id || 'OK'})`;
                     console.log(`[FAST2SMS SUCCESS] Sent real SMS to ${cleanPhone}`);
                   } else {
-                    smsStatus = `Fast2SMS Error: ${parsed.message ? parsed.message[0] : 'Failed'}`;
+                    const msg = Array.isArray(parsed.message) ? parsed.message[0] : (parsed.message || 'Dispatch failed');
+                    smsStatus = `Fast2SMS Notice: ${msg}`;
+                    console.log(`[FAST2SMS NOTICE] ${msg}`);
                   }
                 } catch (e) {
                   smsStatus = `SMS Sent: ${data.substring(0, 30)}`;
@@ -939,7 +941,8 @@ const server = http.createServer(async (req, res) => {
               if (parsed.return) {
                 resolve({ success: true, message: `Fast2SMS delivered to +91 ${cleanPhone}`, requestId: parsed.request_id });
               } else {
-                reject(new Error(parsed.message ? parsed.message[0] : 'Fast2SMS dispatch rejected'));
+                const msg = Array.isArray(parsed.message) ? parsed.message[0] : (parsed.message || 'Fast2SMS dispatch rejected');
+                reject(new Error(msg));
               }
             } catch (e) {
               reject(new Error(data.substring(0, 60)));
