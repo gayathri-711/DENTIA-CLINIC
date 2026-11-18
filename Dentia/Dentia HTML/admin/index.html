@@ -1451,9 +1451,6 @@ async function sendTestSms() {
         resultEl.innerHTML = '<span class="text-danger">Failed to send test SMS: ' + err.message + '</span>';
     }
 }
-        resultEl.innerHTML = `<span class="text-danger fw-semibold"><i class="fa fa-times-circle me-1"></i> Communication error: ${err.message}</span>`;
-    }
-}
 
 async function loadDatabaseStats() {
     try {
@@ -1546,8 +1543,12 @@ async function browseTable(tableName) {
     }
 }
 
-// Initial Load
-document.addEventListener('DOMContentLoaded', loadAllData);
+// Initial Load (Guaranteed immediate execution)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadAllData);
+} else {
+    loadAllData();
+}
 </script>
 </body>
 </html>
