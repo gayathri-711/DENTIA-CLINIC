@@ -211,43 +211,100 @@ async function dispatchNotification({ patient_name, patient_email, patient_phone
   };
   notifications.push(emailNotif);
 
-  // 3. Attempt Real SMS via Fast2SMS if configured and enabled
-  if (gwConfig.sms && gwConfig.sms.enabled && gwConfig.sms.api_key && patient_phone) {
+  // 3. Attempt Real SMS via Twilio or Fast2SMS if configured and enabled
+  if (gwConfig.sms && gwConfig.sms.enabled && patient_phone) {
     try {
-      const cleanPhone = patient_phone.replace(/[^0-9]/g, '').slice(-10);
-      if (cleanPhone.length === 10) {
+      const smsContent = (sms_text || message).substring(0, 160);
+
+      // A. Twilio SMS Gateway (Worldwide)
+      if (gwConfig.sms.provider === 'twilio' && gwConfig.sms.twilio_sid && gwConfig.sms.twilio_token && gwConfig.sms.twilio_phone) {
         const https = require('https');
-        const smsMsg = encodeURIComponent((sms_text || message).substring(0, 150));
-        const url = `https://www.fast2sms.com/dev/bulkV2?authorization=${gwConfig.sms.api_key}&route=q&message=${smsMsg}&language=english&flash=0&numbers=${cleanPhone}`;
+        const formattedPhone = patient_phone.startsWith('+') ? patient_phone : ('+' + patient_phone.replace(/[^0-9]/g, ''));
+        const postBody = new URLSearchParams({
+          To: formattedPhone,
+          From: gwConfig.sms.twilio_phone,
+          Body: smsContent
+        }).toString();
+
+        const authHeader = 'Basic ' + Buffer.from(`${gwConfig.sms.twilio_sid}:${gwConfig.sms.twilio_token}`).toString('base64');
         await new Promise((resolve) => {
-          https.get(url, (res) => {
-            let data = '';
-            res.on('data', chunk => data += chunk);
-            res.on('end', () => {
+          const reqTwilio = https.request({
+            hostname: 'api.twilio.com',
+            path: `/2010-04-01/Accounts/${gwConfig.sms.twilio_sid}/Messages.json`,
+            method: 'POST',
+            headers: {
+              'Authorization': authHeader,
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Length': Buffer.byteLength(postBody)
+            }
+          }, (tRes) => {
+            let resData = '';
+            tRes.on('data', chunk => resData += chunk);
+            tRes.on('end', () => {
               try {
-                const parsed = JSON.parse(data);
-                if (parsed.return) {
-                  smsStatus = `Delivered to Mobile (${parsed.request_id || 'OK'})`;
-                  console.log(`[SMS SUCCESS] Sent real SMS to ${cleanPhone}`);
+                const parsed = JSON.parse(resData);
+                if (tRes.statusCode >= 200 && tRes.statusCode < 300) {
+                  smsStatus = `Delivered via Twilio (${parsed.sid || 'OK'})`;
+                  console.log(`[TWILIO SUCCESS] Sent real SMS to ${formattedPhone}: ${parsed.sid}`);
                 } else {
-                  smsStatus = `SMS Gateway Error: ${parsed.message ? parsed.message[0] : 'Failed'}`;
+                  smsStatus = `Twilio Error: ${parsed.message || 'Failed'}`;
+                  console.error(`[TWILIO ERROR]:`, parsed.message);
                 }
               } catch (e) {
-                smsStatus = `SMS Sent: ${data.substring(0, 30)}`;
+                smsStatus = `Twilio Response: ${resData.substring(0, 30)}`;
               }
               resolve();
             });
-          }).on('error', (err) => {
-            smsStatus = `SMS Connection Error: ${err.message}`;
+          });
+          reqTwilio.on('error', (err) => {
+            smsStatus = `Twilio Connection Error: ${err.message}`;
             resolve();
           });
+          reqTwilio.write(postBody);
+          reqTwilio.end();
         });
+
+      // B. Fast2SMS Gateway (India)
+      } else if (gwConfig.sms.api_key) {
+        const cleanPhone = patient_phone.replace(/[^0-9]/g, '').slice(-10);
+        if (cleanPhone.length === 10) {
+          const https = require('https');
+          const smsMsg = encodeURIComponent(smsContent.substring(0, 150));
+          const url = `https://www.fast2sms.com/dev/bulkV2?authorization=${gwConfig.sms.api_key}&route=q&message=${smsMsg}&language=english&flash=0&numbers=${cleanPhone}`;
+          await new Promise((resolve) => {
+            https.get(url, (res) => {
+              let data = '';
+              res.on('data', chunk => data += chunk);
+              res.on('end', () => {
+                try {
+                  const parsed = JSON.parse(data);
+                  if (parsed.return) {
+                    smsStatus = `Delivered via Fast2SMS (${parsed.request_id || 'OK'})`;
+                    console.log(`[FAST2SMS SUCCESS] Sent real SMS to ${cleanPhone}`);
+                  } else {
+                    smsStatus = `Fast2SMS Error: ${parsed.message ? parsed.message[0] : 'Failed'}`;
+                  }
+                } catch (e) {
+                  smsStatus = `SMS Sent: ${data.substring(0, 30)}`;
+                }
+                resolve();
+              });
+            }).on('error', (err) => {
+              smsStatus = `SMS Connection Error: ${err.message}`;
+              resolve();
+            });
+          });
+        } else {
+          smsStatus = `SMS Skipped: Invalid 10-digit phone number (${patient_phone})`;
+        }
+      } else {
+        smsStatus = 'Delivered (System Ledger - Enter API key in Admin to deliver to phone)';
       }
     } catch (e) {
       smsStatus = `SMS Error: ${e.message}`;
     }
   } else {
-    smsStatus = 'Delivered (System Ledger - Configure Fast2SMS in Admin to send real SMS)';
+    smsStatus = 'Delivered (System Ledger - Enable SMS Dispatch in Admin Gateway to send real SMS)';
   }
 
   // 4. SMS Notification Record
@@ -794,6 +851,106 @@ const server = http.createServer(async (req, res) => {
         success: false,
         message: `SMTP Delivery Failed: ${err.message}. If using Gmail, ensure you created a 16-character App Password (Google Account -> Security -> 2-Step Verification -> App Passwords).`
       }, 500);
+    }
+  }
+
+  // POST /api/admin/gateway/test-sms (Send live test SMS to verify SMS gateway delivery)
+  if (pathname === '/api/admin/gateway/test-sms' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const toPhone = (data.phone || data.recipient || data.number || '').trim();
+    const config = readJSON(GATEWAY_CONFIG_FILE, {});
+
+    if (!toPhone) {
+      return sendJSON(res, { success: false, message: 'Recipient phone number is required' }, 400);
+    }
+
+    if (!config.sms || (!config.sms.api_key && (!config.sms.twilio_sid || !config.sms.twilio_token))) {
+      return sendJSON(res, {
+        success: false,
+        message: 'SMS Gateway credentials are not configured yet! Please enter your Fast2SMS API Key or Twilio credentials first.'
+      }, 400);
+    }
+
+    const testMessage = `Dentia Clinic Test: Real SMS delivery is verified and active for patient appointment confirmations and alerts.`;
+
+    try {
+      // 1. Twilio
+      if (config.sms.provider === 'twilio' && config.sms.twilio_sid && config.sms.twilio_token && config.sms.twilio_phone) {
+        const https = require('https');
+        const formattedPhone = toPhone.startsWith('+') ? toPhone : ('+' + toPhone.replace(/[^0-9]/g, ''));
+        const postBody = new URLSearchParams({
+          To: formattedPhone,
+          From: config.sms.twilio_phone,
+          Body: testMessage
+        }).toString();
+
+        const authHeader = 'Basic ' + Buffer.from(`${config.sms.twilio_sid}:${config.sms.twilio_token}`).toString('base64');
+        const result = await new Promise((resolve, reject) => {
+          const reqTwilio = https.request({
+            hostname: 'api.twilio.com',
+            path: `/2010-04-01/Accounts/${config.sms.twilio_sid}/Messages.json`,
+            method: 'POST',
+            headers: {
+              'Authorization': authHeader,
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Content-Length': Buffer.byteLength(postBody)
+            }
+          }, (tRes) => {
+            let resData = '';
+            tRes.on('data', chunk => resData += chunk);
+            tRes.on('end', () => {
+              try {
+                const parsed = JSON.parse(resData);
+                if (tRes.statusCode >= 200 && tRes.statusCode < 300) {
+                  resolve({ success: true, sid: parsed.sid, message: `Twilio SMS dispatched to ${formattedPhone}` });
+                } else {
+                  reject(new Error(parsed.message || `Twilio error code ${parsed.code}`));
+                }
+              } catch (e) {
+                reject(new Error(resData));
+              }
+            });
+          });
+          reqTwilio.on('error', reject);
+          reqTwilio.write(postBody);
+          reqTwilio.end();
+        });
+
+        return sendJSON(res, { success: true, message: result.message, messageId: result.sid });
+      }
+
+      // 2. Fast2SMS
+      const cleanPhone = toPhone.replace(/[^0-9]/g, '').slice(-10);
+      if (cleanPhone.length !== 10) {
+        return sendJSON(res, { success: false, message: 'Fast2SMS requires a valid 10-digit Indian mobile number.' }, 400);
+      }
+
+      const https = require('https');
+      const smsMsg = encodeURIComponent(testMessage.substring(0, 150));
+      const url = `https://www.fast2sms.com/dev/bulkV2?authorization=${config.sms.api_key}&route=q&message=${smsMsg}&language=english&flash=0&numbers=${cleanPhone}`;
+
+      const f2sResult = await new Promise((resolve, reject) => {
+        https.get(url, (fRes) => {
+          let data = '';
+          fRes.on('data', chunk => data += chunk);
+          fRes.on('end', () => {
+            try {
+              const parsed = JSON.parse(data);
+              if (parsed.return) {
+                resolve({ success: true, message: `Fast2SMS delivered to +91 ${cleanPhone}`, requestId: parsed.request_id });
+              } else {
+                reject(new Error(parsed.message ? parsed.message[0] : 'Fast2SMS dispatch rejected'));
+              }
+            } catch (e) {
+              reject(new Error(data.substring(0, 60)));
+            }
+          });
+        }).on('error', reject);
+      });
+
+      return sendJSON(res, { success: true, message: f2sResult.message, messageId: f2sResult.requestId });
+    } catch (err) {
+      return sendJSON(res, { success: false, message: `SMS Dispatch Failed: ${err.message}` }, 500);
     }
   }
 

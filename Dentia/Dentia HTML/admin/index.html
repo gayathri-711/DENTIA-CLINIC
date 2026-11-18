@@ -456,25 +456,58 @@
 
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small">SMS Gateway Provider</label>
-                                    <select id="gw_sms_provider" class="form-control rounded-3">
-                                        <option value="fast2sms">Fast2SMS (India - Free & Quick API)</option>
+                                    <select id="gw_sms_provider" class="form-control rounded-3" onchange="toggleSmsFields()">
+                                        <option value="fast2sms">Fast2SMS (India — Free Instant API)</option>
                                         <option value="twilio">Twilio SMS (Global SMS Gateway)</option>
                                     </select>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold small">Fast2SMS Authorization API Key</label>
-                                    <input type="text" id="gw_sms_api_key" class="form-control rounded-3" placeholder="Enter Fast2SMS API key">
-                                    <small class="text-muted" style="font-size:11px;">Get free SMS credits at <a href="https://www.fast2sms.com" target="_blank">fast2sms.com</a></small>
+                                <!-- Fast2SMS Fields -->
+                                <div id="fast2sms_fields">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Fast2SMS Authorization API Key</label>
+                                        <input type="text" id="gw_sms_api_key" class="form-control rounded-3" placeholder="Enter Fast2SMS API key">
+                                        <small class="text-muted" style="font-size:11px;">Get 50 free instant SMS credits at <a href="https://www.fast2sms.com" target="_blank">fast2sms.com</a> (Dev API &rarr; Authorization Key).</small>
+                                    </div>
+                                </div>
+
+                                <!-- Twilio Fields -->
+                                <div id="twilio_fields" class="d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Twilio Account SID *</label>
+                                        <input type="text" id="gw_twilio_sid" class="form-control rounded-3" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Twilio Auth Token *</label>
+                                        <input type="password" id="gw_twilio_token" class="form-control rounded-3" placeholder="Enter Twilio Auth Token">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Twilio From Phone Number *</label>
+                                        <input type="text" id="gw_twilio_phone" class="form-control rounded-3" placeholder="+1xxxxxxxxxx">
+                                        <small class="text-muted" style="font-size:11px;">Get credentials at <a href="https://www.twilio.com" target="_blank">twilio.com/console</a></small>
+                                    </div>
                                 </div>
 
                                 <div class="alert alert-warning py-2 px-3 rounded-3 small mb-4">
-                                    <i class="fa fa-shield me-1"></i> Without an API key, all SMS messages are safely recorded in the live <strong>SMS & Email Logs</strong> and <strong>Patient Dashboard</strong> ledger!
+                                    <i class="fa fa-shield me-1"></i> Without an API key, all SMS messages are safely recorded in real-time in the <strong>SMS & Email Logs</strong> and <strong>Patient Dashboard</strong> ledger!
                                 </div>
 
-                                <button type="button" class="btn btn-dark rounded-pill px-4 fw-bold w-100" onclick="saveGatewaySettings(event)">
+                                <button type="button" class="btn btn-dark rounded-pill px-4 fw-bold w-100 mb-4" onclick="saveGatewaySettings(event)">
                                     <i class="fa fa-save me-1"></i> Save SMS Gateway Settings
                                 </button>
+
+                                <!-- Test Real SMS Dispatch -->
+                                <div class="p-3 bg-light rounded-4 border">
+                                    <h6 class="fw-bold text-dark mb-2"><i class="fa fa-paper-plane text-warning me-1"></i> Test Real Mobile SMS Delivery</h6>
+                                    <p class="text-muted small mb-3">Send a real test SMS to verify that cellular delivery reaches your mobile device.</p>
+                                    <div class="input-group mb-2">
+                                        <input type="tel" id="test_sms_phone" class="form-control rounded-start-pill" placeholder="Enter mobile number (e.g. 9876543210)">
+                                        <button type="button" class="btn btn-warning rounded-end-pill px-3 fw-bold" onclick="sendTestSms()">
+                                            <i class="fa fa-send me-1"></i> Send Test SMS
+                                        </button>
+                                    </div>
+                                    <div id="test_sms_result"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1274,11 +1307,28 @@ async function loadGatewaySettings() {
             document.getElementById('gw_sms_enabled').checked = !!sms.enabled;
             document.getElementById('gw_sms_provider').value = sms.provider || 'fast2sms';
             document.getElementById('gw_sms_api_key').value = sms.api_key || '';
+            document.getElementById('gw_twilio_sid').value = sms.twilio_sid || '';
+            document.getElementById('gw_twilio_token').value = sms.twilio_token || '';
+            document.getElementById('gw_twilio_phone').value = sms.twilio_phone || '';
 
             toggleSmtpFields();
+            toggleSmsFields();
         }
     } catch (e) {
         console.error('Error loading gateway settings:', e);
+    }
+}
+
+function toggleSmsFields() {
+    const prov = document.getElementById('gw_sms_provider').value;
+    const f2sEl = document.getElementById('fast2sms_fields');
+    const twilioEl = document.getElementById('twilio_fields');
+    if (prov === 'twilio') {
+        f2sEl.classList.add('d-none');
+        twilioEl.classList.remove('d-none');
+    } else {
+        f2sEl.classList.remove('d-none');
+        twilioEl.classList.add('d-none');
     }
 }
 
@@ -1298,7 +1348,10 @@ async function saveGatewaySettings(e) {
         sms: {
             enabled: document.getElementById('gw_sms_enabled').checked,
             provider: document.getElementById('gw_sms_provider').value,
-            api_key: document.getElementById('gw_sms_api_key').value.trim()
+            api_key: document.getElementById('gw_sms_api_key').value.trim(),
+            twilio_sid: document.getElementById('gw_twilio_sid').value.trim(),
+            twilio_token: document.getElementById('gw_twilio_token').value.trim(),
+            twilio_phone: document.getElementById('gw_twilio_phone').value.trim()
         }
     };
 
@@ -1310,7 +1363,7 @@ async function saveGatewaySettings(e) {
         }).then(r => r.json());
 
         if (res.success) {
-            showAlert('Gateway configuration saved! Real email delivery is ' + (config.email.enabled ? 'ACTIVE (Real Inboxes)' : 'INACTIVE (Clinic Ledger Mode)'));
+            showAlert('Gateway configuration saved! Real SMS delivery is ' + (config.sms.enabled ? 'ACTIVE (Real Cellular SMS)' : 'INACTIVE (Clinic Ledger Mode)'));
         } else {
             showAlert(res.message || 'Error saving gateway configuration', 'danger');
         }
@@ -1355,6 +1408,49 @@ async function sendTestEmail() {
             `;
         }
     } catch (err) {
+        resultEl.innerHTML = '<span class="text-danger">Failed to send test email: ' + err.message + '</span>';
+    }
+}
+
+async function sendTestSms() {
+    const phone = (document.getElementById('test_sms_phone').value || '').trim();
+    const resultEl = document.getElementById('test_sms_result');
+    if (!phone) {
+        resultEl.innerHTML = '<span class="text-danger fw-semibold"><i class="fa fa-exclamation-circle me-1"></i> Please enter a mobile phone number first.</span>';
+        return;
+    }
+
+    resultEl.innerHTML = '<span class="text-primary fw-semibold"><i class="fa fa-spinner fa-spin me-1"></i> Connecting to SMS gateway and dispatching live test SMS to ' + phone + '...</span>';
+
+    try {
+        const res = await fetch('/api/admin/gateway/test-sms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: phone })
+        }).then(r => r.json());
+
+        if (res.success) {
+            resultEl.innerHTML = `
+                <div class="alert alert-success p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-check-circle me-1"></i> <strong>Real SMS Delivered to Mobile!</strong><br>
+                    ${res.message}<br>
+                    <span class="text-muted">Gateway ID: <code>${res.messageId || 'OK'}</code></span>
+                </div>
+            `;
+            loadAllData();
+        } else {
+            resultEl.innerHTML = `
+                <div class="alert alert-danger p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-times-circle me-1"></i> <strong>SMS Delivery Failed:</strong><br>
+                    ${res.message || 'Error sending test SMS'}<br>
+                    <small class="text-muted mt-1 d-block">For Fast2SMS, enter your authorization key. For Twilio, enter SID, Auth Token & From phone.</small>
+                </div>
+            `;
+        }
+    } catch (err) {
+        resultEl.innerHTML = '<span class="text-danger">Failed to send test SMS: ' + err.message + '</span>';
+    }
+}
         resultEl.innerHTML = `<span class="text-danger fw-semibold"><i class="fa fa-times-circle me-1"></i> Communication error: ${err.message}</span>`;
     }
 }
