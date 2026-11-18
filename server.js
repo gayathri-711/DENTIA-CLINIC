@@ -1107,8 +1107,12 @@ const server = http.createServer(async (req, res) => {
     const password = data.password || '';
 
     let admin = null;
-    if (database.isAvailable()) {
-      admin = await database.get('SELECT * FROM admins WHERE LOWER(email) = ? AND password = ?', [email, password]);
+    if (database && typeof database.get === 'function') {
+      try {
+        admin = await database.get('SELECT * FROM admins WHERE LOWER(email) = ? AND password = ?', [email, password]);
+      } catch (e) {
+        console.error('[DB ADMIN AUTH ERROR]', e.message);
+      }
     }
     if (!admin && email === 'admin@dentia.com' && password === 'admin123') {
       admin = { id: 1, name: 'Chief Medical Admin', email: 'admin@dentia.com', role: 'superadmin' };

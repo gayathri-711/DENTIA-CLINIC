@@ -401,5 +401,6 @@ module.exports = {
   getDatabaseStats,
   exportTablesToCSV,
   initDatabase,
+  isAvailable: () => true,
   DB_PATH
 };
