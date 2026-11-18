@@ -1,29 +1,32 @@
 <?php
 /**
- * MEDINOVA Multi-Speciality Hospital Management System
- * API: Check Slot Availability & Prevent Duplicate Bookings
+ * API: Check Slot Availability & Return Booked Slots for Dentist + Date
  */
+header('Content-Type: application/json; charset=UTF-8');
 
-header('Content-Type: application/json');
 require_once __DIR__ . '/../includes/db.php';
-require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/functions.php';
 
-$doctorId = isset($_GET['doctor_id']) ? intval($_GET['doctor_id']) : 0;
-$date = isset($_GET['date']) ? sanitize_input($_GET['date']) : date('Y-m-d');
+$dentist_id = isset($_GET['dentist_id']) ? intval($_GET['dentist_id']) : 0;
+$date = isset($_GET['date']) ? sanitize_input($_GET['date']) : '';
 
-$standardSlots = get_standard_slots();
-$bookedSlots = get_booked_slots($doctorId, $date);
+if ($dentist_id <= 0 || empty($date)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Dentist ID and appointment date are required.'
+    ]);
+    exit;
+}
 
-// Filter available slots
-$availableSlots = array_values(array_diff($standardSlots, $bookedSlots));
+$allSlots = get_clinic_time_slots();
+$bookedSlots = get_booked_slots_for_date($dentist_id, $date);
 
 echo json_encode([
     'success' => true,
-    'doctor_id' => $doctorId,
+    'dentist_id' => $dentist_id,
     'date' => $date,
-    'slots' => $standardSlots,
-    'booked_slots' => $bookedSlots,
-    'available_slots' => $availableSlots,
-    'count_available' => count($availableSlots)
+    'slots' => $allSlots,
+    'booked' => $bookedSlots
 ]);
+exit;
+

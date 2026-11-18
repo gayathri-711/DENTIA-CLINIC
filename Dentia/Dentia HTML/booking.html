@@ -1,327 +1,792 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book an Appointment - MEDINOVA Multi-Speciality Hospital</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="fonts/fontawesome6/css/all.min.css">
-    <link rel="stylesheet" href="css/plugins.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/medinova-theme.css">
+    <title>Dentia — Dentist & Dental Clinic Website Template</title>
+    <link rel="icon" href="images/icon.webp" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" >
+    <meta content="Dentia — Dentist & Dental Clinic Website Template" name="description" >
+    <meta content="" name="keywords" >
+    <meta content="" name="author" >
+    <!-- CSS Files
+    ================================================== -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css" >
+    <link href="css/swiper.css" rel="stylesheet" type="text/css" >
+    <link href="css/style.css" rel="stylesheet" type="text/css" >
+    <!-- color scheme -->
+    <link id="colors" href="css/colors/scheme-01.css" rel="stylesheet" type="text/css" >
+
 </head>
+
 <body>
+    <div id="wrapper">
+        <a href="#" id="back-to-top"></a>
 
-<!-- Top Emergency & Utility Bar -->
-<div class="med-topbar d-none d-md-block">
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center gap-4">
-                <div><i class="fa fa-hospital me-2 text-info"></i>750 Health Sciences Blvd, New York, NY</div>
-                <div><i class="fa fa-clock me-2 text-info"></i>Outpatient: Mon - Sat 08:00 AM - 08:00 PM</div>
-            </div>
-            <div class="d-flex align-items-center gap-3">
-                <span class="emergency-badge"><i class="fa fa-phone-volume me-1"></i> 24/7 ER: +1 (800) 555-9111</span>
-                <span class="text-white-50">|</span>
-                <a href="login.html"><i class="fa fa-user me-1"></i> Patient Portal</a>
-                <span class="text-white-50">|</span>
-                <a href="admin/index.html" class="text-warning fw-bold"><i class="fa fa-gauge me-1"></i> Admin Portal</a>
-            </div>
-        </div>
-    </div>
-</div>
+        <!-- preloader begin -->
+        <div id="de-loader"></div>
+        <!-- preloader end -->
 
-<!-- Main Navigation Bar -->
-<nav class="navbar navbar-expand-lg med-navbar">
-    <div class="container">
-        <a class="med-logo" href="index.html">
-            <div class="med-logo-icon">
-                <i class="fa fa-heart-pulse"></i>
-            </div>
-            <div>
-                <div class="med-logo-text">MEDINOVA</div>
-                <div class="med-logo-tagline">Advanced Healthcare</div>
-            </div>
-        </a>
-        <div class="d-flex align-items-center gap-3">
-            <a href="index.html" class="btn btn-med-outline">Back to Home</a>
-            <a href="login.html" class="btn btn-med-primary"><i class="fa fa-arrow-right-to-bracket me-1"></i> Sign In</a>
-        </div>
-    </div>
-</nav>
-
-<!-- Breadcrumb Header -->
-<div class="py-5 bg-light border-bottom">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">Online Scheduling</span>
-                <h1 class="fw-bold text-primary mb-2">Book a Doctor's Appointment</h1>
-                <p class="text-muted mb-0">Select your medical department and preferred specialist. Real-time slot availability prevents double-booking.</p>
-            </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                <div class="p-3 bg-white rounded-3 border d-inline-block shadow-sm">
-                    <small class="text-muted d-block"><i class="fa fa-phone-volume text-danger me-1"></i> 24/7 Emergency Line</small>
-                    <strong class="text-primary fs-6">+1 (800) 555-9111</strong>
+        <!-- Top Utility Bar -->
+        <div class="dentia-topbar d-none d-lg-block" style="background:#0b2545; color:#d1e3ff; padding:8px 0; font-size:13.5px; z-index:100; position:relative;">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-4">
+                        <div><i class="fa fa-clock-o text-info me-2"></i>Mon - Fri: 08:00 AM - 08:00 PM</div>
+                        <div><i class="fa fa-map-marker text-danger me-2"></i>100 S Main St, New York, NY</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span style="background:#e11d48; color:#fff; padding:3px 10px; border-radius:20px; font-weight:600;"><i class="fa fa-phone me-1"></i> EMERGENCY: +1 (800) 911-DENT</span>
+                        <span class="text-white-50">|</span>
+                        <a href="login.html" class="text-white text-decoration-none"><i class="fa fa-user me-1"></i> Patient Login</a>
+                        <a href="register.html" class="text-white text-decoration-none"><i class="fa fa-user-plus me-1"></i> Register</a>
+                        <span class="text-white-50">|</span>
+                        <a href="admin/index.html" class="text-warning text-decoration-none fw-bold"><i class="fa fa-shield me-1"></i> Admin Portal</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Booking Engine Container -->
-<div class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="bg-white rounded-4 shadow-sm border p-4 p-md-5">
-                    
-                    <div id="bookingAlertBox" class="d-none"></div>
-
-                    <form id="medinovaBookingForm">
-                        <!-- Step 1: Department & Specialist Selection -->
-                        <div class="mb-5">
-                            <div class="d-flex align-items-center gap-3 mb-4 pb-2 border-bottom">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">1</div>
-                                <h4 class="fw-bold text-primary mb-0">Select Clinical Department & Doctor</h4>
+        <!-- header begin -->
+        <header class="transparent header-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <!-- logo begin -->
+                                <div id="logo">
+                                    <a href="index.html">
+                                        <img class="logo-main" src="images/logo-black.webp" alt="" >
+                                        <img class="logo-scroll" src="images/logo-black.webp" alt="" >
+                                        <img class="logo-mobile" src="images/logo-black.webp" alt="" >
+                                    </a>
+                                </div>
+                                <!-- logo end -->
                             </div>
+                            <div class="de-flex-col header-col-mid">
+                                <!-- mainemenu begin -->
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item" href="index.html">Home</a>
+                                        <ul class="mega">
+                                            <li>
+                                                <div class="container">
+                                                    <div class="sb-menu p-4">
+                                                        <div class="row g-4">
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="index.html">
+                                                                        <img src="images/demo/homepage-1.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 1</h6>
+                                                            </div>
 
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold text-dark">Medical Department <span class="text-danger">*</span></label>
-                                    <select id="bookingDepartment" name="department_id" class="form-select form-select-lg" required>
-                                        <option value="1">Cardiology (CARD)</option>
-                                        <option value="2">Neurology (NEUR)</option>
-                                        <option value="3">Orthopedics (ORTH)</option>
-                                        <option value="4">Pediatrics (PEDI)</option>
-                                        <option value="5">Gynecology (GYNE)</option>
-                                        <option value="6">Dermatology (DERM)</option>
-                                        <option value="7">Ophthalmology (OPHT)</option>
-                                        <option value="8">Dental Care (DENT)</option>
-                                        <option value="9">Oncology (ONCO)</option>
-                                        <option value="10">General Medicine (GENM)</option>
-                                        <option value="11">Radiology (RADI)</option>
-                                        <option value="12">Emergency Medicine (EMER)</option>
-                                    </select>
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-2.html">
+                                                                        <img src="images/demo/homepage-2.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 2</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-3.html">
+                                                                        <img src="images/demo/homepage-3.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 3</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-4.html">
+                                                                        <img src="images/demo/homepage-4.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 4</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-5.html">
+                                                                        <img src="images/demo/homepage-5.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 5</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-6.html">
+                                                                        <img src="images/demo/homepage-6.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 6</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-7.html">
+                                                                        <img src="images/demo/homepage-7.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 7</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-8.html">
+                                                                        <img src="images/demo/homepage-8.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 8</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-9.html">
+                                                                        <img src="images/demo/homepage-9.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">Homepage 9</h6>
+                                                            </div>
+
+                                                            <div class="col-lg-1-5 col-md-4 col-sm-6 text-center">
+                                                                <div class="relative hover text-center overflow-hidden rounded-5 soft-shadow">
+                                                                    <a class="p-0" href="homepage-10.html">
+                                                                        <img src="images/demo/homepage-10.webp" class="w-100 relative hover-scale-1-1" alt="">
+                                                                    </a>
+                                                                </div>
+                                                                <h6 class="mt-3">New: Homepage 10</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="services.html">Services</a>
+                                        <ul>
+                                            <li><a href="service-general-dentistry.html">General Dentistry</a></li>
+                                            <li><a href="service-cosmetic-dentistry.html">Cosmetic Dentistry</a></li>
+                                            <li><a href="service-pediatric-dentistry.html">Pediatric Dentistry</a></li>
+                                            <li><a href="service-restorative-dentistry.html">Restorative Dentistry</a></li>
+                                            <li><a href="service-preventive-dentistry.html">Preventive Dentistry</a></li>
+                                            <li><a href="service-orthodontics.html">Orthodontics</a></li>
+                                            <li><a href="services.html">All Services</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="dentists.html">Dentists</a></li>
+                                    <li><a class="menu-item" href="#">Portals</a>
+                                        <ul>
+                                            <li><a href="patient-dashboard.html"><i class="fa fa-user text-primary me-2"></i> Patient Portal</a></li>
+                                            <li><a href="doctor-dashboard.html"><i class="fa fa-user-md text-info me-2"></i> Doctor Dashboard</a></li>
+                                            <li><a href="doctor-login.html"><i class="fa fa-key text-warning me-2"></i> Doctor Login</a></li>
+                                            <li><a href="admin/index.html"><i class="fa fa-shield text-danger me-2"></i> Admin Dashboard</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="#">Pages</a>
+                                        <ul>
+                                            <li><a href="about.html">About Us</a></li>
+                                            <li><a href="faq.html">FAQ</a></li>
+                                            <li><a href="gallery.html">Gallery</a></li>
+                                            <li><a href="testimonials.html">Testimonials</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item" href="blog.html">Blog</a></li>
+                                    <li><a class="menu-item" href="contact.html">Contact</a></li>
+                                </ul>
+                                <!-- mainmenu end -->
+                            </div>
+                            <div class="de-flex-col">
+                                <div class="menu_side_area d-flex align-items-center gap-2">
+                                    <a href="doctor-login.html" class="btn btn-outline-secondary rounded-pill px-3 py-1 btn-sm fw-semibold d-none d-lg-inline-block">
+                                        <i class="fa fa-user-md me-1"></i> Doctor Portal
+                                    </a>
+                                    <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold d-none d-sm-inline-block">
+                                        <i class="fa fa-user me-1"></i> Patient Login
+                                    </a>
+                                    <a href="booking.html" class="btn-main fx-slide"><span>Book Appointment</span></a>
+                                    <span id="menu-btn"></span>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold text-dark">Attending Doctor / Specialist <span class="text-danger">*</span></label>
-                                    <select id="bookingDoctor" name="doctor_id" class="form-select form-select-lg" required>
-                                        <option value="1">Dr. Marcus Vance - Interventional Cardiologist ($150)</option>
-                                        <option value="2">Dr. Elena Rostova - Chief of Neurology ($160)</option>
-                                        <option value="3">Dr. Julian Thorne - Orthopedic Surgeon ($140)</option>
-                                        <option value="4">Dr. Sophia Martinez - Head Pediatrician ($110)</option>
-                                    </select>
+                                <div id="btn-extra">
+                                    <span></span>
+                                    <span></span>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header end -->
+        <!-- content begin -->
+        <div class="no-bottom no-top" id="content">
 
-                        <!-- Step 2: Date & Available Time Slot Selection -->
-                        <div class="mb-5">
-                            <div class="d-flex align-items-center gap-3 mb-4 pb-2 border-bottom">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">2</div>
-                                <h4 class="fw-bold text-primary mb-0">Choose Consultation Date & Time Slot</h4>
-                            </div>
+            <div id="top"></div>
 
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold text-dark">Appointment Date <span class="text-danger">*</span></label>
-                                    <input type="date" id="bookingDate" name="appointment_date" class="form-control form-control-lg" required>
-                                    <small class="text-muted d-block mt-2"><i class="fa fa-info-circle me-1"></i> Slots refresh live upon date selection.</small>
+            <section id="subheader" class="bg-color-op-1 text-center">
+                <div class="container relative z-2">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12">
+                            <h1 class="wow fadeInUp">Book Appointment</h1>
+                            <div class="border-bottom my-3"></div>
+                            <ul class="crumb wow fadeInDown">
+                                <li><a href="index.html">Home</a></li>
+                                <li class="active">Book Appointment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <section>
+                <div class="container relative z-2">
+                    <div class="row g-4 gx-5 justify-content-between">
+
+                        <div class="col-lg-6">
+                            <div class="relative" id="booking_form_wrapper">
+                                <div id="booking_alert_box" class="alert d-none rounded-4 p-3 mb-4"></div>
+
+                                <!-- ALTERNATIVE TIMINGS CARD (Shows when requested slot is already taken) -->
+                                <div id="collision_notice_box" class="d-none card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white border-start border-4 border-warning">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <div class="text-warning fs-3"><i class="fa fa-exclamation-triangle"></i></div>
+                                        <div class="flex-grow-1">
+                                            <h5 class="fw-bold text-dark mb-1">Time Slot Just Reserved by Another Patient</h5>
+                                            <p class="small text-muted mb-2" id="collision_message">
+                                                We're sorry! Another patient just finalized this appointment slot. Only the first booked patient receives the slot.
+                                            </p>
+                                            <div class="alert alert-light border small py-2 px-3 rounded-3 mb-3 text-secondary">
+                                                <i class="fa fa-bell text-warning me-1"></i> <strong>Notice:</strong> We have sent an email and SMS alert to your contact details with available timings.
+                                            </div>
+
+                                            <div class="fw-bold small text-dark mb-2">Available Alternative Timings for <span id="alt_doctor_name">Doctor</span> on this date:</div>
+                                            <div id="alternative_slots_pills" class="d-flex flex-wrap gap-2 mb-3">
+                                                <!-- Clickable alternative pills -->
+                                            </div>
+                                            <small class="text-primary fw-semibold"><i class="fa fa-hand-pointer-o me-1"></i> Click any available timing above to instantly pick a new time!</small>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="col-md-8">
-                                    <label class="form-label fw-bold text-dark d-flex justify-content-between">
-                                        <span>Available Time Slots <span class="text-danger">*</span></span>
-                                        <span id="slotAvailabilityStatus" class="badge bg-success bg-opacity-10 text-success">Select a slot</span>
-                                    </label>
+                                <form name="bookingForm" id="booking_form" method="post" action="booking.php" onsubmit="handleModernBooking(event)">
                                     
-                                    <div id="slotsContainer" class="time-slot-grid mb-2"></div>
-                                    <input type="hidden" id="selectedTimeSlot" name="appointment_time" required>
-                                </div>
+                                    <div class="row g-4">
+                                        <div class="col-lg-12">
+                                            <h3 class="mb-2"><i class="fa fa-calendar-plus-o id-color me-2"></i> Book Your Dental Appointment</h3>
+                                            <p class="text-muted">Choose your preferred doctor, procedure, and available timing. Instant real-time confirmation with SMS & Email alert.</p>
+                                            
+                                            <!-- Service Select -->
+                                            <div class="relative mb-3">
+                                                <label class="form-label fw-bold small text-muted">Select Dental Procedure *</label>
+                                                <select name="service" id="service" class="form-control" required>
+                                                    <option disabled selected value="">Select Dental Service</option>
+                                                    <option value="General Dentistry">General Dentistry ($85.00)</option>
+                                                    <option value="Teeth Whitening">Teeth Whitening ($199.00)</option>
+                                                    <option value="Dental Implants">Dental Implants ($850.00)</option>
+                                                    <option value="Root Canal Treatment">Root Canal Treatment ($320.00)</option>
+                                                    <option value="Orthodontics and Braces">Orthodontics and Braces ($1,200.00)</option>
+                                                    <option value="Cosmetic Dentistry">Cosmetic Dentistry ($450.00)</option>
+                                                    <option value="Pediatric Dentistry">Pediatric Dentistry ($95.00)</option>
+                                                    <option value="Tooth Extraction">Tooth Extraction ($150.00)</option>
+                                                    <option value="Dental Cleaning">Dental Cleaning ($75.00)</option>
+                                                    <option value="Gum Treatment">Gum Treatment ($210.00)</option>
+                                                </select>
+                                                <i class="absolute top-0 end-0 id-color pt-4 pe-3 icofont-simple-down"></i>
+                                            </div>
+
+                                            <!-- Doctor Select -->
+                                            <div class="relative">
+                                                <label class="form-label fw-bold small text-muted">Select Preferred Doctor / Specialist *</label>
+                                                <select name="dentist_id" id="dentist_id" class="form-control" onchange="loadRealtimeSlots()" required>
+                                                    <option value="1">Dr. Sarah Bennett (Lead Dentist & General Care)</option>
+                                                    <option value="2">Dr. Maya Lin (Cosmetic & Aesthetic Dentistry)</option>
+                                                    <option value="3">Dr. James Rodriguez (Orthodontics & Implants)</option>
+                                                    <option value="4">Dr. Emily Chen (Pediatric Dentistry & Gum Therapy)</option>
+                                                </select>
+                                                <i class="absolute top-0 end-0 id-color pt-4 pe-3 icofont-simple-down"></i>
+                                            </div>
+                                        </div>
+
+                                        <!-- Date Input -->
+                                        <div class="col-lg-6">
+                                            <label class="form-label fw-bold small text-muted">Appointment Date *</label>
+                                            <div id="date_picker_wrap" class="relative input-group date" data-date-format="yyyy-mm-dd">
+                                                <input class="form-control" id="appointment_date_input" name="date" type="date" required onchange="loadRealtimeSlots()">
+                                            </div>
+                                        </div>
+
+                                        <!-- Hidden Time Input -->
+                                        <input type="hidden" name="time" id="selected_time_value" required>
+
+                                        <!-- Interactive Time Slots Section -->
+                                        <div class="col-lg-12">
+                                            <label class="form-label fw-bold small text-muted d-flex justify-content-between">
+                                                <span>Available Time Slots *</span>
+                                                <span class="text-primary small fw-semibold" id="slot_status_label"><i class="fa fa-clock-o me-1"></i> Click to select a timing</span>
+                                            </label>
+                                            
+                                            <div id="slots_container" class="d-flex flex-wrap gap-2 p-3 bg-light rounded-3 border">
+                                                <span class="text-muted small"><i class="fa fa-spinner fa-spin me-1"></i> Select doctor & date to see available slots...</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Patient Info -->
+                                        <div class="col-lg-4">
+                                            <label class="form-label fw-bold small text-muted">Your Full Name *</label>
+                                            <input type="text" name="name" id="name" placeholder="Full Name" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label class="form-label fw-bold small text-muted">Email Address (For Confirmation) *</label>
+                                            <input type="email" name="email" id="email" placeholder="patient@example.com" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <label class="form-label fw-bold small text-muted">Mobile Phone (For SMS Alert) *</label>
+                                            <input type="tel" name="phone" id="phone" placeholder="+1 (555) 000-0000" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <label class="form-label fw-bold small text-muted">Additional Medical Notes / Symptoms</label>
+                                            <textarea name="message" id="message" class="form-control" rows="3" placeholder="Briefly describe your dental concern, tooth pain, or reason for visit..."></textarea>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <div id='submit'>
+                                                <button type='submit' id='send_message_btn' class="btn-main w-100 py-3 rounded-pill fw-bold fs-6">
+                                                    <span>Confirm & Schedule Appointment</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
 
-                        <!-- Step 3: Patient Information -->
-                        <div class="mb-5">
-                            <div class="d-flex align-items-center gap-3 mb-4 pb-2 border-bottom">
-                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 38px; height: 38px;">3</div>
-                                <h4 class="fw-bold text-primary mb-0">Patient Details & Consultation Reason</h4>
-                            </div>
-
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold text-dark">Full Name <span class="text-danger">*</span></label>
-                                    <input type="text" name="patient_name" class="form-control form-control-lg" placeholder="John Doe" value="John Doe" required>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold text-dark">Email Address <span class="text-danger">*</span></label>
-                                    <input type="email" name="patient_email" class="form-control form-control-lg" placeholder="john@example.com" value="patient@medinova.com" required>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label fw-bold text-dark">Phone Number <span class="text-danger">*</span></label>
-                                    <input type="tel" name="patient_phone" class="form-control form-control-lg" placeholder="+1 (555) 000-0000" value="+1 (555) 234-5678" required>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold text-dark">Appointment Type</label>
-                                    <select name="appointment_type" class="form-select form-select-lg">
-                                        <option value="General Consultation">General Specialist Consultation</option>
-                                        <option value="Follow-up">Follow-up Review</option>
-                                        <option value="Diagnostic Review">Diagnostic / Lab Report Review</option>
-                                        <option value="Emergency Check">Urgent Clinical Assessment</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold text-dark">Describe Symptoms / Medical Need <span class="text-danger">*</span></label>
-                                    <textarea name="symptoms" class="form-control" rows="3" placeholder="Briefly describe what symptoms you are experiencing..." required>Consultation for cardiovascular checkup</textarea>
+                        <div class="col-lg-6">
+                            <div class="h-100 rounded-1 relative" data-bgimage="url(images/misc/s4.webp) center">
+                                <div class="bg-blur text-light shadow-1 abs start-10 bottom-10 p-4 rounded-1 overflow-hidden z-2" data-wow-delay=".5s">
+                                    <div class="d-flex justify-content-center">
+                                        <i class="fs-60 text-white icon_clock"></i>
+                                        <div class="ms-3">
+                                            <h4 class="mb-0">Opening Hours</h4>
+                                            Mon to Sat 08:00 - 20:00
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                        
 
-                        <!-- Submit Button -->
-                        <div class="text-center pt-3 border-top">
-                            <button type="submit" id="submitBookingBtn" class="btn btn-med-primary btn-lg px-5 py-3 fw-bold rounded-pill shadow">
-                                <i class="fa fa-calendar-check me-2"></i> Confirm Hospital Appointment
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+            </section>
+
+        </div>
+        <!-- content end -->
+
+        <!-- footer begin -->
+        <footer class="section-dark">
+            <div class="container">
+                <div class="row gx-5">
+                    <div class="col-lg-4 col-sm-6">
+                        <img src="images/logo-white.webp" class="logo-footer" alt="" >
+                        <div class="spacer-20"></div>
+                        <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+
+                        <div class="social-icons mb-sm-30">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12 order-lg-1 order-sm-2">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="widget">
+                                    <h5>Company</h5>
+                                    <ul>                                        
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="services.html">Our Services</a></li>
+                                        <li><a href="gallery.html">Gallery</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="widget">
+                                    <h5>Our Services</h5>
+                                    <ul>
+                                        <li><a href="service-general-dentistry.html">General Dentistry</a></li>
+                                        <li><a href="service-cosmetic-dentistry.html">Cosmetic Dentistry</a></li>
+                                        <li><a href="service-pediatric-dentistry.html">Pediatric Dentistry</a></li>
+                                        <li><a href="service-restorative-dentistry.html">Restorative Dentistry</a></li>
+                                        <li><a href="service-preventive-dentistry.html">Preventive Dentistry</a></li>
+                                        <li><a href="service-orthodontics.html">Orthodontics</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 order-lg-2 order-sm-1">
+                        <div class="widget">
+                            <h5>Contact Us</h5>
+                            <div class="fw-bold text-white"><i class="icofont-location-pin me-2 id-color"></i>Clinic Location</div>
+                            100 S Main St, New York, NY
+
+                            <div class="spacer-20"></div>
+
+                            <div class="fw-bold text-white"><i class="icofont-phone me-2 id-color"></i>Call Us</div>
+                            +1 123 456 789
+
+                            <div class="spacer-20"></div>
+
+                            <div class="fw-bold text-white"><i class="icofont-envelope me-2 id-color"></i>Send a Message</div>
+                            contact@dentiacare.com                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="de-flex">
+                                <div class="de-flex-col">
+                                    Copyright 2026 - Dentia by Designesia
+                                </div>
+                                <ul class="menu-simple">
+                                    <li><a href="#">Terms &amp; Conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer end -->
+    </div>
+
+
+    <div id="extra-wrap" class="text-light">
+        <div id="btn-close">
+            <span></span>
+            <span></span>
+        </div>
+
+        <div id="extra-content">
+            <img src="images/logo-white.webp" class="w-150px" alt="">
+
+            <div class="spacer-30-line"></div>
+
+            <h5>Our Services</h5>
+            <ul class="ul-check">
+                <li><a href="service-general-dentistry.html">General Dentistry</a></li>
+                <li><a href="service-cosmetic-dentistry.html">Cosmetic Dentistry</a></li>
+                <li><a href="service-pediatric-dentistry.html">Pediatric Dentistry</a></li>
+                <li><a href="service-restorative-dentistry.html">Restorative Dentistry</a></li>
+                <li><a href="service-preventive-dentistry.html">Preventive Dentistry</a></li>
+                <li><a href="service-orthodontics.html">Orthodontics</a></li>
+            </ul>
+
+            <div class="spacer-30-line"></div>
+
+            <h5>Contact Us</h5>
+            <div><i class="icofont-clock-time me-2 op-5"></i>Monday - Friday 08.00 - 18.00</div>
+            <div><i class="icofont-location-pin me-2 op-5"></i>100 S Main St, New York, </div>
+            <div><i class="icofont-envelope me-2 op-5"></i>contact@dentiacare.com </div>
+
+            <div class="spacer-30-line"></div>
+
+            <h5>About Us</h5>
+            <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Booking Confirmation Modal -->
-<div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-4 border-0 shadow-lg text-center p-4">
-            <div class="mx-auto mb-3 text-success fs-1">
-                <i class="fa fa-circle-check"></i>
-            </div>
-            <h3 class="fw-bold text-primary mb-2">Appointment Reserved!</h3>
-            <p class="text-muted mb-4">Your appointment has been registered with the hospital clinical desk.</p>
-            
-            <div class="p-3 bg-light rounded-3 text-start mb-4 border">
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Appointment Ref:</span>
-                    <strong class="text-primary font-monospace" id="confRefCode">-</strong>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Doctor:</span>
-                    <strong id="confDoctorName">-</strong>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Speciality:</span>
-                    <span id="confDeptName">-</span>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="text-muted">Date & Time:</span>
-                    <strong id="confDateTime">-</strong>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span class="text-muted">Status:</span>
-                    <span class="badge bg-warning text-dark" id="confStatus">Pending Confirmation</span>
-                </div>
-            </div>
+    <!-- Javascript Files
+    ================================================== -->
+    <script src="js/plugins.js"></script>
+    <script src="js/designesia.js"></script>
 
-            <div class="d-flex gap-2">
-                <a href="patient-dashboard.html" class="btn btn-med-primary w-100 py-2">Go to Patient Portal</a>
-                <button type="button" class="btn btn-outline-secondary w-100 py-2" data-bs-dismiss="modal" onclick="window.location.reload();">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
+    <script>
+    let globalAvailableSlots = [];
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const dateInput = document.getElementById('bookingDate');
-    const doctorSelect = document.getElementById('bookingDoctor');
-    const deptSelect = document.getElementById('bookingDepartment');
-    const slotsContainer = document.getElementById('slotsContainer');
-    const timeSlotInput = document.getElementById('selectedTimeSlot');
-    const form = document.getElementById('medinovaBookingForm');
-
-    // Set default tomorrow date
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    dateInput.value = d.toISOString().split('T')[0];
-    dateInput.min = new Date().toISOString().split('T')[0];
-
-    const standardSlots = [
-        '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', 
-        '11:00 AM', '11:30 AM', '01:30 PM', '02:00 PM', 
-        '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM'
-    ];
-
-    function renderSlots() {
-        slotsContainer.innerHTML = '';
-        timeSlotInput.value = '';
-        document.getElementById('slotAvailabilityStatus').textContent = 'Select a slot';
-        document.getElementById('slotAvailabilityStatus').className = 'badge bg-success bg-opacity-10 text-success';
-
-        standardSlots.forEach(slot => {
-            const pill = document.createElement('div');
-            pill.className = 'time-slot-pill';
-            pill.textContent = slot;
-            pill.addEventListener('click', function() {
-                document.querySelectorAll('.time-slot-pill').forEach(p => p.classList.remove('active'));
-                pill.classList.add('active');
-                timeSlotInput.value = slot;
-                document.getElementById('slotAvailabilityStatus').textContent = `Selected: ${slot}`;
-                document.getElementById('slotAvailabilityStatus').className = 'badge bg-primary text-white';
-            });
-            slotsContainer.appendChild(pill);
-        });
+    // Helper: format today's date as YYYY-MM-DD
+    function getTodayString() {
+        const d = new Date();
+        const month = '' + (d.getMonth() + 1);
+        const day = '' + d.getDate();
+        const year = d.getFullYear();
+        return [year, month.padStart(2, '0'), day.padStart(2, '0')].join('-');
     }
 
-    renderSlots();
-    dateInput.addEventListener('change', renderSlots);
-    doctorSelect.addEventListener('change', renderSlots);
+    // Load Real-time available slots for selected Doctor and Date
+    async function loadRealtimeSlots() {
+        const docId = document.getElementById('dentist_id').value;
+        const dateInput = document.getElementById('appointment_date_input');
+        const container = document.getElementById('slots_container');
+        const timeInput = document.getElementById('selected_time_value');
 
-    // Form submit
-    form.addEventListener('submit', function(e) {
+        if (!dateInput.value) {
+            dateInput.value = getTodayString();
+        }
+        const selectedDate = dateInput.value;
+
+        if (!docId || !selectedDate) return;
+
+        container.innerHTML = '<span class="text-muted small"><i class="fa fa-spinner fa-spin me-1"></i> Checking live clinic availability...</span>';
+
+        try {
+            const res = await fetch(`/api/check-slots.php?dentist_id=${docId}&date=${encodeURIComponent(selectedDate)}`).then(r => r.json());
+            if (res.success) {
+                const slots = res.slots || [];
+                const booked = res.booked || [];
+                globalAvailableSlots = res.available_slots || [];
+
+                let html = '';
+                slots.forEach(slot => {
+                    const isBooked = booked.includes(slot);
+                    const isSelected = timeInput.value === slot;
+
+                    if (isBooked) {
+                        html += `
+                            <div class="slot-pill booked" title="Already booked by another patient">
+                                ${slot} <span class="d-block text-danger fw-semibold" style="font-size:9px;">Booked</span>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="slot-pill ${isSelected ? 'selected' : ''}" onclick="selectTimeSlot('${slot}', this)">
+                                ${slot} <span class="d-block text-success" style="font-size:9px;">Available</span>
+                            </div>
+                        `;
+                    }
+                });
+
+                container.innerHTML = html;
+            }
+        } catch (e) {
+            container.innerHTML = '<span class="text-danger small">Error checking clinic slot schedule.</span>';
+        }
+    }
+
+    function selectTimeSlot(slot, el) {
+        document.getElementById('selected_time_value').value = slot;
+        document.querySelectorAll('#slots_container .slot-pill').forEach(p => p.classList.remove('selected'));
+        if (el) el.classList.add('selected');
+
+        document.getElementById('slot_status_label').innerHTML = `<i class="fa fa-check text-success me-1"></i> Selected: <strong class="text-success">${slot}</strong>`;
+        // Hide collision box if open
+        document.getElementById('collision_notice_box').classList.add('d-none');
+    }
+
+    // Handle Appointment Booking Submission
+    async function handleModernBooking(e) {
         e.preventDefault();
-        if (!timeSlotInput.value) {
-            alert('Please select an available time slot pill above.');
+        const form = document.getElementById('booking_form');
+        const submitBtn = document.getElementById('send_message_btn');
+        const alertBox = document.getElementById('booking_alert_box');
+        const collisionBox = document.getElementById('collision_notice_box');
+        const timeVal = document.getElementById('selected_time_value').value;
+
+        if (!timeVal) {
+            alertBox.className = 'alert alert-danger rounded-4 p-3 mb-4 d-block';
+            alertBox.innerHTML = '<i class="fa fa-exclamation-triangle me-2"></i> <strong>Please select an available time slot pill</strong> above before submitting.';
+            $('html, body').animate({ scrollTop: $('#slots_container').offset().top - 100 }, 400);
             return;
         }
 
-        const formData = new FormData(form);
-        const ref = 'MED-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
-        const docName = doctorSelect.options[doctorSelect.selectedIndex].text.split(' - ')[0];
-        const deptName = deptSelect.options[deptSelect.selectedIndex].text;
+        const formData = {
+            service_name: document.getElementById('service').value,
+            dentist_id: document.getElementById('dentist_id').value,
+            date: document.getElementById('appointment_date_input').value,
+            time: timeVal,
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            message: document.getElementById('message').value.trim()
+        };
 
-        fetch('/api/book-appointment.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(r => r.json())
-        .then(data => {
-            showSuccessModal(data.appointment_ref || ref, docName, deptName, dateInput.value, timeSlotInput.value);
-        })
-        .catch(() => {
-            showSuccessModal(ref, docName, deptName, dateInput.value, timeSlotInput.value);
-        });
-    });
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Scheduling & Checking Concurrency...';
+        alertBox.className = 'alert d-none';
+        collisionBox.classList.add('d-none');
 
-    function showSuccessModal(ref, doc, dept, date, time) {
-        document.getElementById('confRefCode').textContent = ref;
-        document.getElementById('confDoctorName').textContent = doc;
-        document.getElementById('confDeptName').textContent = dept;
-        document.getElementById('confDateTime').textContent = `${date} at ${time}`;
-        new bootstrap.Modal(document.getElementById('bookingSuccessModal')).show();
+        try {
+            const res = await fetch('/api/book-appointment.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            }).then(r => r.json());
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Confirm & Schedule Appointment</span>';
+
+            if (res.success) {
+                // FIRST BOOKED PATIENT: Successful confirmation!
+                // Cache patient info in localStorage so it appears in their dashboard immediately
+                const existingPatient = localStorage.getItem('dentia_patient');
+                if (!existingPatient) {
+                    localStorage.setItem('dentia_patient', JSON.stringify({
+                        name: formData.name,
+                        email: formData.email,
+                        phone: formData.phone
+                    }));
+                }
+
+                // Render beautiful Confirmation Summary
+                const confHtml = `
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden text-center p-4 p-md-5 my-3 bg-white">
+                        <div class="mb-4">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle shadow" style="width:76px; height:76px; font-size:36px;">
+                                <i class="fa fa-check"></i>
+                            </div>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-1">Appointment Confirmed!</h3>
+                        <p class="text-muted mb-4">Your dental appointment has been successfully scheduled. We look forward to welcoming you.</p>
+
+                        <!-- Notification receipts -->
+                        <div class="alert alert-success border-0 bg-success-subtle text-success-emphasis rounded-3 p-3 mb-4 mx-auto text-start" style="max-width: 540px;">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <i class="fa fa-envelope text-success"></i>
+                                <span class="small fw-semibold">Confirmation Email dispatched to: <strong>${formData.email}</strong></span>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fa fa-commenting text-success"></i>
+                                <span class="small fw-semibold">Confirmation SMS alert dispatched to: <strong>${formData.phone}</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Details card -->
+                        <div class="card bg-light border-0 rounded-4 p-4 text-start mb-4 mx-auto" style="max-width: 540px;">
+                            <div class="row g-2">
+                                <div class="col-6 text-muted small">Booking Reference:</div>
+                                <div class="col-6 fw-bold text-primary font-monospace">${res.ref}</div>
+
+                                <div class="col-6 text-muted small">Dental Procedure:</div>
+                                <div class="col-6 fw-bold text-dark">${res.details.service_name}</div>
+
+                                <div class="col-6 text-muted small">Assigned Doctor:</div>
+                                <div class="col-6 fw-bold text-primary">${res.details.dentist_name}</div>
+
+                                <div class="col-6 text-muted small">Scheduled Date & Time:</div>
+                                <div class="col-6 fw-bold text-success">${res.details.date} at ${res.details.time}</div>
+
+                                <div class="col-6 text-muted small">Initial Status:</div>
+                                <div class="col-6"><span class="badge bg-warning text-dark px-3 py-1 rounded-pill small">Pending Medical Confirmation</span></div>
+
+                                <div class="col-6 text-muted small">Clinic Location:</div>
+                                <div class="col-6 text-muted small">100 S Main St, Suite 400, New York, NY</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-wrap justify-content-center gap-3">
+                            <a href="patient-dashboard.html" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+                                <i class="fa fa-dashboard me-2"></i> View in My Patient Dashboard
+                            </a>
+                            <a href="booking.html" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                                Schedule Another Visit
+                            </a>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('booking_form_wrapper').innerHTML = confHtml;
+                $('html, body').animate({ scrollTop: $('#booking_form_wrapper').offset().top - 80 }, 400);
+
+            } else if (res.already_booked) {
+                // SECOND PATIENT: Slot was already booked! Provide alternative available timings.
+                collisionBox.classList.remove('d-none');
+                document.getElementById('collision_message').innerText = res.message;
+                document.getElementById('alt_doctor_name').innerText = res.dentist_name || 'the doctor';
+
+                const altContainer = document.getElementById('alternative_slots_pills');
+                const altSlots = res.available_slots || [];
+
+                if (altSlots.length === 0) {
+                    altContainer.innerHTML = '<span class="text-danger small">No other slots remaining today. Please pick another date.</span>';
+                } else {
+                    altContainer.innerHTML = altSlots.map(s => `
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 py-1 fw-bold" onclick="pickAlternativeSlot('${s}')">
+                            <i class="fa fa-clock-o me-1"></i> ${s}
+                        </button>
+                    `).join('');
+                }
+
+                // Refresh slots in main grid
+                loadRealtimeSlots();
+                $('html, body').animate({ scrollTop: $('#collision_notice_box').offset().top - 100 }, 400);
+
+            } else {
+                alertBox.className = 'alert alert-danger rounded-4 p-3 mb-4 d-block';
+                alertBox.innerHTML = `<i class="fa fa-times-circle me-2"></i> ${res.message || 'Error booking appointment.'}`;
+            }
+
+        } catch (err) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Confirm & Schedule Appointment</span>';
+            alertBox.className = 'alert alert-danger rounded-4 p-3 mb-4 d-block';
+            alertBox.innerHTML = '<i class="fa fa-exclamation-triangle me-2"></i> Server communication error. Please try again.';
+        }
     }
-});
-</script>
+
+    function pickAlternativeSlot(slot) {
+        selectTimeSlot(slot, null);
+        document.getElementById('collision_notice_box').classList.add('d-none');
+        alertBox = document.getElementById('booking_alert_box');
+        alertBox.className = 'alert alert-info rounded-4 p-3 mb-4 d-block';
+        alertBox.innerHTML = `<i class="fa fa-info-circle me-2"></i> Updated to alternative timing: <strong>${slot}</strong>. Click 'Confirm & Schedule Appointment' below to complete booking.`;
+        $('html, body').animate({ scrollTop: $('#submit').offset().top - 150 }, 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Set date to today
+        document.getElementById('appointment_date_input').value = getTodayString();
+
+        // Populate doctors dynamically from API
+        try {
+            const res = await fetch('/api/dentists').then(r => r.json());
+            if (Array.isArray(res) && res.length > 0) {
+                const select = document.getElementById('dentist_id');
+                select.innerHTML = res.map(d => `<option value="${d.id}">${d.name} (${d.specialization})</option>`).join('');
+            }
+        } catch (e) {}
+
+        // Load slots for default doctor and today
+        loadRealtimeSlots();
+
+        // Auto-fill logged-in patient details
+        try {
+            const pRaw = localStorage.getItem('dentia_patient');
+            if (pRaw) {
+                const p = JSON.parse(pRaw);
+                if (p.name) document.getElementById('name').value = p.name;
+                if (p.email) document.getElementById('email').value = p.email;
+                if (p.phone) document.getElementById('phone').value = p.phone;
+            }
+        } catch (e) {}
+    });
+    </script>
 </body>
 </html>

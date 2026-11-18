@@ -12,18 +12,11 @@ $admin = get_logged_in_admin();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($adminPageTitle) ? e($adminPageTitle) . ' — ' : '' ?>MEDINOVA Hospital Administration</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- CSS Stylesheets -->
+    <title><?= isset($adminPageTitle) ? e($adminPageTitle) . ' — ' : '' ?>Dentia Admin Management</title>
     <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="../fonts/fontawesome6/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="../css/plugins.css" rel="stylesheet" type="text/css">
     <link href="../css/style.css" rel="stylesheet" type="text/css">
     <link href="../css/custom-modern.css" rel="stylesheet" type="text/css">
-    <link href="../css/medinova-theme.css" rel="stylesheet" type="text/css">
     <link rel="icon" href="../images/icon.webp" type="image/gif">
 </head>
 <body class="bg-light">
@@ -31,14 +24,8 @@ $admin = get_logged_in_admin();
 <div class="d-flex">
     <!-- Sidebar -->
     <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 260px;">
-        <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100 gap-2">
-            <div class="med-logo-icon" style="width: 36px; height: 36px; font-size: 16px;">
-                <i class="fa fa-heart-pulse"></i>
-            </div>
-            <div>
-                <div class="med-logo-text text-white fs-5 lh-1">MEDINOVA</div>
-                <div class="med-logo-tagline text-info" style="font-size: 10px;">Hospital Administration</div>
-            </div>
+        <a href="index.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100">
+            <img src="../images/logo-white.webp" alt="Dentia" style="max-height: 38px;">
         </a>
 
         <div class="py-2 px-2 text-white-50 small mt-2">
@@ -48,32 +35,32 @@ $admin = get_logged_in_admin();
         <ul class="admin-nav nav-pills flex-column mb-auto">
             <li>
                 <a href="index.php" class="<?= ($currentAdminScript === 'index.php') ? 'active' : '' ?>">
-                    <i class="fa fa-gauge me-2"></i> Dashboard
+                    <i class="fa fa-dashboard me-2"></i> Dashboard
                 </a>
             </li>
             <li>
                 <a href="appointments.php" class="<?= ($currentAdminScript === 'appointments.php') ? 'active' : '' ?>">
-                    <i class="fa fa-calendar-check me-2"></i> Appointments
+                    <i class="fa fa-calendar-check-o me-2"></i> Appointments
                 </a>
             </li>
             <li>
                 <a href="patients.php" class="<?= ($currentAdminScript === 'patients.php') ? 'active' : '' ?>">
-                    <i class="fa fa-users me-2"></i> Patients Roster
+                    <i class="fa fa-users me-2"></i> Patients
                 </a>
             </li>
             <li>
                 <a href="dentists.php" class="<?= ($currentAdminScript === 'dentists.php') ? 'active' : '' ?>">
-                    <i class="fa fa-user-doctor me-2"></i> Medical Specialists
+                    <i class="fa fa-user-md me-2"></i> Dentists & Staff
                 </a>
             </li>
             <li>
                 <a href="services.php" class="<?= ($currentAdminScript === 'services.php') ? 'active' : '' ?>">
-                    <i class="fa fa-hospital me-2"></i> Clinical Departments
+                    <i class="fa fa-stethoscope me-2"></i> Dental Services
                 </a>
             </li>
             <li>
                 <a href="settings.php" class="<?= ($currentAdminScript === 'settings.php') ? 'active' : '' ?>">
-                    <i class="fa fa-clock me-2"></i> Hours & Settings
+                    <i class="fa fa-clock-o me-2"></i> Hours & Settings
                 </a>
             </li>
             <li>
@@ -83,7 +70,7 @@ $admin = get_logged_in_admin();
             </li>
             <li>
                 <a href="messages.php" class="<?= ($currentAdminScript === 'messages.php') ? 'active' : '' ?>">
-                    <i class="fa fa-envelope me-2"></i> Help Desk Messages
+                    <i class="fa fa-envelope-o me-2"></i> Contact Messages
                 </a>
             </li>
         </ul>

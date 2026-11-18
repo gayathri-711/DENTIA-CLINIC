@@ -1,99 +1,193 @@
-# MEDINOVA – Multi-Speciality Hospital Management System
-> **Tagline:** *Advanced Healthcare, Better Tomorrow.*  
-> **Accreditation:** JCI & NABH Accredited Tertiary Healthcare  
+# Doctor Dental Clinic Dentia — Modern Management Platform
+
+A modern, responsive, full-stack dental clinic management platform built with PHP, MySQL, Bootstrap 5, and JavaScript. This platform transforms the clinic website into a comprehensive clinical management solution featuring real-time appointment scheduling, duplicate booking prevention, patient self-service portal, and an administrative control panel.
 
 ---
 
-## 🏥 1. System Overview
+## 1. Key Features & Modules
 
-**MEDINOVA** is an enterprise-grade, responsive, full-stack Multi-Speciality Hospital Management Platform designed for tertiary and quaternary healthcare institutions. It provides a patient-facing hospital web portal and eight specialized clinical and operational modules powered by role-based access control (RBAC).
-
----
-
-## 🩺 2. The 12 Medical Specialities (Centres of Excellence)
-
-Each department features dedicated landing pages, specialist directories, procedure details, and cascading online appointment booking:
-
-1. **Cardiology & Cath Lab** (`/departments/cardiology.php`) – Emergency PTCA angioplasty, stenting, pacemaker implantation.
-2. **Neurology & Stroke** (`/departments/neurology.php`) – Acute stroke thrombolysis, epilepsy monitoring, neurosurgery.
-3. **Robotic Orthopedics** (`/departments/orthopedics.php`) – Computerized robotic joint replacements, sports trauma.
-4. **Pediatrics & Level-III NICU** (`/departments/pediatrics.php`) – Infant care, childhood immunizations, neonatal ICU.
-5. **Gynecology & Obstetrics** (`/departments/gynecology.php`) – Maternity suites, fetal medicine, laparoscopic surgery.
-6. **Dermatology** (`/departments/dermatology.php`) – Skin pathology, laser dermatology, melanoma screening.
-7. **Ophthalmology** (`/departments/ophthalmology.php`) – Micro-incision cataract surgery, LASIK, retina diagnostics.
-8. **Dental Care & Surgery** (`/departments/dental-care.php`) – Titanium implants, micro-endodontics, maxillofacial surgery.
-9. **Comprehensive Oncology** (`/departments/oncology.php`) – Medical oncology, targeted immunotherapy, tumor boards.
-10. **General & Internal Medicine** (`/departments/general-medicine.php`) – Adult primary healthcare, metabolic syndrome, fevers.
-11. **Radiology & Imaging** (`/departments/radiology.php`) – 3.0 Tesla Silent MRI, 128-slice CT, ultrasound.
-12. **Emergency Medicine** (`/departments/emergency-medicine.php`) – Level-I trauma bays, resuscitation, ambulance dispatch.
+### 🦷 Dental Services Module (10 Core Procedures)
+Dedicated, detailed procedure pages with clinical descriptions, high-resolution imagery, treatment benefits, step-by-step patient expectations, and direct appointment scheduling:
+1. **General Dentistry** (`service-general-dentistry.php`)
+2. **Teeth Whitening** (`service-teeth-whitening.php`)
+3. **Dental Implants** (`service-dental-implants.php`)
+4. **Root Canal Treatment** (`service-root-canal.php`)
+5. **Orthodontics and Braces** (`service-orthodontics.php`)
+6. **Cosmetic Dentistry** (`service-cosmetic-dentistry.php`)
+7. **Pediatric Dentistry** (`service-pediatric-dentistry.php`)
+8. **Tooth Extraction** (`service-tooth-extraction.php`)
+9. **Dental Cleaning** (`service-dental-cleaning.php`)
+10. **Gum Treatment** (`service-gum-treatment.php`)
+- **Dynamic Service Route**: `service-details.php?slug=...` / `service-details.php?id=...`
+- **All Services Directory**: `services.php` with instant client-side search and filtering.
 
 ---
 
-## 👥 3. Portals & Multi-Role Access Control (RBAC)
-
-The system enforces strict role-based session authorization with unified sign-in at `http://localhost:8000/login.html` (or `login.php`):
-
-| Role | Portal URL | Demo Credentials | Key Capabilities |
-| :--- | :--- | :--- | :--- |
-| **Super Admin** | [`/admin/index.html`](http://localhost:8000/admin/index.html) | `admin@medinova.com`<br>`medinova123` | • Executive KPI stats & Chart.js analytics<br>• Real-time Accept / Cancel appointment requests<br>• Onboard new specialist doctors<br>• Hospital-wide ward & revenue monitoring |
-| **Doctor / Specialist** | [`/doctor/index.php`](http://localhost:8000/doctor/index.php) | `cardiology@medinova.com`<br>`medinova123` | • Daily patient queue management<br>• Record clinical diagnoses & consultation notes<br>• Generate e-prescriptions & order pathology tests |
-| **Patient** | [`/patient-dashboard.html`](http://localhost:8000/patient-dashboard.html) | `patient@medinova.com`<br>`medinova123` | • View upcoming visits & past history<br>• Download physician clinical notes & e-prescriptions<br>• Access diagnostic lab test results<br>• View itemized invoices & 1-click visit cancellation |
-| **Receptionist** | [`/receptionist/index.php`](http://localhost:8000/receptionist/index.php) | `reception@medinova.com`<br>`medinova123` | • Front desk patient check-in & walk-in registration<br>• Appointment approval & schedule management<br>• Inpatient bed admissions & transfers |
-| **Inpatient Nurse (RN)** | [`/nurse/index.php`](http://localhost:8000/nurse/index.php) | `nurse@medinova.com`<br>`medinova123` | • Inpatient ward monitoring<br>• Record patient vitals (BP, Pulse, Temp, SpO2)<br>• Nursing care observation logs |
-| **Lab Technician** | [`/laboratory/index.php`](http://localhost:8000/laboratory/index.php) | `lab@medinova.com`<br>`medinova123` | • Diagnostic test worklist (Requested &rarr; Processing &rarr; Completed)<br>• Enter measured values & abnormal/critical flags<br>• Publish verified pathology reports |
-| **Pharmacist** | [`/pharmacy/index.php`](http://localhost:8000/pharmacy/index.php) | `pharmacy@medinova.com`<br>`medinova123` | • Drug formulary & batch inventory tracking<br>• Expiration safety validation (&lt; 30d alerts)<br>• Prescription-based medication dispensing |
-| **Billing & Cashier** | [`/billing/index.php`](http://localhost:8000/billing/index.php) | `billing@medinova.com`<br>`medinova123` | • Itemized invoice generation (Consultation + Lab + Pharmacy + Bed)<br>• Payment settlement (Cash, Card, Insurance Claim)<br>• Printable hospital tax invoice receipts |
+### 📅 Functional Appointment Booking Engine
+- Real-time time slot availability checking via AJAX (`api/check-slots.php`).
+- **Duplicate Booking Prevention**: Queries existing database appointments. If a time slot is already reserved for a doctor on that date, it is locked and crossed out, preventing double-booking.
+- Generates a unique appointment reference ID (e.g. `DEN-2026-8492`).
+- Auto-associates bookings with registered patient accounts based on login session or email.
+- Dispatches confirmation emails and records notification logs (`data/mail_notifications.log`).
+- Generates an immediate visual booking receipt card with appointment details.
 
 ---
 
-## 📅 4. Interactive Cascading Booking Engine
-
-Accessible publicly at [`http://localhost:8000/booking.html`](http://localhost:8000/booking.html) (or `booking.php`):
-1. **Select Department**: Real-time AJAX loader populates available specialists for that department.
-2. **Select Doctor**: Fetches consultation fee, room number, and working days.
-3. **Select Date**: Interactively calculates slot availability.
-4. **Choose Time Slot**: Interactive pills highlight available slots vs already-booked slots.
-5. **Concurrency Validation**: Server enforces duplicate prevention for the same doctor and time slot.
-6. **Reference Code**: Generates secure unique `MED-2026-XXXX` reference code.
-
----
-
-## 🗄️ 5. Database Architecture (`medinova_hospital`)
-
-Normalized 3NF MySQL database schema in `database.sql` and `database/medinova_hospital.sql`:
-- `roles` (9 system roles)
-- `users` (central authentication & password hashing)
-- `departments` (12 clinical divisions)
-- `doctors` & `doctor_schedules`
-- `patients` (demographics, insurance, blood group, allergies)
-- `staff` (nurses, receptionists, technicians, pharmacists)
-- `appointments` (booking registry with status transitions)
-- `medical_records` (EMR clinical notes & diagnoses)
-- `medicines` & `medicine_stock` (batch & expiry tracking)
-- `prescriptions` & `prescription_items` (e-prescriptions)
-- `lab_tests`, `lab_orders`, `lab_results` (pathology reports)
-- `room_categories`, `rooms`, `beds`, `admissions` (inpatient care)
-- `invoices`, `invoice_items`, `payments` (billing ledgers)
-- `hospital_settings`, `testimonials`, `contact_messages`, `blogs`, `audit_logs`
+### 👤 Patient Self-Service Portal
+- **Registration & Auth** (`register.php`, `login.php`, `logout.php`): Secure account creation with email uniqueness checks and `password_hash()`.
+- **Patient Dashboard** (`patient-dashboard.php`):
+  - Overview metrics: Upcoming visits, Completed treatments, Cancelled appointments, Total scheduled.
+  - Tabbed interface separating active upcoming appointments from past medical history.
+  - One-click appointment cancellation with confirmation modal and reason recording.
+- **Patient Profile** (`patient-profile.php`):
+  - Update personal contact information, date of birth, gender, and residential address.
+  - Change password with verification of the current password.
 
 ---
 
-## 🚀 6. Running Locally & Production Hosting
+### ⚙️ Professional Admin Management Dashboard (`/admin/`)
+- **Executive Overview** (`admin/index.php`):
+  - Total Patients, Total Appointments, Pending Approvals, Confirmed Visits, Cancelled Visits, Active Dentists, Total Services.
+  - Recent appointments table with quick status actions (Confirm, Complete, Cancel).
+  - Recent contact inquiries preview.
+- **Manage Appointments** (`admin/appointments.php`):
+  - Filter by Status (Pending, Confirmed, Completed, Cancelled), Doctor, or Date.
+  - Real-time status update dropdown.
+  - Schedule new appointments directly from the admin panel.
+  - Permanent record deletion with confirmation.
+- **Manage Patients** (`admin/patients.php`):
+  - Search directory by name, email, or phone.
+  - View visit counts, registration date, and contact information.
+  - Register new patients manually.
+- **Manage Dentists & Staff** (`admin/dentists.php`):
+  - Full CRUD (Create, Read, Update, Delete) for medical specialists.
+  - Manage credentials, qualifications, specialties, weekly availability, and active status.
+- **Manage Dental Services** (`admin/services.php`):
+  - Add and edit dental procedures, fees, duration, and clinical descriptions.
+  - Toggle featured procedures displayed on the homepage.
+- **Manage Clinic Working Hours & Settings** (`admin/settings.php`):
+  - Update weekday hours, weekend hours, emergency hotlines, and address.
+- **Manage Testimonials** (`admin/testimonials.php`):
+  - Moderate patient reviews (Approve, Unpublish, Delete, Add).
+- **Contact Messages** (`admin/messages.php`):
+  - View inquiries submitted via `contact.php`, mark as read, and reply via mailto.
 
-### Option A: Local Dev Server (Running Right Now)
-The server is already running on port **8000**:
-- **Website Homepage:** [http://localhost:8000](http://localhost:8000)
-- **Appointment Booking:** [http://localhost:8000/booking.html](http://localhost:8000/booking.html)
-- **Admin Dashboard:** [http://localhost:8000/admin/index.html](http://localhost:8000/admin/index.html)
-- **Patient Sign In:** [http://localhost:8000/login.html](http://localhost:8000/login.html)
+---
 
-To restart manually at any time:
-```powershell
-node server.js
+### 🛡️ Security & Architecture
+- **Prepared Statements**: All database operations use PDO prepared statements to guard against SQL injection.
+- **Password Security**: Strong hashing via `password_hash()` (`PASSWORD_DEFAULT` / BCRYPT).
+- **Authentication Guard**: Role-based access control protecting patient and admin routes.
+- **Cross-Site Request Forgery (CSRF)**: CSRF tokens generated and validated on all form submissions.
+- **Cross-Site Scripting (XSS)**: Escaping of all user-supplied data using `htmlspecialchars()`.
+- **Resilient Fallback Layer**: If MySQL is offline during initial inspection, the platform gracefully alerts the administrator to run the installer without fatal crashes.
+
+---
+
+## 2. Directory Structure
+
+```
+DentistDentalClinicDentia/
+├── database.sql                  # MySQL database schema and seed data
+├── index.php                     # Root redirection router to main platform
+├── README.md                     # Documentation and setup instructions
+├── PROJECT.md                    # Project requirements and specification
+└── Dentia/
+    └── Dentia HTML/              # Main Web Application Directory
+        ├── admin/                # Admin Management Dashboard
+        │   ├── appointments.php  # Manage and filter appointments
+        │   ├── auth.php          # Admin auth guard
+        │   ├── dentists.php      # Manage dentists and credentials
+        │   ├── footer.php        # Admin footer
+        │   ├── header.php        # Admin header and sidebar
+        │   ├── index.php         # Admin metrics overview
+        │   ├── login.php         # Admin portal login
+        │   ├── logout.php        # Admin logout
+        │   ├── messages.php      # View patient inquiries
+        │   ├── patients.php      # Manage registered patients
+        │   ├── services.php      # Manage procedures and fees
+        │   ├── settings.php      # Manage hours and clinic settings
+        │   └── testimonials.php  # Moderate patient reviews
+        ├── api/                  # JSON API Endpoints
+        │   ├── check-slots.php   # Real-time slot availability & duplicate check
+        │   └── book-appointment.php # Appointment submission handler
+        ├── css/                  # Stylesheets
+        │   ├── bootstrap.min.css # Bootstrap 5 framework
+        │   ├── custom-modern.css # Medical-themed UI/UX styling
+        │   ├── style.css         # Base template styling
+        │   └── plugins.css       # Icons and animation styles
+        ├── includes/             # Shared Backend Components
+        │   ├── auth.php          # Session and CSRF helpers
+        │   ├── db.php            # PDO Database connection layer
+        │   ├── footer.php        # Global footer
+        │   ├── functions.php     # Core business logic and slot algorithms
+        │   └── header.php        # Global header with responsive navbar
+        ├── js/                   # Scripts
+        │   ├── custom-app.js     # Slot picker, live check, and search script
+        │   ├── designesia.js     # Template UI effects
+        │   └── plugins.js        # jQuery and Bootstrap bundles
+        ├── about.php             # Clinic history and values
+        ├── blog.php              # Dental articles list
+        ├── blog-single.php       # Single article view
+        ├── booking.php           # Appointment booking engine
+        ├── contact.php           # Contact form and Google Maps
+        ├── dentists.php          # Doctor credentials directory
+        ├── faq.php               # Patient knowledgebase accordion
+        ├── gallery.php           # Facilities & technology tour
+        ├── index.php             # Modern clinic homepage
+        ├── install.php           # 1-Click Database Setup Wizard
+        ├── login.php             # Patient login
+        ├── logout.php            # Patient logout
+        ├── patient-dashboard.php # Patient portal
+        ├── patient-profile.php   # Profile and password update
+        ├── register.php          # Patient registration
+        ├── services.php          # All dental procedures directory
+        ├── service-*.php         # 10 dedicated service pages
+        └── testimonials.php      # Patient feedback and review form
 ```
 
-### Option B: PHP & MySQL Production Hosting (XAMPP / cPanel / Apache)
-1. Point Apache document root to `Dentia/Dentia HTML/` (or copy contents to `public_html/`).
-2. Open phpMyAdmin or MySQL CLI and import `database.sql` (or `database/medinova_hospital.sql`).
-3. Verify connection settings in `config/database.php` (defaults to `localhost`, port `3306`, user `root`, pass ``, db `medinova_hospital`).
-4. Access `http://localhost/` or your domain. All PHP scripts connect with PDO.
+---
+
+## 3. Installation & Setup Guide
+
+### Option A: Using XAMPP / WAMP / Laragon
+1. Copy the `DentistDentalClinicDentia` folder into your web server root:
+   - **XAMPP**: `C:\xampp\htdocs\DentistDentalClinicDentia`
+   - **WAMP**: `C:\wamp64\www\DentistDentalClinicDentia`
+   - **Laragon**: `C:\laragon\www\DentistDentalClinicDentia`
+2. Start the **Apache** and **MySQL** services from the control panel.
+3. Open your browser and navigate to:
+   ```
+   http://localhost/DentistDentalClinicDentia/Dentia/Dentia%20HTML/install.php
+   ```
+4. Click **"Install Database & Sample Data"**. The wizard will automatically create the database, tables, default admin, doctors, services, and sample bookings!
+5. Navigate to:
+   ```
+   http://localhost/DentistDentalClinicDentia/
+   ```
+
+### Option B: Using PHP Built-In Web Server
+From the command line in the project folder:
+```powershell
+# Navigate into Dentia HTML directory
+cd "Dentia\Dentia HTML"
+
+# Start the PHP server
+php -S localhost:8000
+```
+Open your browser at `http://localhost:8000/install.php` to initialize the database, then visit `http://localhost:8000/`.
+
+---
+
+## 4. Default Login Credentials
+
+### 🛡️ Administrator Portal (`/admin/login.php`)
+- **Email**: `admin@dentia.com`
+- **Password**: `admin123`
+- *Access*: Full executive control over appointments, patients, doctors, services, hours, testimonials, and contact inquiries.
+
+### 👤 Sample Patient Account (`/login.php`)
+- **Email**: `john.doe@example.com`
+- **Password**: `patient123`
+- *Access*: Patient dashboard, upcoming appointments, appointment cancellation, and profile management.
+

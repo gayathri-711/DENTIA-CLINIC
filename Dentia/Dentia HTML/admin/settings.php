@@ -1,9 +1,8 @@
 <?php
 /**
- * MEDINOVA Multi-Speciality Hospital Management System
- * Admin Manage Hospital Hours & Configuration
+ * Doctor Dental Clinic Dentia - Admin Manage Clinic Hours & Settings
  */
-$adminPageTitle = "Hospital Working Hours & Settings";
+$adminPageTitle = "Clinic Working Hours & Settings";
 require_once __DIR__ . '/header.php';
 
 global $pdo;

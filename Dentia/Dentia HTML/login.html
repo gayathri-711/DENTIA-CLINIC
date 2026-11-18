@@ -1,133 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Portals Sign In - MEDINOVA</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="fonts/fontawesome6/css/all.min.css">
-    <link rel="stylesheet" href="css/medinova-theme.css">
+    <title>Patient Sign In — Doctor Dental Clinic Dentia</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="images/icon.webp" type="image/gif">
 </head>
-<body class="bg-light">
-
-<div class="py-5">
-    <div class="container py-4">
+<body class="bg-light d-flex align-items-center min-vh-100 py-5">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-5 col-md-8">
-                <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white">
-                    <div class="text-center mb-4">
-                        <div class="med-logo-icon mx-auto mb-3" style="width: 52px; height: 52px; font-size: 26px;">
-                            <i class="fa fa-heart-pulse"></i>
-                        </div>
-                        <h3 class="fw-bold text-primary mb-1">Hospital Portals Sign In</h3>
-                        <p class="text-muted small">Select your clinical or administrative role below</p>
+            <div class="col-lg-5 col-md-7">
+                
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white">
+                    <div class="card-header bg-primary text-white p-4 text-center">
+                        <a href="index.html">
+                            <img src="images/logo-white.webp" alt="Dentia" class="mb-2" style="max-height: 42px;">
+                        </a>
+                        <h4 class="fw-bold text-white mb-0">Patient Account Sign In</h4>
+                        <p class="small text-white-50 mb-0">Access your scheduled dental visits & medical appointments</p>
                     </div>
 
-                    <form id="loginForm" onsubmit="handleLogin(event)">
-                        <div class="mb-3">
-                            <label class="form-label fw-bold small text-muted">Hospital Email Address</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa fa-envelope text-muted"></i></span>
-                                <input type="email" id="loginEmail" class="form-control border-start-0" placeholder="name@medinova.com" value="admin@medinova.com" required>
+                    <div class="card-body p-4 p-md-5">
+                        
+                        <div id="login_alert" class="alert d-none rounded-3 mb-4 shadow-sm"></div>
+
+                        <form id="patient_login_form" onsubmit="handlePatientLogin(event)">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold small">Registered Email Address</label>
+                                <input type="email" id="login_email" class="form-control rounded-3 py-2" placeholder="name@example.com" required>
                             </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small">Account Password</label>
+                                <input type="password" id="login_password" class="form-control rounded-3 py-2" placeholder="••••••••" required>
+                            </div>
+
+                            <button type="submit" id="btn_submit" class="btn btn-primary btn-lg rounded-pill w-100 fw-bold shadow mb-3">
+                                <i class="fa fa-unlock-alt me-2"></i> Access Patient Portal
+                            </button>
+                        </form>
+
+                        <div class="bg-light p-3 rounded-3 text-center border mb-3">
+                            <div class="small text-muted mb-2">Want to test with sample patient?</div>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="fillSamplePatient()">
+                                <i class="fa fa-magic me-1"></i> Quick Fill: John Doe (Demo)
+                            </button>
                         </div>
 
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between">
-                                <label class="form-label fw-bold small text-muted">Password</label>
-                                <a href="#" class="small text-decoration-none" onclick="alert('Demo password is: medinova123'); return false;">Forgot?</a>
-                            </div>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light border-end-0"><i class="fa fa-lock text-muted"></i></span>
-                                <input type="password" id="loginPassword" class="form-control border-start-0" placeholder="••••••••" value="medinova123" required>
-                            </div>
+                        <div class="text-center pt-3 border-top">
+                            <p class="text-muted small mb-2">
+                                New patient? <a href="register.html" class="text-primary fw-bold text-decoration-none">Create an Account</a>
+                            </p>
+                            <p class="text-muted small mb-0">
+                                Clinic Staff? <a href="admin/index.html" class="text-secondary fw-semibold text-decoration-none"><i class="fa fa-shield me-1"></i> Admin Portal</a>
+                            </p>
                         </div>
 
-                        <button type="submit" class="btn btn-med-primary w-100 py-3 fw-bold rounded-3 mb-3">
-                            <i class="fa fa-arrow-right-to-bracket me-2"></i> Sign In to Portal
-                        </button>
-
-                        <div class="text-center mb-3">
-                            <a href="index.html" class="text-muted small text-decoration-none"><i class="fa fa-arrow-left me-1"></i> Back to Homepage</a>
-                        </div>
-                    </form>
-
-                    <!-- 1-Click Fast Demo Logins for Evaluator -->
-                    <div class="mt-4 pt-4 border-top">
-                        <small class="text-muted fw-bold d-block text-uppercase mb-2 text-center" style="font-size: 11px;">1-Click Role Portals (Instant Fill & Jump)</small>
-                        <div class="row g-2">
-                            <div class="col-6">
-                                <a href="admin/index.html" class="btn btn-sm btn-outline-primary w-100 text-truncate">
-                                    <i class="fa fa-gauge me-1"></i> Admin Portal
-                                </a>
-                            </div>
-                            <div class="col-6">
-                                <a href="patient-dashboard.html" class="btn btn-sm btn-outline-primary w-100 text-truncate">
-                                    <i class="fa fa-user me-1"></i> Patient Portal
-                                </a>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100 text-truncate" onclick="fillDemo('cardiology@medinova.com', 'medinova123', 'doctor')">
-                                    <i class="fa fa-user-doctor me-1"></i> Doctor Portal
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100 text-truncate" onclick="fillDemo('reception@medinova.com', 'medinova123', 'reception')">
-                                    <i class="fa fa-id-card me-1"></i> Reception Desk
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100 text-truncate" onclick="fillDemo('nurse@medinova.com', 'medinova123', 'nurse')">
-                                    <i class="fa fa-user-nurse me-1"></i> Nursing Station
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100 text-truncate" onclick="fillDemo('lab@medinova.com', 'medinova123', 'lab')">
-                                    <i class="fa fa-flask me-1"></i> Diagnostic Lab
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100 text-truncate" onclick="fillDemo('pharmacy@medinova.com', 'medinova123', 'pharmacy')">
-                                    <i class="fa fa-pills me-1"></i> Pharmacy
-                                </button>
-                            </div>
-                            <div class="col-6">
-                                <button type="button" class="btn btn-sm btn-outline-primary w-100 text-truncate" onclick="fillDemo('billing@medinova.com', 'medinova123', 'billing')">
-                                    <i class="fa fa-file-invoice me-1"></i> Billing & Cashier
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
+                <div class="text-center mt-3">
+                    <a href="index.html" class="text-muted small text-decoration-none"><i class="fa fa-arrow-left me-1"></i> Return to Homepage</a>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
 
 <script>
-function fillDemo(email, pass, role) {
-    document.getElementById('loginEmail').value = email;
-    document.getElementById('loginPassword').value = pass;
-    if (role === 'admin') window.location.href = 'admin/index.html';
-    else if (role === 'patient') window.location.href = 'patient-dashboard.html';
-    else if (role === 'doctor') window.location.href = 'doctor/index.php';
-    else if (role === 'reception') window.location.href = 'receptionist/index.php';
-    else if (role === 'nurse') window.location.href = 'nurse/index.php';
-    else if (role === 'lab') window.location.href = 'laboratory/index.php';
-    else if (role === 'pharmacy') window.location.href = 'pharmacy/index.php';
-    else if (role === 'billing') window.location.href = 'billing/index.php';
+function fillSamplePatient() {
+    document.getElementById('login_email').value = 'john.doe@example.com';
+    document.getElementById('login_password').value = 'patient123';
 }
 
-function handleLogin(e) {
+async function handlePatientLogin(e) {
     e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    if (email.includes('admin')) window.location.href = 'admin/index.html';
-    else window.location.href = 'patient-dashboard.html';
+    const alertEl = document.getElementById('login_alert');
+    const submitBtn = document.getElementById('btn_submit');
+    const email = document.getElementById('login_email').value.trim();
+    const pass = document.getElementById('login_password').value;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Signing In...';
+
+    try {
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, password: pass })
+        }).then(r => r.json());
+
+        if (res.success) {
+            localStorage.setItem('dentia_patient', JSON.stringify(res.patient));
+            alertEl.className = 'alert alert-success rounded-3 mb-4';
+            alertEl.innerHTML = `<i class="fa fa-check-circle me-2"></i> Welcome back, ${res.patient.name}! Redirecting to dashboard...`;
+            setTimeout(() => {
+                window.location.href = 'patient-dashboard.html';
+            }, 800);
+        } else {
+            alertEl.className = 'alert alert-danger rounded-3 mb-4';
+            alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> ${res.message || 'Invalid credentials'}`;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa fa-unlock-alt me-2"></i> Access Patient Portal';
+        }
+    } catch (err) {
+        alertEl.className = 'alert alert-danger rounded-3 mb-4';
+        alertEl.innerHTML = '<i class="fa fa-exclamation-circle me-2"></i> Server communication error. Please try again.';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa fa-unlock-alt me-2"></i> Access Patient Portal';
+    }
 }
 </script>
 </body>
 </html>
+

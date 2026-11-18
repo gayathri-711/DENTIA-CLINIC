@@ -1,137 +1,119 @@
 <?php
 /**
- * MEDINOVA Multi-Speciality Hospital Management System
- * Global Responsive Public Footer
+ * Doctor Dental Clinic Dentia - Global Footer Component
  */
-$footerSettings = get_hospital_settings();
-
-// Ensure asset prefix exists
-if (!isset($assetPrefix)) {
-    $docRoot = realpath(__DIR__ . '/..');
-    $currentDir = realpath(dirname($_SERVER['SCRIPT_FILENAME'] ?? getcwd()));
-    $assetPrefix = '';
-    if ($docRoot && $currentDir && $currentDir !== $docRoot) {
-        $rel = str_replace('\\', '/', trim(substr($currentDir, strlen($docRoot)), '/\\'));
-        if ($rel !== '') {
-            $depth = count(explode('/', $rel));
-            $assetPrefix = str_repeat('../', $depth);
-        }
-    }
-}
+$clinicSettings = get_clinic_settings();
 ?>
-<!-- Hospital Emergency Banner -->
-<div class="py-4 bg-primary text-white" style="background: linear-gradient(135deg, var(--med-primary-dark), var(--med-secondary-dark)) !important;">
-    <div class="container">
-        <div class="row align-items-center g-3">
-            <div class="col-lg-8">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle bg-white text-danger d-flex align-items-center justify-content-center" style="width: 54px; height: 54px; font-size: 24px;">
-                        <i class="fa fa-truck-medical"></i>
+        <!-- Footer begin -->
+        <footer class="text-light">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="widget">
+                            <img src="images/logo-white.webp" class="w-180px mb-4" alt="Dentia Dental Clinic">
+                            <p>Doctor Dental Clinic Dentia is a patient-first dental clinic in New York delivering advanced, gentle, and aesthetic oral healthcare for children, adults, and seniors using world-class dental technology.</p>
+                            
+                            <div class="d-flex align-items-center gap-3 mt-4">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                                    <i class="fa fa-phone fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="small text-white-50">24/7 Dental Emergency Hotline</div>
+                                    <a href="tel:<?= e($clinicSettings['emergency_phone']) ?>" class="fs-5 fw-bold text-white text-decoration-none"><?= e($clinicSettings['emergency_phone']) ?></a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="mb-1 text-white fw-bold">Medical Emergency? Need an Ambulance?</h4>
-                        <p class="mb-0 text-white-50">Our Level-I Trauma Center and Rapid Response Cardiac Team operate 24 hours a day, 365 days a year.</p>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget">
+                            <h5>Dental Services</h5>
+                            <ul class="ul-check">
+                                <li><a href="service-general-dentistry.php">General Dentistry</a></li>
+                                <li><a href="service-teeth-whitening.php">Teeth Whitening</a></li>
+                                <li><a href="service-dental-implants.php">Dental Implants</a></li>
+                                <li><a href="service-root-canal.php">Root Canal Treatment</a></li>
+                                <li><a href="service-orthodontics.php">Orthodontics & Braces</a></li>
+                                <li><a href="service-cosmetic-dentistry.php">Cosmetic Dentistry</a></li>
+                                <li><a href="service-pediatric-dentistry.php">Pediatric Dentistry</a></li>
+                                <li><a href="service-tooth-extraction.php">Tooth Extraction</a></li>
+                                <li><a href="service-dental-cleaning.php">Dental Cleaning</a></li>
+                                <li><a href="service-gum-treatment.php">Gum Treatment</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6">
+                        <div class="widget">
+                            <h5>Clinic Quick Links</h5>
+                            <ul class="ul-check">
+                                <li><a href="index.php">Home</a></li>
+                                <li><a href="about.php">About Clinic</a></li>
+                                <li><a href="dentists.php">Our Dentists</a></li>
+                                <li><a href="booking.php">Book Appointment</a></li>
+                                <li><a href="faq.php">Patient FAQs</a></li>
+                                <li><a href="gallery.php">Facilities Tour</a></li>
+                                <li><a href="testimonials.php">Patient Reviews</a></li>
+                                <li><a href="blog.php">Dental Blog</a></li>
+                                <li><a href="contact.php">Contact & Location</a></li>
+                                <li><a href="patient-dashboard.php">Patient Portal</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="widget">
+                            <h5>Clinic Hours & Location</h5>
+                            <div class="mb-3">
+                                <div class="text-white-50 small"><i class="fa fa-clock-o me-2 text-primary"></i>Monday - Friday:</div>
+                                <div class="fw-semibold text-white">08:00 AM - 08:00 PM</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-white-50 small"><i class="fa fa-clock-o me-2 text-primary"></i>Saturday:</div>
+                                <div class="fw-semibold text-white">09:00 AM - 05:00 PM</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="text-white-50 small"><i class="fa fa-clock-o me-2 text-primary"></i>Sunday:</div>
+                                <div class="fw-semibold text-danger">Emergency On-Call Only</div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-top border-secondary">
+                                <div class="text-white-50 small"><i class="fa fa-map-marker me-2 text-primary"></i>Clinic Address:</div>
+                                <p class="mb-0 text-white"><?= e($clinicSettings['address']) ?></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 text-lg-end">
-                <a href="tel:<?= e($footerSettings['emergency_phone']) ?>" class="btn btn-danger btn-lg rounded-pill px-4 fw-bold shadow">
-                    <i class="fa fa-phone-volume me-2"></i> Call <?= e($footerSettings['emergency_phone']) ?>
-                </a>
+
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            &copy; <?= date('Y') ?> Doctor Dental Clinic Dentia. All Rights Reserved. Built for Modern Dental Care.
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <div class="social-icons">
+                                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                                <a href="admin/login.php" title="Staff Portal" class="text-white-50 ms-3 small"><i class="fa fa-lock me-1"></i> Admin Portal</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </footer>
+        <!-- Footer end -->
     </div>
-</div>
 
-<!-- Main Footer -->
-<footer class="med-footer">
-    <div class="container">
-        <div class="row g-4 mb-5">
-            <!-- Brand Overview -->
-            <div class="col-lg-4 col-md-6">
-                <div class="med-logo mb-3">
-                    <div class="med-logo-icon">
-                        <i class="fa fa-heart-pulse"></i>
-                    </div>
-                    <div>
-                        <div class="med-logo-text text-white">MEDINOVA</div>
-                        <div class="med-logo-tagline text-info">Advanced Healthcare</div>
-                    </div>
-                </div>
-                <p class="text-white-50 mb-4">
-                    MEDINOVA is a state-of-the-art tertiary hospital dedicated to clinical excellence, patient-centric compassion, and cutting-edge healthcare technology across 12 medical specialities.
-                </p>
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-
-            <!-- 12 Speciality Departments -->
-            <div class="col-lg-3 col-md-6">
-                <h5>Speciality Centers</h5>
-                <ul class="list-unstyled mb-0">
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=cardiology"><i class="fa fa-angle-right me-2 text-info"></i> Cardiology & Cath Lab</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=neurology"><i class="fa fa-angle-right me-2 text-info"></i> Neurology & Stroke Unit</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=orthopedics"><i class="fa fa-angle-right me-2 text-info"></i> Robotic Joint Surgery</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=pediatrics"><i class="fa fa-angle-right me-2 text-info"></i> Pediatrics & Level-III NICU</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>department-details.php?slug=oncology"><i class="fa fa-angle-right me-2 text-info"></i> Comprehensive Oncology</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>departments.php" class="text-info fw-bold"><i class="fa fa-arrow-right me-1"></i> View All 12 Departments</a></li>
-                </ul>
-            </div>
-
-            <!-- Quick Portals & Links -->
-            <div class="col-lg-2 col-md-6">
-                <h5>Hospital Portals</h5>
-                <ul class="list-unstyled mb-0">
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=patient"><i class="fa fa-angle-right me-2 text-info"></i> Patient Portal</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=doctor"><i class="fa fa-angle-right me-2 text-info"></i> Doctor Portal</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=receptionist"><i class="fa fa-angle-right me-2 text-info"></i> Reception Desk</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=nurse"><i class="fa fa-angle-right me-2 text-info"></i> Inpatient Nursing</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=lab_technician"><i class="fa fa-angle-right me-2 text-info"></i> Diagnostic Lab</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>login.php?role=pharmacist"><i class="fa fa-angle-right me-2 text-info"></i> Pharmacy Dispensary</a></li>
-                    <li class="mb-2"><a href="<?= $assetPrefix ?>admin/index.php"><i class="fa fa-angle-right me-2 text-info"></i> Admin Dashboard</a></li>
-                </ul>
-            </div>
-
-            <!-- Contact & Hours -->
-            <div class="col-lg-3 col-md-6">
-                <h5>Hospital Address</h5>
-                <p class="text-white-50 mb-2">
-                    <i class="fa fa-map-marker-alt me-2 text-danger"></i> <?= e($footerSettings['address']) ?>
-                </p>
-                <p class="text-white-50 mb-2">
-                    <i class="fa fa-phone me-2 text-info"></i> <?= e($footerSettings['phone']) ?>
-                </p>
-                <p class="text-white-50 mb-2">
-                    <i class="fa fa-envelope me-2 text-info"></i> <?= e($footerSettings['email']) ?>
-                </p>
-                <div class="mt-3 p-3 rounded-3" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
-                    <small class="text-white d-block fw-bold"><i class="fa fa-shield-heart me-1 text-success"></i> NABH & JCI Accredited</small>
-                    <small class="text-white-50">Certified for international patient safety & clinical standards.</small>
-                </div>
-            </div>
-        </div>
-
-        <hr class="border-secondary mb-4 opacity-25">
-
-        <div class="row align-items-center">
-            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                <small class="text-white-50">&copy; <?= date('Y') ?> <strong>MEDINOVA Multi-Speciality Hospital</strong>. All rights reserved.</small>
-            </div>
-            <div class="col-md-6 text-center text-md-end">
-                <small class="text-white-50">Designed with Advanced Clinical Standards &bull; HIPAA & HL7 Compliant</small>
-            </div>
-        </div>
-    </div>
-</footer>
-
-<!-- Core Scripts -->
-<script src="<?= $assetPrefix ?>js/plugins.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?= $assetPrefix ?>js/custom-app.js"></script>
-
+    <!-- Javascript Files ================================================== -->
+    <script src="js/plugins.js"></script>
+    <script src="js/designesia.js"></script>
+    <script src="js/swiper.js"></script>
+    <!-- Custom Interactive Management Platform Script -->
+    <script src="js/custom-app.js"></script>
 </body>
 </html>
+

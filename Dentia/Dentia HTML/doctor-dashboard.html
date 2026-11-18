@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Clinical Dashboard — Doctor Dental Clinic Dentia</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="images/icon.webp" type="image/gif">
+    <style>
+        .badge-pending { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .badge-confirmed { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .badge-completed { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        
+        .doctor-sidebar-profile {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+            border-radius: 16px;
+            color: white;
+            padding: 24px;
+        }
+        .filter-pill {
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #dee2e6;
+            background: white;
+            color: #495057;
+            transition: all 0.2s;
+        }
+        .filter-pill.active {
+            background: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Top Navbar -->
+    <header class="bg-white border-bottom py-3 shadow-sm sticky-top">
+        <div class="container-fluid px-4 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <a href="index.html" class="d-flex align-items-center text-decoration-none">
+                    <img src="images/logo-black.webp" alt="Dentia" style="max-height: 38px;">
+                </a>
+                <span class="badge bg-primary text-white rounded-pill px-3 py-1 small fw-semibold">
+                    <i class="fa fa-stethoscope me-1"></i> Doctor Clinical Portal
+                </span>
+            </div>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <img id="nav_doctor_img" src="images/team/1.webp" class="rounded-circle shadow-sm" style="width:38px; height:38px; object-fit:cover;">
+                    <div class="d-none d-sm-block">
+                        <div class="fw-bold small text-dark leading-tight" id="nav_doctor_name">Doctor</div>
+                        <div class="text-muted" style="font-size: 11px;" id="nav_doctor_spec">Specialist</div>
+                    </div>
+                </div>
+                <a href="booking.html" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                    <i class="fa fa-calendar me-1"></i> Public Schedule
+                </a>
+                <button onclick="handleDoctorLogout()" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                    <i class="fa fa-sign-out me-1"></i> Sign Out
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="p-4">
+        <div class="container-fluid px-md-4">
+
+            <!-- Toast / Notification Alert Box -->
+            <div id="doctor_alert" class="alert d-none rounded-3 shadow-sm mb-4"></div>
+
+            <!-- Doctor Profile Header Banner -->
+            <div class="doctor-sidebar-profile shadow-sm mb-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        <img id="banner_doctor_img" src="images/team/1.webp" class="rounded-circle border border-3 border-white shadow" style="width: 80px; height: 80px; object-fit: cover;">
+                    </div>
+                    <div class="col">
+                        <h3 class="fw-bold text-white mb-1" id="banner_doctor_name">Welcome, Doctor</h3>
+                        <p class="text-white-50 mb-1" id="banner_doctor_qual">Dental Surgery Specialist</p>
+                        <div class="d-flex flex-wrap gap-3 small text-white" style="opacity: 0.9;">
+                            <span><i class="fa fa-id-badge me-1"></i> <strong id="banner_doctor_spec">Lead Dentist</strong></span>
+                            <span><i class="fa fa-envelope-o me-1"></i> <span id="banner_doctor_email">doctor@dentiacare.com</span></span>
+                            <span><i class="fa fa-clock-o me-1"></i> <span id="banner_doctor_hours">Mon - Fri &bull; 09:00 AM - 05:00 PM</span></span>
+                        </div>
+                    </div>
+                    <div class="col-md-auto text-md-end">
+                        <span class="badge bg-white text-primary rounded-pill px-3 py-2 fw-bold shadow-sm">
+                            <i class="fa fa-check-circle text-success me-1"></i> Active Doctor Practice
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor Summary Statistics Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Pending My Review</div>
+                            <h2 class="fw-bold mb-0 text-warning" id="count_pending">0</h2>
+                            <small class="text-warning fw-semibold"><i class="fa fa-clock-o me-1"></i> Awaiting Confirmation</small>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fa fa-hourglass-half fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Confirmed Visits</div>
+                            <h2 class="fw-bold mb-0 text-success" id="count_confirmed">0</h2>
+                            <small class="text-success fw-semibold"><i class="fa fa-check-circle me-1"></i> Ready for Treatment</small>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fa fa-calendar-check-o fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Completed Treatments</div>
+                            <h2 class="fw-bold mb-0 text-primary" id="count_completed">0</h2>
+                            <small class="text-primary fw-semibold"><i class="fa fa-smile-o me-1"></i> Successfully Treated</small>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fa fa-user-md fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Total Patients Assigned</div>
+                            <h2 class="fw-bold mb-0 text-dark" id="count_total">0</h2>
+                            <small class="text-muted fw-semibold"><i class="fa fa-users me-1"></i> Doctor Case Volume</small>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fa fa-calendar fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor Appointments Table Card -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                <div class="card-header bg-white p-4 border-bottom">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-calendar-check-o text-primary me-2"></i> My Assigned Patient Appointments</h5>
+                            <small class="text-muted">Appointments booked specifically with your clinical profile</small>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="filter-pill active" onclick="filterAppointments('All', this)">All (<span id="pill_all">0</span>)</button>
+                            <button class="filter-pill" onclick="filterAppointments('Pending', this)">Pending (<span id="pill_pending">0</span>)</button>
+                            <button class="filter-pill" onclick="filterAppointments('Confirmed', this)">Confirmed (<span id="pill_confirmed">0</span>)</button>
+                            <button class="filter-pill" onclick="filterAppointments('Completed', this)">Completed (<span id="pill_completed">0</span>)</button>
+                        </div>
+                    </div>
+
+                    <!-- Search Filter -->
+                    <div class="mt-3">
+                        <div class="input-group" style="max-width: 400px;">
+                            <span class="input-group-text bg-light border-end-0"><i class="fa fa-search text-muted"></i></span>
+                            <input type="text" id="doc_app_search" onkeyup="renderAppointmentsTable()" class="form-control border-start-0" placeholder="Search patient name, booking ref, or procedure...">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Patient Information</th>
+                                    <th>Dental Procedure</th>
+                                    <th>Appointment Date & Time</th>
+                                    <th>Patient Message / Notes</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Clinical Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctor_appointments_body">
+                                <tr><td colspan="7" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading your clinical schedule...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL: Clinical Notes & Complete Treatment -->
+    <div class="modal fade" id="clinicalNotesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold text-white"><i class="fa fa-check-circle me-2"></i> Complete Treatment Procedure</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="small text-muted mb-3">Mark this patient visit as completed and record optional clinical notes, procedure summary, or prescription:</p>
+                    <input type="hidden" id="modal_app_id">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Procedure / Clinical Notes</label>
+                        <textarea id="modal_clinical_notes" class="form-control rounded-3" rows="4" placeholder="e.g. Ultrasonic cleaning performed. No active caries detected. Recommended enamel fluoridation in 6 months."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold" onclick="saveCompletedTreatment()">
+                        <i class="fa fa-check me-1"></i> Complete Treatment
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="js/plugins.js"></script>
+<script>
+let currentDoctor = null;
+let doctorAppointments = [];
+let currentFilter = 'All';
+
+function checkDoctorAuth() {
+    const raw = localStorage.getItem('dentia_doctor');
+    if (!raw) {
+        window.location.href = 'doctor-login.html';
+        return;
+    }
+    try {
+        currentDoctor = JSON.parse(raw);
+        if (!currentDoctor || !currentDoctor.id) throw new Error();
+
+        // Update UI with doctor's profile
+        document.getElementById('nav_doctor_name').innerText = currentDoctor.name;
+        document.getElementById('nav_doctor_spec').innerText = currentDoctor.specialization;
+        document.getElementById('banner_doctor_name').innerText = 'Welcome, ' + currentDoctor.name;
+        document.getElementById('banner_doctor_qual').innerText = currentDoctor.qualification || 'Dentist';
+        document.getElementById('banner_doctor_spec').innerText = currentDoctor.specialization;
+        document.getElementById('banner_doctor_email').innerText = currentDoctor.login_email || currentDoctor.email;
+        document.getElementById('banner_doctor_hours').innerText = (currentDoctor.availability_days || 'Mon - Fri') + ' • ' + (currentDoctor.availability_hours || '09:00 AM - 05:00 PM');
+        
+        if (currentDoctor.image) {
+            document.getElementById('nav_doctor_img').src = currentDoctor.image;
+            document.getElementById('banner_doctor_img').src = currentDoctor.image;
+        }
+    } catch (e) {
+        window.location.href = 'doctor-login.html';
+    }
+}
+
+function showDoctorAlert(msg, type = 'success') {
+    const el = document.getElementById('doctor_alert');
+    el.className = `alert alert-${type} rounded-3 shadow-sm mb-4 d-block`;
+    el.innerHTML = `<i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i> ${msg}`;
+    setTimeout(() => { el.className = 'alert d-none'; }, 5000);
+}
+
+async function loadDoctorAppointments() {
+    if (!currentDoctor) return;
+    try {
+        const res = await fetch(`/api/doctor/appointments?doctor_id=${currentDoctor.id}`).then(r => r.json());
+        doctorAppointments = res.appointments || [];
+
+        const pending = doctorAppointments.filter(a => a.status === 'Pending').length;
+        const confirmed = doctorAppointments.filter(a => a.status === 'Confirmed').length;
+        const completed = doctorAppointments.filter(a => a.status === 'Completed').length;
+
+        document.getElementById('count_pending').innerText = pending;
+        document.getElementById('count_confirmed').innerText = confirmed;
+        document.getElementById('count_completed').innerText = completed;
+        document.getElementById('count_total').innerText = doctorAppointments.length;
+
+        document.getElementById('pill_all').innerText = doctorAppointments.length;
+        document.getElementById('pill_pending').innerText = pending;
+        document.getElementById('pill_confirmed').innerText = confirmed;
+        document.getElementById('pill_completed').innerText = completed;
+
+        renderAppointmentsTable();
+    } catch (e) {
+        document.getElementById('doctor_appointments_body').innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error loading doctor schedule.</td></tr>`;
+    }
+}
+
+function filterAppointments(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    renderAppointmentsTable();
+}
+
+function renderAppointmentsTable() {
+    const tbody = document.getElementById('doctor_appointments_body');
+    let list = doctorAppointments;
+
+    if (currentFilter !== 'All') {
+        list = list.filter(a => a.status === currentFilter);
+    }
+
+    const q = (document.getElementById('doc_app_search').value || '').toLowerCase().trim();
+    if (q) {
+        list = list.filter(a => 
+            (a.patient_name || '').toLowerCase().includes(q) ||
+            (a.appointment_ref || '').toLowerCase().includes(q) ||
+            (a.service_name || '').toLowerCase().includes(q) ||
+            (a.patient_email || '').toLowerCase().includes(q)
+        );
+    }
+
+    if (list.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="text-center py-5 text-muted">
+                    <div class="mb-2" style="font-size: 38px;"><i class="fa fa-calendar-check-o text-muted"></i></div>
+                    <div class="fw-bold">No appointments found</div>
+                    <small>No patient visits matching this filter.</small>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = list.map(app => {
+        const isPending = app.status === 'Pending';
+        const isConfirmed = app.status === 'Confirmed';
+        const isCompleted = app.status === 'Completed';
+
+        return `
+            <tr>
+                <td><strong class="font-monospace text-primary">${app.appointment_ref}</strong></td>
+                <td>
+                    <div class="fw-bold text-dark">${app.patient_name}</div>
+                    <div class="small text-muted"><i class="fa fa-envelope-o me-1"></i>${app.patient_email}</div>
+                    <div class="small text-muted"><i class="fa fa-phone me-1"></i>${app.patient_phone || '—'}</div>
+                </td>
+                <td>
+                    <div class="fw-semibold text-dark">${app.service_name || 'Dental Procedure'}</div>
+                </td>
+                <td>
+                    <div class="fw-bold small"><i class="fa fa-calendar text-primary me-1"></i> ${app.appointment_date}</div>
+                    <div class="text-muted small"><i class="fa fa-clock-o me-1"></i> ${app.appointment_time}</div>
+                </td>
+                <td>
+                    <small class="text-muted">${app.message ? `"${app.message}"` : '<span class="text-muted fst-italic">No message</span>'}</small>
+                    ${app.doctor_notes ? `<div class="mt-1 small text-success fw-semibold"><i class="fa fa-file-text-o me-1"></i> Notes: ${app.doctor_notes}</div>` : ''}
+                </td>
+                <td>
+                    <span class="badge badge-${(app.status || 'pending').toLowerCase()} px-3 py-1 rounded-pill fw-semibold">
+                        ${app.status === 'Confirmed' ? '<i class="fa fa-check-circle me-1"></i> Confirmed' : app.status}
+                    </span>
+                </td>
+                <td class="text-end">
+                    <div class="d-flex justify-content-end gap-1">
+                        ${isPending ? `
+                            <button class="btn btn-sm btn-success rounded-pill px-3 fw-bold shadow-sm" onclick="handleDoctorAction(${app.id}, 'Confirm')" title="Accept & Confirm">
+                                <i class="fa fa-check me-1"></i> Accept & Confirm
+                            </button>
+                        ` : ''}
+
+                        ${isConfirmed ? `
+                            <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold" onclick="openCompleteModal(${app.id})" title="Complete Treatment">
+                                <i class="fa fa-check-circle me-1"></i> Complete Visit
+                            </button>
+                        ` : ''}
+
+                        ${app.status !== 'Cancelled' && !isCompleted ? `
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="handleDoctorAction(${app.id}, 'Cancel')" title="Cancel Appointment">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+async function handleDoctorAction(appId, action) {
+    const actionLabel = action === 'Confirm' ? 'accept and confirm' : 'cancel';
+    if (!confirm(`Are you sure you want to ${actionLabel} this appointment? An instant confirmation update will be sent to the patient.`)) return;
+
+    try {
+        const res = await fetch('/api/doctor/appointment/action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: appId, action: action })
+        }).then(r => r.json());
+
+        if (res.success) {
+            showDoctorAlert(`Appointment has been ${action === 'Confirm' ? 'CONFIRMED' : 'cancelled'}. Confirmation email & SMS dispatched to patient!`);
+            loadDoctorAppointments();
+        } else {
+            showDoctorAlert(res.message || 'Error updating appointment', 'danger');
+        }
+    } catch (e) {
+        showDoctorAlert('Server communication error', 'danger');
+    }
+}
+
+function openCompleteModal(appId) {
+    document.getElementById('modal_app_id').value = appId;
+    document.getElementById('modal_clinical_notes').value = '';
+    const modal = new bootstrap.Modal(document.getElementById('clinicalNotesModal'));
+    modal.show();
+}
+
+async function saveCompletedTreatment() {
+    const appId = document.getElementById('modal_app_id').value;
+    const notes = document.getElementById('modal_clinical_notes').value.trim();
+
+    try {
+        const res = await fetch('/api/doctor/appointment/action', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: appId, action: 'Complete', clinical_notes: notes })
+        }).then(r => r.json());
+
+        if (res.success) {
+            const modalEl = document.getElementById('clinicalNotesModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+
+            showDoctorAlert('Patient treatment marked as COMPLETED and clinical notes saved!');
+            loadDoctorAppointments();
+        }
+    } catch (e) {
+        showDoctorAlert('Error completing procedure', 'danger');
+    }
+}
+
+function handleDoctorLogout() {
+    localStorage.removeItem('dentia_doctor');
+    window.location.href = 'doctor-login.html';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkDoctorAuth();
+    loadDoctorAppointments();
+});
+</script>
+</body>
+</html>

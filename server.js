@@ -1,10 +1,13 @@
 /**
- * MEDINOVA - Multi-Speciality Hospital Management Platform Server
+ * Doctor Dental Clinic Dentia - Comprehensive Platform Server
  * Full REST API Support for:
- * - 12 Clinical Departments
- * - Multi-Speciality Doctor Roster & Schedules
- * - Interactive Cascading Appointment Booking with Concurrency Control
- * - Multi-Role Portals (Admin, Doctor, Patient, Reception, Nurse, Lab, Pharmacy, Billing)
+ * - Appointment Requests, Acceptance & Concurrency Protection
+ * - Alternative Slot Availability for Clashing Bookings
+ * - Doctor / Staff Management (Add, Edit, Delete, Credentials)
+ * - Admin-Controlled Doctor Authentication & Dedicated Doctor Dashboard
+ * - User-Based Patient Login & Registration
+ * - Patient Portal Dashboard with Real-Time Booking Sync
+ * - Automated Patient Email & SMS Notifications Engine
  */
 
 const http = require('http');
@@ -23,9 +26,10 @@ if (!fs.existsSync(DATA_DIR)) {
 const APPOINTMENTS_FILE = path.join(DATA_DIR, 'appointments.json');
 const DENTISTS_FILE = path.join(DATA_DIR, 'dentists.json');
 const PATIENTS_FILE = path.join(DATA_DIR, 'patients.json');
-const DEPARTMENTS_FILE = path.join(DATA_DIR, 'departments.json');
 const MESSAGES_FILE = path.join(DATA_DIR, 'messages.json');
+const NOTIFICATIONS_FILE = path.join(DATA_DIR, 'notifications.json');
 
+// Helpers for reading/writing JSON files
 function readJSON(filePath, fallback = []) {
   try {
     if (fs.existsSync(filePath)) {
@@ -66,10 +70,73 @@ const MIME_TYPES = {
 };
 
 const STANDARD_SLOTS = [
-  '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', 
-  '11:00 AM', '11:30 AM', '01:30 PM', '02:00 PM', 
-  '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM'
+  '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
+  '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM', '06:00 PM'
 ];
+
+function normalizeTime(t) {
+  if (!t) return '';
+  t = t.trim();
+  if (/^\d{1,2}:\d{2}$/.test(t)) {
+    const [h, m] = t.split(':').map(Number);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const hour12 = h % 12 === 0 ? 12 : h % 12;
+    return `${hour12 < 10 ? '0' + hour12 : hour12}:${m < 10 ? '0' + m : m} ${period}`;
+  }
+  return t;
+}
+
+function normalizeDate(d) {
+  if (!d) return '';
+  d = d.trim();
+  // If mm-dd-yyyy, convert to yyyy-mm-dd
+  if (/^\d{2}-\d{2}-\d{4}$/.test(d)) {
+    const [m, day, y] = d.split('-');
+    return `${y}-${m}-${day}`;
+  }
+  return d;
+}
+
+// Notification Dispatcher (Email & SMS)
+function dispatchNotification({ patient_name, patient_email, patient_phone, appointment_ref, type, subject, message, sms_text }) {
+  let notifications = readJSON(NOTIFICATIONS_FILE, []);
+  const now = new Date().toISOString();
+
+  // 1. Email Notification
+  const emailNotif = {
+    id: notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 1,
+    recipient_email: patient_email,
+    recipient_phone: patient_phone,
+    recipient_name: patient_name,
+    appointment_ref: appointment_ref || 'GENERAL',
+    channel: 'email',
+    type: type,
+    subject: subject,
+    message: message,
+    created_at: now,
+    status: 'Delivered'
+  };
+  notifications.push(emailNotif);
+
+  // 2. SMS Notification
+  const smsNotif = {
+    id: notifications.length > 0 ? Math.max(...notifications.map(n => n.id)) + 1 : 2,
+    recipient_email: patient_email,
+    recipient_phone: patient_phone,
+    recipient_name: patient_name,
+    appointment_ref: appointment_ref || 'GENERAL',
+    channel: 'sms',
+    type: type,
+    subject: 'SMS Text Alert',
+    message: sms_text || message,
+    created_at: now,
+    status: 'Delivered'
+  };
+  notifications.push(smsNotif);
+
+  writeJSON(NOTIFICATIONS_FILE, notifications);
+  return { email: emailNotif, sms: smsNotif };
+}
 
 function parsePostData(req) {
   return new Promise((resolve) => {
@@ -106,99 +173,83 @@ const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
-  // Friendly Route Aliases & Module Mappings
+  // Friendly Route Aliases
   if (pathname === '/' || pathname === '/index.php') pathname = '/index.html';
-  if (pathname === '/about' || pathname === '/about.php') pathname = '/about.html';
-  if (pathname === '/departments' || pathname === '/departments.php') pathname = '/departments.html';
-  if (pathname === '/doctors' || pathname === '/doctors.php' || pathname === '/dentists' || pathname === '/dentists.php') pathname = '/doctors.html';
-  if (pathname === '/facilities' || pathname === '/facilities.php' || pathname === '/services' || pathname === '/services.php') pathname = '/facilities.html';
-  if (pathname === '/contact' || pathname === '/contact.php') pathname = '/contact.html';
-  if (pathname === '/gallery' || pathname === '/gallery.php') pathname = '/gallery.html';
-  if (pathname === '/faq' || pathname === '/faq.php') pathname = '/faq.html';
-  if (pathname === '/testimonials' || pathname === '/testimonials.php') pathname = '/testimonials.html';
-  if (pathname === '/emergency' || pathname === '/emergency.php') pathname = '/departments/emergency-medicine.html';
-  if (pathname === '/login' || pathname === '/login.php') pathname = '/login.html';
-  if (pathname === '/register' || pathname === '/register.php') pathname = '/register.html';
-  if (pathname === '/booking' || pathname === '/booking.php') pathname = '/booking.html';
-  if (pathname === '/logout' || pathname === '/logout.php') {
-    res.writeHead(302, { 'Location': '/login.html' });
-    return res.end();
-  }
-
-  // Module Portals Aliases
-  if (pathname === '/admin' || pathname === '/admin/' || pathname === '/admin/index.php') pathname = '/admin/index.html';
-  if (pathname === '/doctor' || pathname === '/doctor/' || pathname === '/doctor/index.php') pathname = '/doctor/index.html';
-  if (pathname === '/patient' || pathname === '/patient/' || pathname === '/patient/dashboard.php' || pathname === '/patient/index.php' || pathname === '/dashboard') pathname = '/patient/dashboard.html';
-  if (pathname === '/receptionist' || pathname === '/receptionist/' || pathname === '/receptionist/index.php') pathname = '/receptionist/index.html';
-  if (pathname === '/nurse' || pathname === '/nurse/' || pathname === '/nurse/index.php') pathname = '/nurse/index.html';
-  if (pathname === '/laboratory' || pathname === '/laboratory/' || pathname === '/laboratory/index.php') pathname = '/laboratory/index.html';
-  if (pathname === '/pharmacy' || pathname === '/pharmacy/' || pathname === '/pharmacy/index.php') pathname = '/pharmacy/index.html';
-  if (pathname === '/billing' || pathname === '/billing/' || pathname === '/billing/index.php') pathname = '/billing/index.html';
-
-  // Department Details Mapping
-  if (pathname === '/department-details.php') {
-    const slug = parsedUrl.query.slug || 'cardiology';
-    pathname = `/departments/${slug}.html`;
-  }
-  if (pathname.startsWith('/departments/') && pathname.endsWith('.php')) {
-    pathname = pathname.replace('.php', '.html');
-  }
+  if (pathname === '/admin' || pathname === '/admin/') pathname = '/admin/index.html';
+  if (pathname === '/login') pathname = '/login.html';
+  if (pathname === '/register') pathname = '/register.html';
+  if (pathname === '/dashboard') pathname = '/patient-dashboard.html';
+  if (pathname === '/doctor-login' || pathname === '/doctor/login') pathname = '/doctor-login.html';
+  if (pathname === '/doctor-dashboard' || pathname === '/doctor/dashboard' || pathname === '/doctor') pathname = '/doctor-dashboard.html';
 
   // ----------------------------------------------------
   // REST API ENDPOINTS
   // ----------------------------------------------------
 
-  // 1. GET /api/departments
-  if (pathname === '/api/departments' && req.method === 'GET') {
-    const list = readJSON(DEPARTMENTS_FILE, []);
-    return sendJSON(res, list);
-  }
-
-  // 2. GET /api/get-doctors-by-dept.php
-  if (pathname === '/api/get-doctors-by-dept.php' && req.method === 'GET') {
-    const deptId = parseInt(parsedUrl.query.department_id || '0', 10);
-    const allDocs = readJSON(DENTISTS_FILE, []);
-    const docs = deptId > 0 ? allDocs.filter(d => d.department_id === deptId) : allDocs;
-    return sendJSON(res, { success: true, department_id: deptId, doctors: docs.length > 0 ? docs : allDocs });
-  }
-
-  // 3. GET /api/appointments
+  // 1. GET /api/appointments
   if (pathname === '/api/appointments' && req.method === 'GET') {
     const list = readJSON(APPOINTMENTS_FILE, []);
     return sendJSON(res, list);
   }
 
-  // 4. POST /api/appointments/status or /api/update-appointment-status.php
-  if ((pathname === '/api/appointments/status' || pathname === '/api/update-appointment-status.php') && req.method === 'POST') {
+  // 2. POST /api/appointments/status (Admin/Staff status update)
+  if (pathname === '/api/appointments/status' && req.method === 'POST') {
     const data = await parsePostData(req);
     const appId = parseInt(data.id || '0', 10);
-    const ref = data.appointment_ref || '';
     const newStatus = data.status;
 
     let appointments = readJSON(APPOINTMENTS_FILE, []);
-    let idx = -1;
-    if (appId > 0) {
-      idx = appointments.findIndex(a => a.id === appId);
-    } else if (ref) {
-      idx = appointments.findIndex(a => a.appointment_ref === ref);
-    }
+    const idx = appointments.findIndex(a => a.id === appId);
 
     if (idx !== -1 && newStatus) {
       appointments[idx].status = newStatus;
       appointments[idx].updated_at = new Date().toISOString();
+      const app = appointments[idx];
       writeJSON(APPOINTMENTS_FILE, appointments);
+
+      // Trigger patient confirmation notifications if accepted / confirmed
+      if (newStatus === 'Confirmed') {
+        dispatchNotification({
+          patient_name: app.patient_name,
+          patient_email: app.patient_email,
+          patient_phone: app.patient_phone,
+          appointment_ref: app.appointment_ref,
+          type: 'booking_confirmed',
+          subject: `Appointment Confirmed! [${app.appointment_ref}] - Dentia Dental Clinic`,
+          message: `Dear ${app.patient_name}, Great news! Your appointment for ${app.service_name} with ${app.dentist_name} on ${app.appointment_date} at ${app.appointment_time} has been accepted and CONFIRMED. Clinic address: 100 S Main St, Suite 400, New York, NY. Please arrive 10 minutes before your slot.`,
+          sms_text: `Dentia Clinic: Hello ${app.patient_name}, your appointment ${app.appointment_ref} on ${app.appointment_date} at ${app.appointment_time} with ${app.dentist_name} is CONFIRMED. Call (800) 234-5678 for queries.`
+        });
+      } else if (newStatus === 'Cancelled') {
+        dispatchNotification({
+          patient_name: app.patient_name,
+          patient_email: app.patient_email,
+          patient_phone: app.patient_phone,
+          appointment_ref: app.appointment_ref,
+          type: 'booking_cancelled',
+          subject: `Appointment Cancelled: [${app.appointment_ref}] - Dentia Clinic`,
+          message: `Dear ${app.patient_name}, your dental appointment [${app.appointment_ref}] scheduled for ${app.appointment_date} at ${app.appointment_time} has been cancelled. If you wish to reschedule, please visit our online booking portal.`,
+          sms_text: `Dentia Clinic: Notice - Your appointment ${app.appointment_ref} on ${app.appointment_date} has been cancelled. Please visit our website to reschedule.`
+        });
+      }
+
       return sendJSON(res, { success: true, message: `Appointment marked as ${newStatus}` });
     }
-    return sendJSON(res, { success: false, message: 'Appointment record not found' }, 404);
+    return sendJSON(res, { success: false, message: 'Appointment not found' }, 404);
   }
 
-  // 5. GET /api/dentists or /api/doctors (Specialists list)
-  if ((pathname === '/api/dentists' || pathname === '/api/doctors') && req.method === 'GET') {
+  // 3. GET /api/dentists (Doctors list)
+  if (pathname === '/api/dentists' && req.method === 'GET') {
     const dentists = readJSON(DENTISTS_FILE, []);
-    return sendJSON(res, dentists);
+    // Don't leak raw passwords to public caller unless admin
+    const safeDentists = dentists.map(d => {
+      const copy = { ...d };
+      copy.has_password = Boolean(copy.password);
+      return copy;
+    });
+    return sendJSON(res, safeDentists);
   }
 
-  // 6. POST /api/dentists (Add new specialist)
+  // 4. POST /api/dentists (Add new doctor by Admin)
   if (pathname === '/api/dentists' && req.method === 'POST') {
     const data = await parsePostData(req);
     if (!data.name || !data.specialization) {
@@ -206,132 +257,469 @@ const server = http.createServer(async (req, res) => {
     }
 
     let dentists = readJSON(DENTISTS_FILE, []);
+    const docEmail = (data.email || 'doctor@dentiacare.com').trim().toLowerCase();
+    const loginEmail = (data.login_email || docEmail).trim().toLowerCase();
+    const password = data.password ? data.password.trim() : 'doctor123';
+    const hasLogin = data.has_login !== undefined ? Boolean(data.has_login) : Boolean(data.password || data.enable_login);
+
     const newDoctor = {
       id: dentists.length > 0 ? Math.max(...dentists.map(d => d.id)) + 1 : 1,
-      name: data.name,
-      department_id: parseInt(data.department_id || '1', 10),
-      department_name: data.department_name || 'Cardiology',
-      doctor_code: 'MED-DOC-' + String(dentists.length + 1).padStart(3, '0'),
-      qualification: data.qualification || 'MD, Harvard Medical School',
-      specialization: data.specialization,
-      experience: data.experience || '10+ Years Experience',
-      fee: parseFloat(data.fee || 150),
-      consultation_fee: parseFloat(data.fee || 150),
-      email: data.email || 'doctor@medinova.com',
-      phone: data.phone || '+1 (800) 555-0100',
+      name: data.name.trim(),
+      qualification: data.qualification || 'Doctor of Dental Surgery (DDS)',
+      specialization: data.specialization.trim(),
+      experience: data.experience || '5+ Years Experience',
+      email: docEmail,
+      login_email: loginEmail,
+      password: password,
+      has_login: hasLogin,
+      phone: data.phone || '+1 (800) 234-5678',
       availability_days: data.availability_days || 'Monday - Friday',
       availability_hours: data.availability_hours || '09:00 AM - 05:00 PM',
-      description: data.description || 'Experienced medical faculty dedicated to precision patient outcomes.',
-      avatar: 'images/team/' + ((dentists.length % 4) + 1) + '.webp',
-      is_available: 1
+      description: data.description || 'Experienced dental professional dedicated to comprehensive oral care and patient comfort.',
+      image: data.image || 'images/team/1.webp',
+      is_active: true
     };
 
     dentists.push(newDoctor);
     writeJSON(DENTISTS_FILE, dentists);
-    return sendJSON(res, { success: true, message: 'Specialist doctor added successfully', doctor: newDoctor });
+    return sendJSON(res, { success: true, message: 'Doctor added successfully', doctor: newDoctor });
   }
 
-  // 7. GET /api/check-slots.php
-  if (pathname === '/api/check-slots.php') {
-    const docId = parseInt(parsedUrl.query.doctor_id || parsedUrl.query.dentist_id || '1', 10);
-    const date = parsedUrl.query.date || '';
+  // 5. POST /api/admin/doctor/credentials (Admin sets/edits doctor login credentials)
+  if (pathname === '/api/admin/doctor/credentials' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const docId = parseInt(data.id || '0', 10);
+    let dentists = readJSON(DENTISTS_FILE, []);
+    const idx = dentists.findIndex(d => d.id === docId);
 
-    const appointments = readJSON(APPOINTMENTS_FILE, []);
-    const booked = appointments
-      .filter(a => (a.doctor_id === docId || a.dentist_id === docId) && a.appointment_date === date && a.status !== 'Cancelled')
-      .map(a => a.appointment_time);
+    if (idx === -1) {
+      return sendJSON(res, { success: false, message: 'Doctor not found' }, 404);
+    }
 
+    if (data.login_email) {
+      dentists[idx].login_email = data.login_email.trim().toLowerCase();
+    }
+    if (data.password) {
+      dentists[idx].password = data.password.trim();
+    }
+    if (data.has_login !== undefined) {
+      dentists[idx].has_login = Boolean(data.has_login);
+    } else {
+      dentists[idx].has_login = true;
+    }
+
+    writeJSON(DENTISTS_FILE, dentists);
     return sendJSON(res, {
       success: true,
-      doctor_id: docId,
-      date: date,
-      slots: STANDARD_SLOTS,
-      booked_slots: booked,
-      available_slots: STANDARD_SLOTS.filter(s => !booked.includes(s))
+      message: `Login credentials updated for ${dentists[idx].name}. Login access is now ${dentists[idx].has_login ? 'ENABLED' : 'DISABLED'}.`,
+      doctor: dentists[idx]
     });
   }
 
-  // 8. POST /api/book-appointment.php
-  if (pathname === '/api/book-appointment.php' && req.method === 'POST') {
-    const postData = await parsePostData(req);
+  // 6. POST /api/dentists/delete
+  if (pathname === '/api/dentists/delete' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const docId = parseInt(data.id || '0', 10);
+    let dentists = readJSON(DENTISTS_FILE, []);
+    dentists = dentists.filter(d => d.id !== docId);
+    writeJSON(DENTISTS_FILE, dentists);
+    return sendJSON(res, { success: true, message: 'Doctor removed' });
+  }
 
-    const name = (postData.patient_name || postData.name || '').trim();
-    const email = (postData.patient_email || postData.email || '').trim();
-    const phone = (postData.patient_phone || postData.phone || '').trim();
-    let deptId = parseInt(postData.department_id || '1', 10);
-    let doctorId = parseInt(postData.doctor_id || postData.dentist_id || '1', 10);
-    const date = (postData.appointment_date || postData.date || '').trim();
-    const time = (postData.appointment_time || postData.time || '').trim();
-    const type = (postData.appointment_type || 'General Consultation').trim();
-    const symptoms = (postData.symptoms || postData.message || '').trim();
+  // 7. POST /api/doctor/login (Doctor login authentication)
+  if (pathname === '/api/doctor/login' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+    const password = (data.password || '').trim();
 
-    const doctors = readJSON(DENTISTS_FILE, []);
-    const currentDoc = doctors.find(d => d.id === doctorId) || doctors[0] || { id: 1, name: 'Dr. Marcus Vance' };
-    doctorId = currentDoc.id;
-
-    if (!name || !email || !date || !time) {
-      return sendJSON(res, { success: false, message: 'Please provide patient name, email, date, and select a time slot.' });
+    if (!email || !password) {
+      return sendJSON(res, { success: false, message: 'Doctor email and password are required' }, 400);
     }
 
-    let appointments = readJSON(APPOINTMENTS_FILE, []);
-    const isBooked = appointments.some(a => 
-      (a.doctor_id === doctorId || a.dentist_id === doctorId) && a.appointment_date === date && a.appointment_time === time && a.status !== 'Cancelled'
+    const dentists = readJSON(DENTISTS_FILE, []);
+    const match = dentists.find(d => 
+      ((d.login_email && d.login_email.toLowerCase() === email) || (d.email && d.email.toLowerCase() === email)) &&
+      d.password === password
     );
 
-    if (isBooked) {
+    if (!match) {
+      return sendJSON(res, { success: false, message: 'Invalid doctor login credentials.' }, 401);
+    }
+
+    // STRICT CHECK: Admin must have created/granted login credentials!
+    if (!match.has_login) {
       return sendJSON(res, {
         success: false,
-        message: `The time slot ${time} on ${date} is already booked for ${currentDoc.name}. Please select another slot.`
+        message: 'Doctor login access has not been activated by the Clinic Administrator. Please request credentials from the Admin.'
+      }, 403);
+    }
+
+    const safeDoctor = { ...match };
+    delete safeDoctor.password;
+    return sendJSON(res, {
+      success: true,
+      message: `Welcome Dr. ${safeDoctor.name}!`,
+      doctor: safeDoctor
+    });
+  }
+
+  // 8. GET /api/doctor/appointments (Get appointments specific to a doctor)
+  if (pathname === '/api/doctor/appointments' && req.method === 'GET') {
+    const docId = parseInt(parsedUrl.query.doctor_id || '0', 10);
+    const docEmail = (parsedUrl.query.email || '').trim().toLowerCase();
+
+    const appointments = readJSON(APPOINTMENTS_FILE, []);
+    let filtered = [];
+
+    if (docId > 0) {
+      filtered = appointments.filter(a => a.dentist_id === docId);
+    } else if (docEmail) {
+      const dentists = readJSON(DENTISTS_FILE, []);
+      const doc = dentists.find(d => 
+        (d.login_email && d.login_email.toLowerCase() === docEmail) ||
+        (d.email && d.email.toLowerCase() === docEmail)
+      );
+      if (doc) {
+        filtered = appointments.filter(a => a.dentist_id === doc.id);
+      }
+    }
+
+    return sendJSON(res, { success: true, appointments: filtered });
+  }
+
+  // 9. POST /api/doctor/appointment/action (Doctor accepts, completes, cancels, or notes appointment)
+  if (pathname === '/api/doctor/appointment/action' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const appId = parseInt(data.id || '0', 10);
+    const action = data.action; // 'Confirm' | 'Complete' | 'Cancel'
+    const notes = data.clinical_notes || '';
+
+    let appointments = readJSON(APPOINTMENTS_FILE, []);
+    const idx = appointments.findIndex(a => a.id === appId);
+
+    if (idx === -1) {
+      return sendJSON(res, { success: false, message: 'Appointment not found' }, 404);
+    }
+
+    const app = appointments[idx];
+    if (action === 'Confirm' || action === 'Confirmed') {
+      app.status = 'Confirmed';
+      dispatchNotification({
+        patient_name: app.patient_name,
+        patient_email: app.patient_email,
+        patient_phone: app.patient_phone,
+        appointment_ref: app.appointment_ref,
+        type: 'booking_confirmed',
+        subject: `Appointment Confirmed by ${app.dentist_name}! [${app.appointment_ref}]`,
+        message: `Dear ${app.patient_name}, ${app.dentist_name} has reviewed and CONFIRMED your dental appointment for ${app.service_name} on ${app.appointment_date} at ${app.appointment_time}. Please arrive promptly at our clinic (100 S Main St, Suite 400, NY).`,
+        sms_text: `Dentia Clinic: ${app.dentist_name} has CONFIRMED your appointment on ${app.appointment_date} at ${app.appointment_time}. Ref: ${app.appointment_ref}.`
+      });
+    } else if (action === 'Complete' || action === 'Completed') {
+      app.status = 'Completed';
+    } else if (action === 'Cancel' || action === 'Cancelled') {
+      app.status = 'Cancelled';
+      dispatchNotification({
+        patient_name: app.patient_name,
+        patient_email: app.patient_email,
+        patient_phone: app.patient_phone,
+        appointment_ref: app.appointment_ref,
+        type: 'booking_cancelled',
+        subject: `Appointment Notice: Cancelled [${app.appointment_ref}]`,
+        message: `Dear ${app.patient_name}, your appointment with ${app.dentist_name} on ${app.appointment_date} was cancelled. Please log in to your patient portal to pick a new date or doctor.`,
+        sms_text: `Dentia Clinic: Appointment ${app.appointment_ref} with ${app.dentist_name} has been cancelled. Visit your dashboard to rebook.`
       });
     }
 
-    const ref = 'MED-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+    if (notes) {
+      app.doctor_notes = notes;
+    }
+    app.updated_at = new Date().toISOString();
+
+    writeJSON(APPOINTMENTS_FILE, appointments);
+    return sendJSON(res, { success: true, message: `Appointment status updated to ${app.status}`, appointment: app });
+  }
+
+  // 10. GET /api/patients
+  if (pathname === '/api/patients' && req.method === 'GET') {
+    const patients = readJSON(PATIENTS_FILE, []);
+    return sendJSON(res, patients);
+  }
+
+  // 11. POST /api/auth/register (User registration)
+  if (pathname === '/api/auth/register' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const name = (data.name || '').trim();
+    const email = (data.email || '').trim().toLowerCase();
+    const phone = (data.phone || '').trim();
+    const password = data.password || '';
+
+    if (!name || !email || !password) {
+      return sendJSON(res, { success: false, message: 'Name, email, and password are required' }, 400);
+    }
+
+    let patients = readJSON(PATIENTS_FILE, []);
+    if (patients.some(p => p.email.toLowerCase() === email)) {
+      return sendJSON(res, { success: false, message: 'An account with this email address already exists' }, 400);
+    }
+
+    const newPatient = {
+      id: patients.length > 0 ? Math.max(...patients.map(p => p.id)) + 1 : 1,
+      name: name,
+      email: email,
+      phone: phone,
+      password: password,
+      dob: data.dob || null,
+      gender: data.gender || 'Male',
+      address: data.address || '',
+      created_at: new Date().toISOString()
+    };
+
+    patients.push(newPatient);
+    writeJSON(PATIENTS_FILE, patients);
+
+    const safePatient = { ...newPatient };
+    delete safePatient.password;
+    return sendJSON(res, { success: true, message: 'Registration successful', patient: safePatient });
+  }
+
+  // 12. POST /api/auth/login (User login)
+  if (pathname === '/api/auth/login' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+    const password = data.password || '';
+
+    const patients = readJSON(PATIENTS_FILE, []);
+    const match = patients.find(p => p.email.toLowerCase() === email && p.password === password);
+
+    if (match) {
+      const safePatient = { ...match };
+      delete safePatient.password;
+      return sendJSON(res, { success: true, message: 'Login successful', patient: safePatient });
+    }
+    return sendJSON(res, { success: false, message: 'Invalid email or password' }, 401);
+  }
+
+  // 13. GET /api/patient/appointments (Get specific patient visits)
+  if (pathname === '/api/patient/appointments' && req.method === 'GET') {
+    const email = (parsedUrl.query.email || '').trim().toLowerCase();
+    const phone = (parsedUrl.query.phone || '').trim();
+    const appointments = readJSON(APPOINTMENTS_FILE, []);
+
+    const patientApps = appointments.filter(a => {
+      const matchEmail = email && (a.patient_email || '').toLowerCase() === email;
+      const matchPhone = phone && (a.patient_phone || '').replace(/\D/g, '') === phone.replace(/\D/g, '');
+      return matchEmail || matchPhone;
+    });
+
+    return sendJSON(res, { success: true, appointments: patientApps });
+  }
+
+  // 14. GET /api/notifications (Get notification history for a patient or ref)
+  if (pathname === '/api/notifications' && req.method === 'GET') {
+    const email = (parsedUrl.query.email || '').trim().toLowerCase();
+    const ref = (parsedUrl.query.ref || '').trim();
+    const allNotifs = readJSON(NOTIFICATIONS_FILE, []);
+
+    let filtered = allNotifs;
+    if (email) {
+      filtered = filtered.filter(n => (n.recipient_email || '').toLowerCase() === email);
+    }
+    if (ref) {
+      filtered = filtered.filter(n => n.appointment_ref === ref);
+    }
+
+    return sendJSON(res, { success: true, notifications: filtered.reverse() });
+  }
+
+  // 15. GET /api/check-slots.php
+  if (pathname === '/api/check-slots.php') {
+    const dentistId = parseInt(parsedUrl.query.dentist_id || '0', 10);
+    const rawDate = parsedUrl.query.date || '';
+    const normDate = normalizeDate(rawDate);
+
+    const appointments = readJSON(APPOINTMENTS_FILE, []);
+    const booked = appointments
+      .filter(a => {
+        const matchesDoc = a.dentist_id === dentistId;
+        const matchesDate = normalizeDate(a.appointment_date) === normDate || a.appointment_date === rawDate;
+        const isActive = a.status !== 'Cancelled';
+        return matchesDoc && matchesDate && isActive;
+      })
+      .map(a => normalizeTime(a.appointment_time));
+
+    const availableSlots = STANDARD_SLOTS.filter(s => !booked.includes(normalizeTime(s)));
+
+    return sendJSON(res, {
+      success: true,
+      dentist_id: dentistId,
+      date: rawDate,
+      slots: STANDARD_SLOTS,
+      booked: booked,
+      available_slots: availableSlots
+    });
+  }
+
+  // 16. POST /api/book-appointment.php or /booking.php
+  if ((pathname === '/api/book-appointment.php' || pathname === '/booking.php') && req.method === 'POST') {
+    const postData = await parsePostData(req);
+
+    const name = (postData.name || '').trim();
+    const email = (postData.email || '').trim().toLowerCase();
+    const phone = (postData.phone || '').trim();
+    let serviceId = parseInt(postData.service_id || '0', 10);
+    let dentistId = parseInt(postData.dentist_id || '0', 10);
+    const rawDate = (postData.date || '').trim();
+    const rawTime = (postData.time || '').trim();
+    const message = (postData.message || '').trim();
+
+    const date = normalizeDate(rawDate);
+    const time = normalizeTime(rawTime);
+
+    const dentists = readJSON(DENTISTS_FILE, []);
+    const currentDoc = dentists.find(d => d.id === dentistId) || dentists[0] || { id: 1, name: 'Dr. Sarah Bennett' };
+    dentistId = currentDoc.id;
+
+    if (!name || !email || !rawDate || rawDate === 'Select Date' || !rawTime || rawTime === 'Select Time') {
+      return sendJSON(res, {
+        success: false,
+        message: 'Please provide your full name, email, appointment date, and choose an available time slot.'
+      }, 400);
+    }
+
+    let appointments = readJSON(APPOINTMENTS_FILE, []);
+
+    // ---------------------------------------------------------------------------------
+    // STRICT CONCURRENCY & DUPLICATE SLOT CHECKING
+    // If two or more patients attempt to book the same slot at the same time:
+    // First booked patient gets the slot.
+    // The second/subsequent patient is NOT confirmed, and receives alternative available timings!
+    // ---------------------------------------------------------------------------------
+    const conflictingApp = appointments.find(a => {
+      const matchDoc = a.dentist_id === dentistId;
+      const matchDate = normalizeDate(a.appointment_date) === date || a.appointment_date === rawDate;
+      const matchTime = normalizeTime(a.appointment_time) === time;
+      const isActive = a.status !== 'Cancelled';
+      return matchDoc && matchDate && matchTime && isActive;
+    });
+
+    if (conflictingApp) {
+      // Slot is already taken by the first patient!
+      // Calculate remaining available slots for this doctor on this date:
+      const bookedSlots = appointments
+        .filter(a => {
+          const matchDoc = a.dentist_id === dentistId;
+          const matchDate = normalizeDate(a.appointment_date) === date || a.appointment_date === rawDate;
+          return matchDoc && matchDate && a.status !== 'Cancelled';
+        })
+        .map(a => normalizeTime(a.appointment_time));
+
+      const remainingSlots = STANDARD_SLOTS.filter(s => !bookedSlots.includes(normalizeTime(s)));
+
+      // Dispatch Not-Confirmed Rejection Notification to this second patient
+      const notif = dispatchNotification({
+        patient_name: name,
+        patient_email: email,
+        patient_phone: phone,
+        appointment_ref: 'UNAVAILABLE',
+        type: 'slot_unavailable',
+        subject: `Appointment Update: ${time} on ${rawDate} Already Reserved - Dentia Clinic`,
+        message: `Dear ${name}, We regret to inform you that your requested appointment on ${rawDate} at ${time} with ${currentDoc.name} could not be confirmed because another patient just reserved this time slot. Available alternative timings for ${currentDoc.name} on this date are: ${remainingSlots.join(', ')}. Please select another timing to confirm your visit.`,
+        sms_text: `Dentia Clinic: Dear ${name}, your booking on ${rawDate} at ${time} was NOT confirmed (slot just booked by another patient). Available slots with ${currentDoc.name}: ${remainingSlots.slice(0, 4).join(', ')}. Please choose another time.`
+      });
+
+      return sendJSON(res, {
+        success: false,
+        already_booked: true,
+        message: `The time slot ${time} on ${rawDate} was just reserved by another patient! Only the first booked patient is confirmed. We have dispatched a notification with alternative timings.`,
+        dentist_id: dentistId,
+        dentist_name: currentDoc.name,
+        date: rawDate,
+        attempted_time: time,
+        available_slots: remainingSlots,
+        notifications_sent: notif
+      }, 409);
+    }
+
+    // First patient gets the appointment!
+    const ref = 'DEN-2026-' + Math.floor(1000 + Math.random() * 9000);
+    const serviceName = postData.service_name || postData.service || 'General Dentistry';
+
+    // Auto-link or create patient in patients list so they can log in and see it immediately
+    let patients = readJSON(PATIENTS_FILE, []);
+    let patientRecord = patients.find(p => p.email.toLowerCase() === email);
+    if (!patientRecord) {
+      patientRecord = {
+        id: patients.length > 0 ? Math.max(...patients.map(p => p.id)) + 1 : 1,
+        name: name,
+        email: email,
+        phone: phone,
+        password: 'patient' + Math.floor(100 + Math.random() * 900),
+        address: '',
+        created_at: new Date().toISOString()
+      };
+      patients.push(patientRecord);
+      writeJSON(PATIENTS_FILE, patients);
+    }
+
     const newAppointment = {
       id: appointments.length > 0 ? Math.max(...appointments.map(a => a.id)) + 1 : 1,
       appointment_ref: ref,
+      patient_id: patientRecord.id,
       patient_name: name,
       patient_email: email,
       patient_phone: phone,
-      department_id: deptId,
-      dept_name: currentDoc.department_name || 'Cardiology',
-      doctor_id: doctorId,
-      doctor_name: currentDoc.name,
-      appointment_date: date,
+      service_id: serviceId || 1,
+      service_name: serviceName,
+      dentist_id: dentistId,
+      dentist_name: currentDoc.name,
+      appointment_date: rawDate,
       appointment_time: time,
-      appointment_type: type,
-      symptoms: symptoms,
-      status: 'Pending',
+      message: message,
+      status: 'Pending', // New requests start as Pending, ready for Admin or Doctor to Accept
       created_at: new Date().toISOString()
     };
 
     appointments.push(newAppointment);
     writeJSON(APPOINTMENTS_FILE, appointments);
 
+    // Dispatch Confirmation Email & SMS for the booked appointment
+    const notifs = dispatchNotification({
+      patient_name: name,
+      patient_email: email,
+      patient_phone: phone,
+      appointment_ref: ref,
+      type: 'booking_received',
+      subject: `Appointment Booking Request Received: [${ref}] - Dentia Dental Clinic`,
+      message: `Dear ${name}, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for ${serviceName} with ${currentDoc.name} on ${rawDate} at ${time} has been received and scheduled (Ref: ${ref}). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.`,
+      sms_text: `Dentia Clinic: Hello ${name}, your appointment request ${ref} with ${currentDoc.name} on ${rawDate} at ${time} is received. We will send confirmation shortly!`
+    });
+
+    // If legacy jQuery AJAX expecting plain text 'sent'
+    if (req.headers['x-requested-with'] === 'XMLHttpRequest' && pathname === '/booking.php' && !req.headers['accept']?.includes('json')) {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('sent');
+      return;
+    }
+
     return sendJSON(res, {
       success: true,
-      message: 'Your hospital appointment has been reserved!',
-      appointment_ref: ref,
-      doctor_name: currentDoc.name,
-      department_name: newAppointment.dept_name,
-      appointment_date: date,
-      appointment_time: time,
-      status: 'Pending'
+      message: 'Your appointment has been successfully scheduled!',
+      ref: ref,
+      details: {
+        name: name,
+        email: email,
+        phone: phone,
+        service_name: serviceName,
+        dentist_name: currentDoc.name,
+        date: rawDate,
+        time: time
+      },
+      notifications_sent: notifs
     });
   }
 
-  // Static File Resolution
+  // 17. Static File Resolution
   let filePath = path.join(WEB_ROOT, pathname);
-
-  // Automatic Static Asset Resolution from any subdirectory (doctor/css/..., nurse/css/..., etc.)
-  const assetMatch = pathname.match(/\/(css|fonts|images|js)\/(.*)$/);
-  if (assetMatch) {
-    const assetDir = assetMatch[1];
-    const assetFile = assetMatch[2];
-    const directAssetPath = path.join(WEB_ROOT, assetDir, assetFile);
-    if (fs.existsSync(directAssetPath)) {
-      filePath = directAssetPath;
-    }
-  }
 
   if (!fs.existsSync(filePath)) {
     if (fs.existsSync(filePath + '.html')) filePath += '.html';
@@ -343,7 +731,7 @@ const server = http.createServer(async (req, res) => {
       res.end(`
         <!DOCTYPE html>
         <html>
-        <head><title>404 Not Found - MEDINOVA Hospital</title>
+        <head><title>404 Not Found - Dentia Dental Clinic</title>
         <link rel="stylesheet" href="/css/bootstrap.min.css">
         </head>
         <body class="bg-light p-5 text-center">
@@ -351,7 +739,7 @@ const server = http.createServer(async (req, res) => {
             <h1 class="display-3 text-primary fw-bold">404</h1>
             <h3 class="mb-3">Page Not Found</h3>
             <p class="text-muted mb-4">The requested page <code>${pathname}</code> was not found.</p>
-            <a href="/" class="btn btn-primary rounded-pill px-4">Return to Hospital Home</a>
+            <a href="/" class="btn btn-primary rounded-pill px-4">Return to Homepage</a>
           </div>
         </body>
         </html>
@@ -369,10 +757,10 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`====================================================`);
-  console.log(`MEDINOVA Multi-Speciality Hospital Platform Running`);
+  console.log(`Doctor Dental Clinic Dentia Platform Server Running`);
   console.log(`Local URL: http://localhost:${PORT}`);
   console.log(`Admin Portal: http://localhost:${PORT}/admin/index.html`);
+  console.log(`Doctor Login: http://localhost:${PORT}/doctor-login.html`);
   console.log(`Patient Login: http://localhost:${PORT}/login.html`);
-  console.log(`Booking Engine: http://localhost:${PORT}/booking.html`);
   console.log(`====================================================`);
 });

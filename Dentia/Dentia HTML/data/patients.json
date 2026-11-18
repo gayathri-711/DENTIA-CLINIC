@@ -20,6 +20,16 @@
     "gender": "Female",
     "address": "452 Broadway Ave, Brooklyn, NY",
     "created_at": "2026-02-14T14:30:00.000Z"
+  },
+  {
+    "id": 3,
+    "name": "Gayathri Dhanasekaran",
+    "email": "gayathri.240103@cse.ritchennai.edu.in",
+    "phone": "+917598092785",
+    "password": "gayathri",
+    "dob": null,
+    "gender": "Female",
+    "address": "11/256,kuzhimedu, Ulipuram (po), gangavalli (tk),salem(dt).",
+    "created_at": "2026-11-18T04:50:03.930Z"
   }
 ]
-

@@ -1,7 +1,6 @@
 <?php
 /**
- * MEDINOVA Multi-Speciality Hospital Management System
- * Patient Testimonials & Review Submission
+ * Doctor Dental Clinic Dentia - Patient Testimonials & Review Submission
  */
 $pageTitle = "Patient Reviews & Testimonials";
 require_once __DIR__ . '/includes/header.php';
@@ -46,7 +45,7 @@ $testimonials = get_all_testimonials(true);
                 <div class="col-lg-12">
                     <span class="badge bg-primary text-white rounded-pill px-3 py-1 mb-2">Patient Satisfaction</span>
                     <h1 class="fw-bold mb-2">Patient Reviews & Experiences</h1>
-                    <div class="border-bottom my-3 mx-auto" style="width: 60px; border-width: 3px !important; border-color: var(--med-primary) !important;"></div>
+                    <div class="border-bottom my-3 mx-auto" style="width: 60px; border-width: 3px !important; border-color: var(--dentia-primary) !important;"></div>
                     <ul class="crumb list-inline mb-0">
                         <li class="list-inline-item"><a href="index.php" class="text-decoration-none text-muted">Home</a></li>
                         <li class="list-inline-item">/</li>
