@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Patient Portal — Doctor Dental Clinic Dentia</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="images/icon.webp" type="image/gif">
+    <style>
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .badge-confirmed { background: #d1fae5; color: #065f46; }
+        .badge-completed { background: #e0f2fe; color: #0369a1; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <header class="bg-white border-bottom py-3 shadow-sm sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="index.html" class="d-flex align-items-center text-decoration-none">
+                <img src="images/logo-black.webp" alt="Dentia" style="max-height: 40px;">
+            </a>
+
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:38px; height:38px;" id="avatar_initial">
+                        P
+                    </div>
+                    <div class="d-none d-sm-block">
+                        <div class="fw-bold small text-dark leading-tight" id="header_patient_name">Patient</div>
+                        <div class="text-muted" style="font-size: 11px;" id="header_patient_email">user@example.com</div>
+                    </div>
+                </div>
+                <a href="booking.html" class="btn btn-sm btn-primary rounded-pill px-3 fw-semibold">
+                    <i class="fa fa-calendar-plus-o me-1"></i> <span class="d-none d-sm-inline">Book Visit</span>
+                </a>
+                <button onclick="handleLogout()" class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                    <i class="fa fa-sign-out me-1"></i> <span class="d-none d-sm-inline">Sign Out</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Subheader -->
+    <section class="py-4 bg-primary text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <h2 class="fw-bold text-white mb-1">Welcome, <span id="welcome_name">Patient</span></h2>
+                    <p class="small text-white-50 mb-0">Your Personal Dental Care Hub & Scheduled Appointments</p>
+                </div>
+                <div>
+                    <a href="booking.html" class="btn btn-light text-primary rounded-pill px-4 fw-bold shadow-sm">
+                        <i class="fa fa-plus-circle me-1"></i> Book New Procedure
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+
+            <div id="patient_alert" class="alert d-none rounded-3 shadow-sm mb-4"></div>
+
+            <!-- Stats Overview -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Upcoming Visits</div>
+                            <h2 class="fw-bold mb-0 text-primary" id="count_upcoming">0</h2>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fa fa-calendar-check-o fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Completed Treatments</div>
+                            <h2 class="fw-bold mb-0 text-success" id="count_completed">0</h2>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fa fa-check-circle fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card border-0 rounded-4 shadow-sm p-4 bg-white d-flex flex-row justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted small fw-semibold">Total Scheduled</div>
+                            <h2 class="fw-bold mb-0 text-dark" id="count_total">0</h2>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fa fa-history fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. Current & Upcoming Appointments Section -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-calendar-check-o text-primary me-2"></i> Current & Upcoming Appointments</h5>
+                        <small class="text-muted">Active bookings awaiting treatment or confirmed by clinic</small>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 small" id="badge_upcoming_count">0 Active</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Dental Procedure</th>
+                                    <th>Assigned Doctor</th>
+                                    <th>Scheduled Date & Time</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient_upcoming_body">
+                                <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading current appointments...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Previous Appointments & Past Visit History -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-history text-secondary me-2"></i> Previous Appointments & Past Visits</h5>
+                        <small class="text-muted">Historical completed visits and previous cancelled appointments</small>
+                    </div>
+                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1 small" id="badge_past_count">0 Past Visits</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Booking Ref</th>
+                                    <th>Dental Procedure</th>
+                                    <th>Doctor</th>
+                                    <th>Visit Date & Time</th>
+                                    <th>Status</th>
+                                    <th>Doctor Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient_past_body">
+                                <tr><td colspan="6" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading past visit history...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. My Clinical Diagnosis & Prescription Records -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-medkit text-success me-2"></i> My Dental Clinical Records & Prescriptions</h5>
+                        <small class="text-muted">Official diagnostic records, treatment summaries, and doctor prescriptions</small>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 small" id="badge_med_count">
+                        0 Records
+                    </span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Treatment Date</th>
+                                    <th>Attending Doctor</th>
+                                    <th>Clinical Diagnosis</th>
+                                    <th>Treatment Provided</th>
+                                    <th>Prescription</th>
+                                    <th>Follow-up</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient_records_body">
+                                <tr><td colspan="6" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading dental records...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Email & SMS Notifications Receipt Section -->
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                <div class="card-header bg-white p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-bell text-warning me-2"></i> My Email & SMS Notifications</h5>
+                        <small class="text-muted">Live log of all appointment confirmations, regret alerts with doctor timings, and SMS alerts dispatched to you</small>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 small">
+                        <i class="fa fa-check me-1"></i> SMS & Email Delivery Active
+                    </span>
+                </div>
+                <div class="card-body p-4" id="notifications_container">
+                    <div class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading notifications...</div>
+                </div>
+            </div>
+
+            <!-- Need Help Section -->
+            <div class="emergency-callout-box">
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div>
+                        <h4 class="text-white fw-bold mb-1">Have an Urgent Dental Emergency?</h4>
+                        <p class="text-white mb-0" style="opacity:0.9;">Our New York dental emergency specialists provide immediate same-day relief.</p>
+                    </div>
+                    <a href="tel:+18009113368" class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow">
+                        <i class="fa fa-phone me-2"></i> Emergency: +1 (800) 911-DENT
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL: PATIENT MESSAGE PREVIEW -->
+    <div class="modal fade" id="patientMessageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white p-3">
+                    <h5 class="modal-title fw-bold text-white mb-0" id="pat_msg_title">
+                        <i class="fa fa-envelope-o me-2"></i> Official Clinic Correspondence
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 bg-light" id="pat_msg_body">
+                    <!-- Loaded dynamically -->
+                </div>
+                <div class="modal-footer bg-white p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+let currentPatient = null;
+
+function checkAuth() {
+    const raw = localStorage.getItem('dentia_patient');
+    if (!raw) {
+        window.location.href = 'login.html';
+        return;
+    }
+    try {
+        currentPatient = JSON.parse(raw);
+        document.getElementById('header_patient_name').innerText = currentPatient.name || 'Patient';
+        document.getElementById('welcome_name').innerText = currentPatient.name || 'Patient';
+        document.getElementById('header_patient_email').innerText = currentPatient.email || '';
+        document.getElementById('avatar_initial').innerText = (currentPatient.name || 'P')[0].toUpperCase();
+    } catch (e) {
+        window.location.href = 'login.html';
+    }
+}
+
+async function loadPatientAppointments() {
+    if (!currentPatient) return;
+    const upcomingTbody = document.getElementById('patient_upcoming_body');
+    const pastTbody = document.getElementById('patient_past_body');
+
+    try {
+        const res = await fetch(`/api/patient/appointments?email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
+        const list = res.appointments || [];
+
+        const upcoming = list.filter(a => a.status === 'Pending' || a.status === 'Confirmed');
+        const past = list.filter(a => a.status === 'Completed' || a.status === 'Cancelled');
+        const completed = list.filter(a => a.status === 'Completed');
+
+        document.getElementById('count_upcoming').innerText = upcoming.length;
+        document.getElementById('count_completed').innerText = completed.length;
+        document.getElementById('count_total').innerText = list.length;
+
+        document.getElementById('badge_upcoming_count').innerText = `${upcoming.length} Active`;
+        document.getElementById('badge_past_count').innerText = `${past.length} Past Visits`;
+
+        // Render 1: Current & Upcoming Appointments
+        if (upcoming.length === 0) {
+            upcomingTbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-5">
+                        <div class="text-muted mb-2" style="font-size: 38px;"><i class="fa fa-calendar-check-o text-muted"></i></div>
+                        <h6 class="fw-bold text-dark mb-1">No Active Upcoming Visits</h6>
+                        <p class="text-muted small mb-3">You don't have any appointments currently scheduled.</p>
+                        <a href="booking.html" class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Book a New Visit</a>
+                    </td>
+                </tr>
+            `;
+        } else {
+            upcomingTbody.innerHTML = upcoming.map(app => `
+                <tr>
+                    <td><strong class="font-monospace text-primary">${app.appointment_ref}</strong></td>
+                    <td>
+                        <div class="fw-bold text-dark">${app.service_name || 'Dental Service'}</div>
+                        <small class="text-muted">${app.message ? `"${app.message}"` : ''}</small>
+                    </td>
+                    <td>
+                        <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i> ${app.dentist_name || 'Doctor'}</div>
+                    </td>
+                    <td>
+                        <div class="fw-bold small"><i class="fa fa-calendar me-1 text-primary"></i> ${app.appointment_date}</div>
+                        <small class="text-muted"><i class="fa fa-clock-o me-1"></i> ${app.appointment_time}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-${(app.status || 'pending').toLowerCase()} px-3 py-1 rounded-pill fw-semibold">
+                            ${app.status === 'Confirmed' ? '<i class="fa fa-check-circle me-1"></i> Confirmed' : app.status}
+                        </span>
+                    </td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="cancelAppointment(${app.id})">
+                            <i class="fa fa-times me-1"></i> Cancel
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Render 2: Previous Appointments & Past Visits
+        if (past.length === 0) {
+            pastTbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted small">No past appointments or completed treatments recorded yet.</td></tr>`;
+        } else {
+            pastTbody.innerHTML = past.map(app => `
+                <tr>
+                    <td><strong class="font-monospace text-muted small">${app.appointment_ref}</strong></td>
+                    <td>
+                        <div class="fw-semibold text-dark">${app.service_name || 'Dental Service'}</div>
+                    </td>
+                    <td>
+                        <div class="small text-muted"><i class="fa fa-user-md me-1"></i> ${app.dentist_name || 'Doctor'}</div>
+                    </td>
+                    <td>
+                        <div class="small"><i class="fa fa-calendar me-1 text-muted"></i> ${app.appointment_date}</div>
+                        <small class="text-muted">${app.appointment_time}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-${(app.status || 'completed').toLowerCase()} px-3 py-1 rounded-pill small">
+                            ${app.status}
+                        </span>
+                    </td>
+                    <td>
+                        <small class="text-muted">${app.doctor_notes || '<span class="fst-italic opacity-75">No doctor notes</span>'}</small>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+    } catch (e) {
+        upcomingTbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error loading appointments.</td></tr>`;
+    }
+}
+
+async function loadPatientMedicalRecords() {
+    if (!currentPatient) return;
+    const tbody = document.getElementById('patient_records_body');
+
+    try {
+        const res = await fetch(`/api/medical-records?patient_email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
+        const records = res.records || [];
+
+        document.getElementById('badge_med_count').innerText = `${records.length} Records`;
+
+        if (records.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        <i class="fa fa-folder-open-o fs-3 d-block mb-2 text-muted"></i>
+                        No clinical treatment records or prescriptions entered yet by your doctor.
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = records.map(r => `
+            <tr>
+                <td>
+                    <div class="fw-bold text-dark small"><i class="fa fa-calendar text-primary me-1"></i> ${r.treatment_date}</div>
+                    <small class="font-monospace text-muted">${r.appointment_ref || ''}</small>
+                </td>
+                <td>
+                    <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i> ${r.dentist_name || 'Doctor'}</div>
+                </td>
+                <td>
+                    <div class="fw-semibold text-dark small">${r.diagnosis}</div>
+                    ${r.doctor_notes ? `<small class="text-muted d-block">${r.doctor_notes}</small>` : ''}
+                </td>
+                <td>
+                    <div class="small text-muted">${r.treatment_provided}</div>
+                </td>
+                <td>
+                    <div class="small text-success font-monospace fw-semibold">${r.prescription || '<span class="text-muted font-normal">—</span>'}</div>
+                </td>
+                <td>
+                    <small class="badge bg-light text-dark border">${r.followup_date || 'None set'}</small>
+                </td>
+            </tr>
+        `).join('');
+
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-3 text-danger">Error loading medical records.</td></tr>`;
+    }
+}
+
+async function cancelAppointment(id) {
+    if (!confirm('Are you sure you want to cancel this appointment?')) return;
+    try {
+        const res = await fetch('/api/appointments/status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, status: 'Cancelled' })
+        }).then(r => r.json());
+
+        if (res.success) {
+            const alertEl = document.getElementById('patient_alert');
+            alertEl.className = 'alert alert-warning rounded-3 shadow-sm mb-4 d-block';
+            alertEl.innerHTML = '<i class="fa fa-info-circle me-2"></i> Your appointment has been cancelled.';
+            setTimeout(() => { alertEl.className = 'alert d-none'; }, 4000);
+            loadPatientAppointments();
+            loadPatientNotifications();
+        }
+    } catch (e) {
+        alert('Server communication error');
+    }
+}
+
+let cachedPatientNotifications = [];
+
+async function loadPatientNotifications() {
+    if (!currentPatient) return;
+    const container = document.getElementById('notifications_container');
+    try {
+        const res = await fetch(`/api/notifications?email=${encodeURIComponent(currentPatient.email)}`).then(r => r.json());
+        const list = res.notifications || [];
+        cachedPatientNotifications = list;
+
+        if (list.length === 0) {
+            container.innerHTML = `
+                <div class="text-center py-4 text-muted">
+                    <i class="fa fa-envelope-open-o fs-3 d-block mb-2 text-muted"></i>
+                    No notifications or SMS alerts logged yet for this email.
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = `
+            <div class="alert alert-info py-2 px-3 rounded-3 small mb-3 border-0 bg-info-subtle text-info-emphasis d-flex align-items-center gap-2">
+                <i class="fa fa-info-circle fs-5"></i>
+                <div>
+                    All official booking confirmations and appointment alerts are archived in your patient portal below. You can click <strong>View Full Message</strong> anytime to view the official clinic letter or mobile SMS preview.
+                </div>
+            </div>
+            <div class="row g-3">
+                ${list.map(n => {
+                    const isEmail = n.channel === 'email';
+                    const isConfirmed = n.type === 'booking_confirmed';
+                    const isUnavailable = n.type === 'slot_unavailable';
+                    const isReal = (n.status || '').toLowerCase().includes('real inbox');
+
+                    return `
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-4 border ${isUnavailable ? 'border-warning bg-warning-subtle' : 'border-light bg-light'} h-100 shadow-sm d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="badge ${isEmail ? 'bg-primary' : 'bg-success'} rounded-pill px-3 py-1">
+                                            <i class="fa fa-${isEmail ? 'envelope' : 'comment'} me-1"></i> ${isEmail ? 'Official Email' : 'Mobile SMS Alert'}
+                                        </span>
+                                        <span class="badge ${isReal ? 'bg-success text-white' : 'bg-white text-primary border'} rounded-pill px-2 py-1 small">
+                                            <i class="fa fa-${isReal ? 'check-circle' : 'database'} me-1"></i> ${isReal ? 'Real Inbox' : 'Clinic Ledger'}
+                                        </span>
+                                    </div>
+                                    <div class="fw-bold text-dark small mb-1">${n.subject || 'Dentia Notification'}</div>
+                                    <p class="small text-muted mb-2" style="font-size:12px; line-height:1.5;">${n.message.substring(0, 160)}${n.message.length > 160 ? '...' : ''}</p>
+                                </div>
+                                <div class="pt-2 border-top">
+                                    <div class="d-flex justify-content-between align-items-center text-muted mb-2" style="font-size:11px;">
+                                        <span>Ref: <strong class="text-primary font-monospace">${n.appointment_ref}</strong></span>
+                                        <span>${n.created_at ? n.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-semibold" onclick="previewPatientNotification(${n.id})">
+                                        <i class="fa fa-eye me-1"></i> View Full ${isEmail ? 'Formatted Email' : 'SMS Message'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+
+    } catch (e) {
+        container.innerHTML = `<div class="text-danger small">Error loading notifications.</div>`;
+    }
+}
+
+function previewPatientNotification(id) {
+    const notif = cachedPatientNotifications.find(n => n.id === id);
+    if (!notif) return;
+
+    const titleEl = document.getElementById('pat_msg_title');
+    const bodyEl = document.getElementById('pat_msg_body');
+    const isEmail = notif.channel === 'email';
+
+    titleEl.innerHTML = `<i class="fa fa-${isEmail ? 'envelope' : 'commenting'} me-2"></i> ${isEmail ? 'Official Dental Clinic Email' : 'Mobile SMS Text Alert'} &mdash; Ref: ${notif.appointment_ref}`;
+
+    if (isEmail) {
+        bodyEl.innerHTML = `
+            <div class="card border-0 shadow-sm rounded-4 mb-2 bg-white p-3">
+                <div class="border-bottom pb-2 mb-3">
+                    <div class="small text-muted">From: <strong>Doctor Dental Clinic Dentia &lt;no-reply@dentiacare.com&gt;</strong></div>
+                    <div class="small text-muted">To: <strong>${notif.recipient_name} &lt;${notif.recipient_email}&gt;</strong></div>
+                    <div class="fw-bold text-dark mt-1">Subject: ${notif.subject || 'Dentia Notification'}</div>
+                </div>
+                <div class="border rounded-3 p-3 bg-white" style="max-height: 480px; overflow-y: auto;">
+                    ${notif.html || `<div class="p-3" style="white-space: pre-wrap; font-family: sans-serif; line-height: 1.6;">${notif.message}</div>`}
+                </div>
+            </div>
+        `;
+    } else {
+        bodyEl.innerHTML = `
+            <div class="d-flex justify-content-center py-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="max-width: 440px; width:100%;">
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:38px; height:38px;">
+                            <i class="fa fa-commenting"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-dark">Dentia Dental Clinic SMS Service</div>
+                            <small class="text-muted">Mobile Number: <strong>${notif.recipient_phone || 'Registered Phone'}</strong></small>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-4 bg-success-subtle text-dark border border-success-subtle mb-3" style="line-height:1.6; font-size:13px;">
+                        ${notif.message}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center text-muted small" style="font-size:11px;">
+                        <span>Status: <strong class="text-success">${notif.status}</strong></span>
+                        <span>${notif.created_at ? notif.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('patientMessageModal'));
+    modal.show();
+}
+
+function handleLogout() {
+    localStorage.removeItem('dentia_patient');
+    window.location.href = 'index.html';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
+    loadPatientAppointments();
+    loadPatientMedicalRecords();
+    loadPatientNotifications();
+});
+</script>
+</body>
+</html>
+

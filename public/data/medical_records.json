@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "patient_id": 1,
+    "patient_name": "John Doe",
+    "patient_email": "john.doe@example.com",
+    "dentist_id": 1,
+    "dentist_name": "Dr. Sarah Bennett",
+    "appointment_ref": "DEN-2026-1001",
+    "treatment_date": "2026-11-14",
+    "diagnosis": "Mild dental plaque accumulation and localized gingivitis on lower incisors.",
+    "treatment_provided": "Ultrasonic dental scaling and polishing with fluoride varnish application.",
+    "prescription": "Chlorhexidine Gluconate 0.12% oral rinse - 15ml twice daily for 7 days.",
+    "doctor_notes": "Patient advised to practice daily interdental flossing. Recommended soft-bristled brush.",
+    "followup_date": "2027-05-14",
+    "created_at": "2026-11-14T08:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "patient_id": 3,
+    "patient_name": "Gayathri Dhanasekaran",
+    "patient_email": "gayathri.240103@cse.ritchennai.edu.in",
+    "dentist_id": 1,
+    "dentist_name": "Dr. Sarah Bennett",
+    "appointment_ref": "DEN-2026-6103",
+    "treatment_date": "2026-11-18",
+    "diagnosis": "Surface extrinsic enamel staining suitable for laser whitening therapy.",
+    "treatment_provided": "Pre-treatment dental examination and enamel shade assessment (Shade A3 to target B1).",
+    "prescription": "Sensodyne Rapid Relief toothpaste twice daily to minimize post-whitening sensitivity.",
+    "doctor_notes": "Patient scheduled for in-office whitening. Enamel thickness is healthy.",
+    "followup_date": "2026-11-25",
+    "created_at": "2026-11-18T05:10:00.000Z"
+  },
+  {
+    "id": 3,
+    "patient_id": 1,
+    "patient_name": "John Doe",
+    "patient_email": "john.doe@example.com",
+    "dentist_id": 1,
+    "dentist_name": "Dr. Sarah Bennett",
+    "appointment_ref": "DEN-2026-1001",
+    "treatment_date": "2026-11-18",
+    "diagnosis": "Recurrent deep dentinal fissure on tooth #19 with localized pulp sensitivity.",
+    "treatment_provided": "Biomimetic composite resin filling and high-viscosity dentin sealing.",
+    "prescription": "Acetaminophen 500mg (1 tablet every 6 hours PRN) & Fluoride rinse daily.",
+    "doctor_notes": "Cavity excavated without pulp exposure. Recommended soft chewing for 24h.",
+    "followup_date": "2027-02-18",
+    "created_at": "2026-11-18T05:32:37.991Z"
+  }
+]

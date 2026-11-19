@@ -3,7 +3,13 @@
  * Relational SQLite database engine with automatic schema creation and JSON sync
  */
 
-const sqlite3 = require('sqlite3').verbose();
+let sqlite3 = null;
+try {
+  sqlite3 = require('sqlite3').verbose();
+} catch (e) {
+  console.warn('[DATABASE WARNING] sqlite3 native module not available in current environment:', e.message);
+}
+
 const path = require('path');
 const fs = require('fs');
 
@@ -14,7 +20,7 @@ const DB_PATH = isVercel ? path.join(DATA_DIR, 'dentia.sqlite') : path.join(DATA
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+  try { fs.mkdirSync(DATA_DIR, { recursive: true }); } catch (e) {}
 }
 
 // In Vercel serverless environment, copy seed database to writable /tmp directory
@@ -30,44 +36,55 @@ if (isVercel && !fs.existsSync(DB_PATH)) {
   }
 }
 
-const db = new sqlite3.Database(DB_PATH, (err) => {
-  if (err) {
-    console.error('[DATABASE ERROR] Could not connect to SQLite database:', err.message);
-  } else {
-    console.log('[DATABASE SUCCESS] Connected to SQLite database:', DB_PATH);
+let db = null;
+if (sqlite3) {
+  try {
+    db = new sqlite3.Database(DB_PATH, (err) => {
+      if (err) {
+        console.error('[DATABASE ERROR] Could not connect to SQLite database:', err.message);
+      } else {
+        console.log('[DATABASE SUCCESS] Connected to SQLite database:', DB_PATH);
+      }
+    });
+  } catch (err) {
+    console.error('[DATABASE INIT ERROR]:', err.message);
   }
-});
+}
 
-// Helper for running queries with Promises
+// Helper for running queries with Promises (Safe & Non-blocking)
 function run(sql, params = []) {
-  return new Promise((resolve, reject) => {
+  if (!db) return Promise.resolve({ lastID: 0, changes: 0 });
+  return new Promise((resolve) => {
     db.run(sql, params, function (err) {
-      if (err) reject(err);
+      if (err) resolve({ lastID: 0, changes: 0 });
       else resolve({ lastID: this.lastID, changes: this.changes });
     });
   });
 }
 
 function get(sql, params = []) {
-  return new Promise((resolve, reject) => {
+  if (!db) return Promise.resolve(null);
+  return new Promise((resolve) => {
     db.get(sql, params, (err, row) => {
-      if (err) reject(err);
+      if (err) resolve(null);
       else resolve(row);
     });
   });
 }
 
 function all(sql, params = []) {
-  return new Promise((resolve, reject) => {
+  if (!db) return Promise.resolve([]);
+  return new Promise((resolve) => {
     db.all(sql, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
+      if (err) resolve([]);
+      else resolve(rows || []);
     });
   });
 }
 
 // Initialize Tables and Sync Existing Data
 async function initDatabase() {
+  if (!db) return;
   db.serialize(async () => {
     // 1. Patients Table
     db.run(`

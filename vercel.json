@@ -1,22 +1,19 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "Dentia/**",
-          "database.js",
-          "database.sql"
-        ]
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/booking.php", "destination": "/api/index.js" },
+    { "source": "/contact.php", "destination": "/api/index.js" },
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/", "destination": "/admin/index.html" },
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/services/", "destination": "/services.html" },
+    { "source": "/booking", "destination": "/booking.html" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/register", "destination": "/register.html" },
+    { "source": "/doctor-login", "destination": "/doctor-login.html" },
+    { "source": "/doctor-dashboard", "destination": "/doctor-dashboard.html" },
+    { "source": "/patient-dashboard", "destination": "/patient-dashboard.html" },
+    { "source": "/dashboard", "destination": "/patient-dashboard.html" }
   ]
 }

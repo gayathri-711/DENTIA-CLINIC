@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>SQL Database Table Explorer - Doctor Dental Clinic Dentia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <style>
+        body { background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1e293b; }
+        .db-header { background: linear-gradient(135deg, #0d6efd 0%, #084298 100%); color: white; padding: 40px 0 30px; }
+        .table-card { border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.06); background: white; }
+        .nav-pills .nav-link { border-radius: 30px; padding: 8px 20px; font-weight: 600; color: #475569; margin-right: 8px; margin-bottom: 8px; }
+        .nav-pills .nav-link.active { background-color: #0d6efd; color: white; }
+        .table-responsive { max-height: 540px; overflow-y: auto; }
+        table { font-size: 13px; }
+        thead th { position: sticky; top: 0; background-color: #f1f5f9; z-index: 10; font-weight: 700; color: #334155; }
+        .cell-id { font-family: monospace; font-weight: bold; color: #0d6efd; }
+        .badge-status-confirmed { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .badge-status-pending { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .badge-status-completed { background-color: #e0e7ff; color: #3730a3; border: 1px solid #c7d2fe; }
+        .badge-status-cancelled { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <header class="db-header shadow-sm">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <div class="d-flex align-items-center gap-3 mb-2">
+                        <span class="badge bg-success rounded-pill px-3 py-2 small fw-semibold">
+                            <i class="fa fa-database me-1"></i> SQLite 3 Relational Engine Active
+                        </span>
+                        <span class="badge bg-white-50 text-white rounded-pill px-3 py-2 small">
+                            <i class="fa fa-refresh me-1"></i> Real-Time Synchronized
+                        </span>
+                    </div>
+                    <h2 class="fw-bold text-white mb-1">Dentia Clinic Database Table Explorer</h2>
+                    <p class="text-white-50 mb-0 small">Direct query inspection of all relational database tables, patient accounts, bookings, and prescriptions</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="/api/admin/database/download-sqlite" class="btn btn-light rounded-pill px-3 fw-bold btn-sm shadow-sm">
+                        <i class="fa fa-download me-1 text-primary"></i> Download dentia.sqlite
+                    </a>
+                    <a href="/api/admin/database/download-sql" class="btn btn-outline-light rounded-pill px-3 fw-bold btn-sm">
+                        <i class="fa fa-file-code-o me-1"></i> Download MySQL database.sql
+                    </a>
+                    <a href="admin/index.html" class="btn btn-dark rounded-pill px-3 btn-sm">
+                        <i class="fa fa-shield me-1 text-warning"></i> Admin Portal
+                    </a>
+                    <a href="index.html" class="btn btn-outline-light rounded-pill px-3 btn-sm">
+                        <i class="fa fa-home me-1"></i> Website
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container py-4">
+
+        <!-- Storage & Table Overview Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                    <div class="text-muted small fw-semibold">Database Engine</div>
+                    <h4 class="fw-bold mb-0 text-dark">SQLite 3</h4>
+                    <small class="text-muted font-monospace" style="font-size:11px;">data/dentia.sqlite</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                    <div class="text-muted small fw-semibold">Storage File Size</div>
+                    <h4 class="fw-bold mb-0 text-primary" id="metric_size">88.00 KB</h4>
+                    <small class="text-muted">Compact binary format</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                    <div class="text-muted small fw-semibold">Total Table Records</div>
+                    <h4 class="fw-bold mb-0 text-success" id="metric_records">52 Records</h4>
+                    <small class="text-muted">Stored across 8 tables</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                    <div class="text-muted small fw-semibold">Human-Readable CSVs</div>
+                    <h4 class="fw-bold mb-0 text-dark">8 CSV Tables</h4>
+                    <small class="text-muted font-monospace" style="font-size:11px;">data/tables/*.csv</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Selection Tabs -->
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <ul class="nav nav-pills" id="db_tabs">
+                    <li class="nav-item">
+                        <button class="nav-link active" onclick="switchTable('patients')"><i class="fa fa-users me-1"></i> patients (<span id="count_patients">0</span>)</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="switchTable('appointments')"><i class="fa fa-calendar-check-o me-1"></i> appointments (<span id="count_appointments">0</span>)</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="switchTable('dentists')"><i class="fa fa-user-md me-1"></i> dentists (<span id="count_dentists">0</span>)</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="switchTable('patient_medical_records')"><i class="fa fa-stethoscope me-1"></i> patient_medical_records (<span id="count_medical">0</span>)</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="switchTable('notifications')"><i class="fa fa-envelope-o me-1"></i> notifications (<span id="count_notifications">0</span>)</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="switchTable('services')"><i class="fa fa-tooth me-1"></i> services (<span id="count_services">0</span>)</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" onclick="switchTable('admins')"><i class="fa fa-shield me-1"></i> admins (<span id="count_admins">0</span>)</button>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2" style="max-width: 300px; width:100%;">
+                    <input type="text" id="table_search" class="form-control form-control-sm rounded-pill" placeholder="Search current table..." onkeyup="filterCurrentTable()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Table Content Card -->
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+            <div class="card-header bg-white p-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div>
+                    <h5 class="fw-bold mb-0 text-dark">
+                        <span class="text-primary font-monospace">TABLE: <span id="active_table_name">patients</span></span>
+                    </h5>
+                    <small class="text-muted" id="active_table_subtitle">Querying SQL rows</small>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-secondary rounded-pill btn-sm px-3" onclick="reloadCurrentTable()">
+                        <i class="fa fa-refresh me-1"></i> Refresh Table
+                    </button>
+                    <a id="btn_download_csv" href="data/tables/patients.csv" download class="btn btn-outline-success rounded-pill btn-sm px-3">
+                        <i class="fa fa-file-excel-o me-1"></i> Download Table CSV
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 font-monospace" id="sql_table_grid">
+                        <thead id="sql_thead">
+                            <!-- Headers -->
+                        </thead>
+                        <tbody id="sql_tbody">
+                            <tr><td colspan="12" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Querying table records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="bg-white border-top py-3 text-center text-muted small">
+        Doctor Dental Clinic Dentia Database Management Platform &bull; SQLite 3 Engine Active
+    </footer>
+
+<script>
+let currentActiveTable = 'patients';
+let cachedRows = [];
+
+async function loadStats() {
+    try {
+        const res = await fetch('/api/admin/database/stats').then(r => r.json());
+        if (res.success) {
+            document.getElementById('metric_size').innerText = res.size_formatted || '88 KB';
+            const tables = res.tables || {};
+            let total = 0;
+            Object.keys(tables).forEach(k => total += tables[k]);
+            document.getElementById('metric_records').innerText = total + ' Records';
+
+            if (tables.patients !== undefined) document.getElementById('count_patients').innerText = tables.patients;
+            if (tables.appointments !== undefined) document.getElementById('count_appointments').innerText = tables.appointments;
+            if (tables.dentists !== undefined) document.getElementById('count_dentists').innerText = tables.dentists;
+            if (tables.patient_medical_records !== undefined) document.getElementById('count_medical').innerText = tables.patient_medical_records;
+            if (tables.notifications !== undefined) document.getElementById('count_notifications').innerText = tables.notifications;
+            if (tables.services !== undefined) document.getElementById('count_services').innerText = tables.services;
+            if (tables.admins !== undefined) document.getElementById('count_admins').innerText = tables.admins;
+        }
+    } catch (e) {
+        console.error('Error fetching stats:', e);
+    }
+}
+
+async function switchTable(tableName) {
+    currentActiveTable = tableName;
+    document.querySelectorAll('#db_tabs .nav-link').forEach(btn => btn.classList.remove('active'));
+    event?.target?.closest('button')?.classList.add('active');
+
+    document.getElementById('active_table_name').innerText = tableName;
+    document.getElementById('btn_download_csv').href = `data/tables/${tableName}.csv`;
+    document.getElementById('btn_download_csv').download = `${tableName}.csv`;
+    document.getElementById('table_search').value = '';
+
+    await fetchTableData(tableName);
+}
+
+async function fetchTableData(tableName) {
+    const thead = document.getElementById('sql_thead');
+    const tbody = document.getElementById('sql_tbody');
+    const subtitle = document.getElementById('active_table_subtitle');
+
+    subtitle.innerText = `Executing query: SELECT * FROM ${tableName} ORDER BY id ASC...`;
+    tbody.innerHTML = `<tr><td colspan="12" class="text-center py-5 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Querying table ${tableName}...</td></tr>`;
+
+    try {
+        const res = await fetch(`/api/admin/database/table?name=${encodeURIComponent(tableName)}`).then(r => r.json());
+        if (res.success && res.rows) {
+            cachedRows = res.rows;
+            subtitle.innerText = `Showing ${res.rows.length} rows stored in table '${tableName}'`;
+            renderRows(cachedRows);
+        } else {
+            tbody.innerHTML = `<tr><td colspan="12" class="text-danger py-4 text-center">${res.message || 'Error querying table'}</td></tr>`;
+        }
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="12" class="text-danger py-4 text-center">Network error querying database</td></tr>`;
+    }
+}
+
+function renderRows(rows) {
+    const thead = document.getElementById('sql_thead');
+    const tbody = document.getElementById('sql_tbody');
+
+    if (!rows || rows.length === 0) {
+        thead.innerHTML = '';
+        tbody.innerHTML = `<tr><td colspan="12" class="text-center py-5 text-muted">Table '${currentActiveTable}' is currently empty.</td></tr>`;
+        return;
+    }
+
+    const columns = Object.keys(rows[0]);
+    thead.innerHTML = `<tr>${columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+
+    tbody.innerHTML = rows.map(r => {
+        return `
+            <tr>
+                ${columns.map(c => {
+                    let val = r[c];
+                    if (val === null || val === undefined) {
+                        return `<td><span class="text-muted small">NULL</span></td>`;
+                    }
+                    if (c === 'id') {
+                        return `<td class="cell-id">#${val}</td>`;
+                    }
+                    if (c === 'status') {
+                        const s = String(val).toLowerCase();
+                        let badgeClass = 'badge bg-light text-dark border';
+                        if (s.includes('confirmed')) badgeClass = 'badge badge-status-confirmed';
+                        else if (s.includes('pending')) badgeClass = 'badge badge-status-pending';
+                        else if (s.includes('completed')) badgeClass = 'badge badge-status-completed';
+                        else if (s.includes('cancel')) badgeClass = 'badge badge-status-cancelled';
+                        return `<td><span class="${badgeClass} px-2 py-1 rounded-pill small">${val}</span></td>`;
+                    }
+                    if (typeof val === 'string' && val.length > 55) {
+                        return `<td title="${val.replace(/"/g, '&quot;')}">${val.substring(0, 55)}...</td>`;
+                    }
+                    return `<td>${val}</td>`;
+                }).join('')}
+            </tr>
+        `;
+    }).join('');
+}
+
+function filterCurrentTable() {
+    const q = (document.getElementById('table_search').value || '').toLowerCase().trim();
+    if (!q) {
+        renderRows(cachedRows);
+        return;
+    }
+    const filtered = cachedRows.filter(r => {
+        return Object.values(r).some(v => String(v || '').toLowerCase().includes(q));
+    });
+    renderRows(filtered);
+}
+
+function reloadCurrentTable() {
+    fetchTableData(currentActiveTable);
+    loadStats();
+}
+
+// Initial Load
+document.addEventListener('DOMContentLoaded', () => {
+    loadStats();
+    fetchTableData('patients');
+});
+</script>
+</body>
+</html>

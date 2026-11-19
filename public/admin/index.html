@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Admin Dashboard — Doctor Dental Clinic Dentia</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="../css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+    <link href="../css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="../images/icon.webp" type="image/gif">
+    <style>
+        header, .admin-topbar {
+            position: relative !important;
+            width: 100% !important;
+            left: auto !important;
+            top: auto !important;
+            z-index: 10 !important;
+            background: #ffffff !important;
+            margin: 0 !important;
+        }
+        .admin-sidebar {
+            width: 260px !important;
+            min-width: 260px !important;
+            max-width: 260px !important;
+            flex-shrink: 0 !important;
+            overflow-x: hidden !important;
+        }
+        .admin-sidebar .sidebar-bottom-actions {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 10px !important;
+            width: 100% !important;
+        }
+        .admin-sidebar .sidebar-bottom-actions .btn {
+            display: block !important;
+            width: 100% !important;
+            text-align: left !important;
+            white-space: normal !important;
+            margin: 0 !important;
+            padding: 8px 16px !important;
+            font-size: 13px !important;
+        }
+        .admin-stat-box {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s;
+        }
+        .admin-stat-box:hover { transform: translateY(-3px); }
+        .action-btn-accept {
+            background: #10b981;
+            color: #fff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .action-btn-accept:hover { background: #059669; color: #fff; }
+        .action-btn-cancel {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .action-btn-cancel:hover { background: #dc2626; color: #fff; }
+        .badge-pending { background: #fef3c7; color: #b45309; }
+        .badge-confirmed { background: #d1fae5; color: #065f46; }
+        .badge-completed { background: #e0f2fe; color: #0369a1; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; }
+        .nav-link.active-tab {
+            background-color: #1463b8 !important;
+            color: #fff !important;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 260px; min-height: 100vh;">
+        <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100">
+            <img src="../images/logo-white.webp" alt="Dentia" style="max-height: 38px;">
+        </a>
+
+        <div class="py-2 px-2 text-white-50 small mt-2">
+            MANAGEMENT MODULES
+        </div>
+
+        <ul class="admin-nav nav-pills flex-column mb-auto">
+            <li>
+                <a href="#appointments-section" class="active" onclick="switchSection('appointments')">
+                    <i class="fa fa-calendar-check-o me-2"></i> Appointment Requests
+                </a>
+            </li>
+            <li>
+                <a href="#doctors-section" onclick="switchSection('doctors')">
+                    <i class="fa fa-user-md me-2"></i> Manage Doctors
+                </a>
+            </li>
+            <li>
+                <a href="#patients-section" onclick="switchSection('patients')">
+                    <i class="fa fa-users me-2"></i> Patients & User Login Details
+                </a>
+            </li>
+            <li>
+                <a href="#notifications-section" onclick="switchSection('notifications')">
+                    <i class="fa fa-envelope-o me-2"></i> SMS & Email Logs
+                </a>
+            </li>
+            <li>
+                <a href="#gateway-section" onclick="switchSection('gateway')">
+                    <i class="fa fa-cogs me-2"></i> Email & SMS Gateway
+                </a>
+            </li>
+            <li>
+                <a href="#database-section" onclick="switchSection('database')">
+                    <i class="fa fa-database me-2"></i> Database & Storage
+                </a>
+            </li>
+        </ul>
+
+        <hr class="border-secondary my-3">
+
+        <div class="sidebar-bottom-actions px-1 d-flex flex-column gap-2">
+            <a href="../index.html" class="btn btn-outline-info rounded-pill w-100 btn-sm text-start px-3 d-block" style="display: block !important; width: 100% !important;">
+                <i class="fa fa-external-link me-2"></i> View Website
+            </a>
+            <a href="../database-viewer.html" target="_blank" class="btn btn-outline-warning rounded-pill w-100 btn-sm text-start px-3 d-block" style="display: block !important; width: 100% !important;">
+                <i class="fa fa-table me-2"></i> SQL Table Explorer
+            </a>
+            <a href="javascript:void(0)" onclick="handleAdminLogout()" class="btn btn-outline-danger rounded-pill w-100 btn-sm text-start px-3 d-block" style="display: block !important; width: 100% !important;">
+                <i class="fa fa-sign-out me-2"></i> Sign Out
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex-grow-1 min-vh-100 d-flex flex-column" style="overflow-x: hidden;">
+        
+        <!-- Topbar -->
+        <nav class="admin-topbar bg-white border-bottom py-2 px-4 d-flex justify-content-between align-items-center shadow-sm" style="position: relative !important; left: auto !important; width: 100% !important; z-index: 10 !important;">
+            <div>
+                <h5 class="fw-bold mb-0 text-dark">Dentia Clinic Administration</h5>
+                <small class="text-muted" style="font-size: 12px;">Accept appointment requests, manage doctors, and monitor patient care</small>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-primary text-white rounded-pill px-3 py-1 small fw-semibold">
+                    <i class="fa fa-shield me-1"></i> Chief Medical Admin
+                </span>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 36px; height: 36px; font-size: 14px;">
+                        A
+                    </div>
+                    <div class="d-none d-sm-block">
+                        <div class="fw-semibold small leading-tight">Admin Portal</div>
+                        <div class="text-muted" style="font-size: 11px;">admin@dentia.com</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Body -->
+        <main class="p-4 flex-grow-1">
+            
+            <!-- Toast Alert Box -->
+            <div id="admin_alert" class="alert d-none rounded-3 shadow-sm mb-4"></div>
+
+            <!-- Executive Stats Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-xl-3 col-sm-6">
+                    <div class="admin-stat-box">
+                        <div>
+                            <div class="text-muted small fw-semibold">Pending Requests</div>
+                            <h2 class="fw-bold mb-0 text-warning" id="stat_pending">0</h2>
+                            <small class="text-warning fw-semibold"><i class="fa fa-clock-o me-1"></i> Needs Acceptance</small>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fa fa-hourglass-half fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="admin-stat-box">
+                        <div>
+                            <div class="text-muted small fw-semibold">Confirmed Visits</div>
+                            <h2 class="fw-bold mb-0 text-success" id="stat_confirmed">0</h2>
+                            <small class="text-success fw-semibold"><i class="fa fa-check-circle me-1"></i> Accepted by Clinic</small>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fa fa-calendar-check-o fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="admin-stat-box">
+                        <div>
+                            <div class="text-muted small fw-semibold">Active Doctors</div>
+                            <h2 class="fw-bold mb-0 text-primary" id="stat_doctors">4</h2>
+                            <small class="text-muted"><i class="fa fa-user-md me-1"></i> Medical Specialists</small>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fa fa-user-md fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="admin-stat-box">
+                        <div>
+                            <div class="text-muted small fw-semibold">Registered Patients</div>
+                            <h2 class="fw-bold mb-0 text-dark" id="stat_patients">0</h2>
+                            <small class="text-muted"><i class="fa fa-users me-1"></i> Total Patient Records</small>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fa fa-users fs-3"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 1: APPOINTMENTS & REQUESTS -->
+            <div id="section_appointments">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-calendar-check-o text-primary me-2"></i> Appointment Requests & Schedule</h4>
+                        <small class="text-muted">Review incoming requests and click <strong>Accept</strong> to confirm bookings</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-secondary rounded-pill px-3 btn-sm" onclick="loadAllData()">
+                            <i class="fa fa-refresh me-1"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filter Pills -->
+                <div class="card border-0 shadow-sm rounded-4 bg-white p-3 mb-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-outline-primary active-tab rounded-pill px-3 me-2" id="btn_filter_all" onclick="filterAppointments('All')">All (<span id="count_all">0</span>)</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning rounded-pill px-3 me-2" id="btn_filter_pending" onclick="filterAppointments('Pending')">Pending Requests (<span id="count_pending">0</span>)</button>
+                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 me-2" id="btn_filter_confirmed" onclick="filterAppointments('Confirmed')">Confirmed (<span id="count_confirmed">0</span>)</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="btn_filter_completed" onclick="filterAppointments('Completed')">Completed</button>
+                        </div>
+                        <div style="max-width: 280px; width: 100%;">
+                            <input type="text" id="appointment_search" class="form-control form-control-sm rounded-pill" placeholder="Search patient, doctor, ref..." onkeyup="searchAppointments()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Ref ID</th>
+                                        <th>Patient Info</th>
+                                        <th>Requested Procedure</th>
+                                        <th>Doctor</th>
+                                        <th>Date & Time</th>
+                                        <th>Status</th>
+                                        <th class="text-end">Manage Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointments_table_body">
+                                    <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading appointment requests...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: DOCTOR MANAGEMENT -->
+            <div id="section_doctors" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-user-md text-primary me-2"></i> Clinic Doctors & Medical Staff</h4>
+                        <small class="text-muted">Add new dentists, manage credentials, specialties, and clinical hours</small>
+                    </div>
+                    <button type="button" class="btn btn-primary rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                        <i class="fa fa-plus-circle me-1"></i> Add New Doctor
+                    </button>
+                </div>
+
+                <div class="row g-4" id="doctors_container">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- SECTION 3: PATIENTS & USERS LOGIN DETAILS -->
+            <div id="section_patients" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-users text-primary me-2"></i> Patient Directory & User Login Details</h4>
+                        <small class="text-muted">Registered patient user accounts, login credentials, and scheduled visit metrics</small>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Patient Name</th>
+                                        <th>Login Credential (Email)</th>
+                                        <th>Phone Number</th>
+                                        <th>Account Status</th>
+                                        <th>Total Bookings</th>
+                                        <th>Registered Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="patients_table_body">
+                                    <!-- Loaded dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: SMS & EMAIL LOGS -->
+            <div id="section_notifications" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-envelope-o text-primary me-2"></i> Automated SMS & Email Communication Logs</h4>
+                        <small class="text-muted">Live audit ledger of all appointment confirmations, regret & rescheduling alerts, and clinical notifications</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary rounded-pill px-3 btn-sm" onclick="switchSection('gateway')">
+                            <i class="fa fa-cogs me-1"></i> Configure Real SMTP Gateway
+                        </button>
+                        <button class="btn btn-outline-secondary rounded-pill px-3 btn-sm" onclick="loadAllData()">
+                            <i class="fa fa-refresh me-1"></i> Refresh Logs
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Channel & Ref</th>
+                                        <th>Recipient</th>
+                                        <th>Subject / Intent</th>
+                                        <th>Delivered Message</th>
+                                        <th>Status</th>
+                                        <th>Dispatched Time</th>
+                                        <th class="text-end">Preview</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin_notifications_body">
+                                    <tr><td colspan="7" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Loading communication ledger...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: REAL EMAIL & SMS GATEWAY CONFIGURATION -->
+            <div id="section_gateway" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-cogs text-primary me-2"></i> Real-World Email & SMS Gateway Integration</h4>
+                        <small class="text-muted">Connect your Gmail SMTP / Brevo and SMS API to deliver real emails to actual patient inboxes and real SMS to mobile phones</small>
+                    </div>
+                </div>
+
+                <div class="row g-4">
+                    <!-- EMAIL SMTP CONFIGURATION -->
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                            <div class="card-header bg-primary text-white p-4">
+                                <h5 class="fw-bold text-white mb-1"><i class="fa fa-envelope-o me-2"></i> Real SMTP Email Transporter (Gmail / Custom)</h5>
+                                <small class="text-white-50">Delivers booking confirmations, regret messages, and doctor prescriptions directly to patient inboxes</small>
+                            </div>
+                            <div class="card-body p-4">
+                                <form id="gateway_email_form" onsubmit="saveGatewaySettings(event)">
+                                    <div class="form-check form-switch p-3 bg-light rounded-3 mb-3">
+                                        <input class="form-check-input ms-0 me-2" type="checkbox" id="gw_email_enabled">
+                                        <label class="form-check-label fw-bold text-dark small" for="gw_email_enabled">Enable Real-World Email Sending via SMTP</label>
+                                        <div class="text-muted" style="font-size:11px;">When enabled, the server dispatches real emails to patient addresses (e.g. cse.ritchennai.edu.in, gmail.com).</div>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Email Service Provider</label>
+                                            <select id="gw_email_provider" class="form-control rounded-3" onchange="toggleSmtpFields()">
+                                                <option value="gmail">Google Gmail SMTP</option>
+                                                <option value="custom">Custom SMTP Server (Brevo / SendGrid / AWS SES)</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Sender Display Name</label>
+                                            <input type="text" id="gw_email_from" class="form-control rounded-3" placeholder="Doctor Dental Clinic Dentia">
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Your Clinic Email Address *</label>
+                                            <input type="email" id="gw_email_user" class="form-control rounded-3" placeholder="your-email@gmail.com" required>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold small">Gmail 16-Char App Password *</label>
+                                            <input type="password" id="gw_email_pass" class="form-control rounded-3" placeholder="xxxx xxxx xxxx xxxx">
+                                        </div>
+
+                                        <div class="col-12" id="custom_smtp_fields" style="display:none;">
+                                            <div class="row g-3">
+                                                <div class="col-md-8">
+                                                    <label class="form-label fw-semibold small">SMTP Host</label>
+                                                    <input type="text" id="gw_email_host" class="form-control rounded-3" value="smtp.gmail.com">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold small">SMTP Port</label>
+                                                    <input type="number" id="gw_email_port" class="form-control rounded-3" value="465">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="alert alert-info py-3 px-3 rounded-3 small mb-0">
+                                                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                                                    <strong><i class="fa fa-google me-1 text-danger"></i> How to get your 16-Letter Gmail App Password:</strong>
+                                                    <a href="https://myaccount.google.com/apppasswords" target="_blank" class="btn btn-sm btn-dark rounded-pill px-3 fw-bold">
+                                                        Open Google App Passwords <i class="fa fa-external-link ms-1"></i>
+                                                    </a>
+                                                </div>
+                                                <ol class="mb-0 ps-3">
+                                                    <li>Make sure <strong>2-Step Verification</strong> is ON in your Google Account.</li>
+                                                    <li>Click the button above to go directly to <strong>App Passwords</strong>.</li>
+                                                    <li>Type <em>"Dentia Clinic"</em> as the app name and click <strong>Create</strong>.</li>
+                                                    <li>Copy the <strong>16-letter code</strong> (e.g. <code>abcd efgh ijkl mnop</code>) and paste it into the password field above. <em>(Never use your normal Google account password!)</em></li>
+                                                </ol>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 pt-2">
+                                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm">
+                                                <i class="fa fa-save me-1"></i> Save Gateway Configuration
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- SEND TEST EMAIL BOX -->
+                                <div class="mt-4 pt-4 border-top">
+                                    <h6 class="fw-bold text-dark mb-2"><i class="fa fa-paper-plane text-success me-1"></i> Test Real Email Delivery to Any Inbox</h6>
+                                    <p class="small text-muted mb-3">Send a live test verification email right now to verify that your inbox receives it:</p>
+                                    <div class="input-group">
+                                        <input type="email" id="test_email_recipient" class="form-control rounded-start-pill" placeholder="Enter recipient email (e.g. gayathri.240103@cse.ritchennai.edu.in)">
+                                        <button class="btn btn-success rounded-end-pill px-4 fw-bold" onclick="sendTestEmail()">
+                                            <i class="fa fa-send me-1"></i> Send Test Email
+                                        </button>
+                                    </div>
+                                    <div id="test_email_result" class="small mt-2"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SMS GATEWAY CONFIGURATION -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                            <div class="card-header bg-dark text-white p-4">
+                                <h5 class="fw-bold text-white mb-1"><i class="fa fa-commenting-o text-warning me-2"></i> Real SMS Gateway (Fast2SMS / Twilio)</h5>
+                                <small class="text-white-50">Delivers real SMS text messages to patient mobile numbers</small>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="form-check form-switch p-3 bg-light rounded-3 mb-3">
+                                    <input class="form-check-input ms-0 me-2" type="checkbox" id="gw_sms_enabled">
+                                    <label class="form-check-label fw-bold text-dark small" for="gw_sms_enabled">Enable Real SMS Dispatch</label>
+                                    <div class="text-muted" style="font-size:11px;">Sends live SMS text to patient phones (+91 and international).</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">SMS Gateway Provider</label>
+                                    <select id="gw_sms_provider" class="form-control rounded-3" onchange="toggleSmsFields()">
+                                        <option value="fast2sms">Fast2SMS (India — Free Instant API)</option>
+                                        <option value="twilio">Twilio SMS (Global SMS Gateway)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Fast2SMS Fields -->
+                                <div id="fast2sms_fields">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Fast2SMS Authorization API Key</label>
+                                        <input type="text" id="gw_sms_api_key" class="form-control rounded-3" placeholder="Enter Fast2SMS API key">
+                                        <small class="text-muted" style="font-size:11px;">Get 50 free instant SMS credits at <a href="https://www.fast2sms.com" target="_blank">fast2sms.com</a> (Dev API &rarr; Authorization Key).</small>
+                                    </div>
+                                </div>
+
+                                <!-- Twilio Fields -->
+                                <div id="twilio_fields" class="d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Twilio Account SID *</label>
+                                        <input type="text" id="gw_twilio_sid" class="form-control rounded-3" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Twilio Auth Token *</label>
+                                        <input type="password" id="gw_twilio_token" class="form-control rounded-3" placeholder="Enter Twilio Auth Token">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold small">Twilio From Phone Number *</label>
+                                        <input type="text" id="gw_twilio_phone" class="form-control rounded-3" placeholder="+1xxxxxxxxxx">
+                                        <small class="text-muted" style="font-size:11px;">Get credentials at <a href="https://www.twilio.com" target="_blank">twilio.com/console</a></small>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-warning py-2 px-3 rounded-3 small mb-4">
+                                    <i class="fa fa-info-circle me-1"></i> <strong>Fast2SMS ₹100 Activation Rule:</strong> Fast2SMS requires an initial one-time recharge of ₹100 in your <a href="https://www.fast2sms.com" target="_blank" class="fw-bold">Fast2SMS Wallet</a> before their API route unlocks to send SMS to mobile towers. Alternatively, select Twilio for 100% free trial credits!
+                                </div>
+
+                                <button type="button" class="btn btn-dark rounded-pill px-4 fw-bold w-100 mb-4" onclick="saveGatewaySettings(event)">
+                                    <i class="fa fa-save me-1"></i> Save SMS Gateway Settings
+                                </button>
+
+                                <!-- Test Real SMS Dispatch -->
+                                <div class="p-3 bg-light rounded-4 border">
+                                    <h6 class="fw-bold text-dark mb-2"><i class="fa fa-paper-plane text-warning me-1"></i> Test Real Mobile SMS Delivery</h6>
+                                    <p class="text-muted small mb-3">Send a real test SMS to verify that cellular delivery reaches your mobile device.</p>
+                                    <div class="input-group mb-2">
+                                        <input type="tel" id="test_sms_phone" class="form-control rounded-start-pill" placeholder="Enter mobile number (e.g. 9876543210)">
+                                        <button type="button" class="btn btn-warning rounded-end-pill px-3 fw-bold" onclick="sendTestSms()">
+                                            <i class="fa fa-send me-1"></i> Send Test SMS
+                                        </button>
+                                    </div>
+                                    <div id="test_sms_result"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: RELATIONAL DATABASE & STORAGE -->
+            <div id="section_database" class="d-none">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                    <div>
+                        <h4 class="fw-bold text-dark mb-1"><i class="fa fa-database text-primary me-2"></i> Relational Database & Table Storage</h4>
+                        <small class="text-muted">Permanent SQLite 3 database storage engine and MySQL schema synchronized in real-time</small>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/api/admin/database/download-sqlite" class="btn btn-outline-primary rounded-pill btn-sm px-3 shadow-sm">
+                            <i class="fa fa-download me-1"></i> Download dentia.sqlite
+                        </a>
+                        <a href="/api/admin/database/download-sql" class="btn btn-outline-dark rounded-pill btn-sm px-3 shadow-sm">
+                            <i class="fa fa-file-code-o me-1"></i> Download MySQL database.sql
+                        </a>
+                        <button class="btn btn-primary rounded-pill btn-sm px-3 shadow-sm" onclick="loadDatabaseStats()">
+                            <i class="fa fa-refresh me-1"></i> Refresh Stats
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Database Metrics Banner -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-4">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3">
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-2">
+                                    <i class="fa fa-check-circle me-1"></i> Engine Online & Active
+                                </span>
+                                <h5 class="fw-bold text-dark mb-0" id="db_engine_name">SQLite 3 Relational</h5>
+                                <small class="text-muted" id="db_file_name">dentia.sqlite</small>
+                            </div>
+                            <div class="col-md-3 border-start">
+                                <div class="text-muted small">Database Storage Size</div>
+                                <h3 class="fw-bold text-primary mb-0" id="db_size_formatted">Loading...</h3>
+                                <small class="text-muted">Direct binary file persistence</small>
+                            </div>
+                            <div class="col-md-3 border-start">
+                                <div class="text-muted small">Total Relational Records</div>
+                                <h3 class="fw-bold text-dark mb-0" id="db_total_records">0</h3>
+                                <small class="text-muted">Across 7 synchronized tables</small>
+                            </div>
+                            <div class="col-md-3 border-start">
+                                <div class="text-muted small">MySQL Compatibility</div>
+                                <h6 class="fw-bold text-success mb-0"><i class="fa fa-check-square me-1"></i> 100% Export Ready</h6>
+                                <small class="text-muted">Ready for phpMyAdmin & Cloud MySQL</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Table Metrics Cards -->
+                <div class="row g-3 mb-4" id="db_table_metrics_container">
+                    <!-- Loaded dynamically -->
+                </div>
+
+                <!-- Interactive SQL Table Browser -->
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5">
+                    <div class="card-header bg-white p-4 border-bottom d-flex flex-wrap justify-content-between align-items-center gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <h5 class="fw-bold mb-0 text-dark"><i class="fa fa-table text-primary me-2"></i> SQL Table Browser</h5>
+                            <select id="db_table_selector" class="form-select form-select-sm rounded-pill" style="width: 240px;" onchange="browseTable(this.value)">
+                                <option value="patients">patients (User accounts)</option>
+                                <option value="appointments">appointments (Bookings)</option>
+                                <option value="dentists">dentists (Specialists)</option>
+                                <option value="patient_medical_records">patient_medical_records</option>
+                                <option value="notifications">notifications (Email & SMS)</option>
+                                <option value="services">services (Dental procedures)</option>
+                                <option value="admins">admins (Staff credentials)</option>
+                            </select>
+                        </div>
+                        <div class="small text-muted" id="db_table_status_text">Showing live rows from table</div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                            <table class="table table-hover align-middle mb-0 font-monospace small" id="db_browser_table">
+                                <thead class="table-light sticky-top" id="db_browser_thead">
+                                    <!-- Table headers -->
+                                </thead>
+                                <tbody id="db_browser_tbody">
+                                    <!-- Table rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="admin-footer bg-white border-top py-3 px-4 text-muted small text-center" style="width: 100% !important; clear: both !important; margin: 0 !important;">
+            Doctor Dental Clinic Dentia Management Platform &copy; 2026. Live Administration Control Active.
+        </footer>
+    </div>
+</div>
+
+<!-- MODAL: ADD DOCTOR -->
+<div class="modal fade" id="addDoctorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold text-white"><i class="fa fa-user-md me-2"></i> Add New Doctor / Specialist</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="add_doctor_form" onsubmit="submitNewDoctor(event)">
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Doctor Full Name *</label>
+                            <input type="text" id="doc_name" class="form-control rounded-3" placeholder="e.g. Dr. Alexander Vance" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Specialization *</label>
+                            <input type="text" id="doc_specialization" class="form-control rounded-3" placeholder="e.g. Periodontist & Implantologist" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Academic Qualification *</label>
+                            <input type="text" id="doc_qualification" class="form-control rounded-3" placeholder="e.g. DDS, Harvard School of Dental Medicine" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Years Experience *</label>
+                            <input type="text" id="doc_experience" class="form-control rounded-3" placeholder="e.g. 10+ Years Experience" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Availability Days</label>
+                            <input type="text" id="doc_days" class="form-control rounded-3" value="Monday - Friday">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Availability Hours</label>
+                            <input type="text" id="doc_hours" class="form-control rounded-3" value="09:00 AM - 05:00 PM">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Email Address</label>
+                            <input type="email" id="doc_email" class="form-control rounded-3" placeholder="doctor@dentiacare.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small">Phone Number</label>
+                            <input type="text" id="doc_phone" class="form-control rounded-3" placeholder="+1 (800) 234-5678">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-primary"><i class="fa fa-envelope-o me-1"></i> Doctor Portal Login Email *</label>
+                            <input type="email" id="doc_login_email" class="form-control rounded-3" placeholder="doctor.name@dentiacare.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-primary"><i class="fa fa-key me-1"></i> Portal Password *</label>
+                            <input type="text" id="doc_password" class="form-control rounded-3" value="doctor123">
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch p-3 bg-light rounded-3">
+                                <input class="form-check-input ms-0 me-2" type="checkbox" id="doc_enable_login" checked>
+                                <label class="form-check-label fw-semibold small" for="doc_enable_login">Grant Doctor Dashboard Login Access Immediately</label>
+                                <div class="text-muted" style="font-size:11px;">If unchecked, the doctor cannot access the doctor portal until admin enables it.</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-primary"><i class="fa fa-camera me-1"></i> Doctor Profile Photograph *</label>
+                            <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row align-items-center gap-3">
+                                <div class="position-relative flex-shrink-0">
+                                    <img id="doc_photo_preview" src="../images/team/1.webp" alt="Doctor Preview" class="rounded-circle shadow-sm" style="width: 82px; height: 82px; object-fit: cover; border: 3px solid #0d6efd;">
+                                </div>
+                                <div class="flex-grow-1 w-100">
+                                    <div class="mb-2">
+                                        <label for="doc_photo_file" class="form-label small fw-semibold text-dark mb-1">
+                                            <i class="fa fa-upload me-1"></i> Upload Doctor Photo (JPG, PNG, WEBP)
+                                        </label>
+                                        <input type="file" id="doc_photo_file" class="form-control form-control-sm rounded-3" accept="image/*" onchange="handleDoctorPhotoUpload(event, 'doc_photo_preview', 'doc_image')">
+                                    </div>
+                                    <input type="hidden" id="doc_image" value="images/team/1.webp">
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <span class="small text-muted" style="font-size:11px;">Or select quick preset avatar:</span>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/1.webp', 'doc_photo_preview', 'doc_image')">Doctor 1</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/2.webp', 'doc_photo_preview', 'doc_image')">Doctor 2</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/3.webp', 'doc_photo_preview', 'doc_image')">Doctor 3</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/4.webp', 'doc_photo_preview', 'doc_image')">Doctor 4</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small">Doctor Biography</label>
+                            <textarea id="doc_description" class="form-control rounded-3" rows="3" placeholder="Short description of clinical expertise, patient care philosophy, and achievements..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Save & Add Doctor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: MANAGE DOCTOR LOGIN CREDENTIALS -->
+<div class="modal fade" id="doctorCredentialsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold text-white"><i class="fa fa-key text-warning me-2"></i> Doctor Credentials & Profile Photo</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="doc_credentials_form" onsubmit="saveDoctorCredentials(event)">
+                <div class="modal-body p-4">
+                    <input type="hidden" id="cred_doc_id">
+                    <div class="d-flex align-items-center gap-3 mb-3 p-3 bg-light rounded-3 border">
+                        <img id="cred_doc_photo_preview" src="../images/team/1.webp" alt="Doctor Photo" class="rounded-circle shadow-sm" style="width: 70px; height: 70px; object-fit: cover; border: 3px solid #0d6efd;">
+                        <div class="flex-grow-1">
+                            <div class="fw-bold fs-5 text-dark" id="cred_doc_name">Dr. Name</div>
+                            <div class="small text-primary fw-semibold" id="cred_doc_spec">Specialization</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small text-primary"><i class="fa fa-camera me-1"></i> Update Doctor Profile Photo</label>
+                        <input type="file" id="cred_doc_photo_file" class="form-control form-control-sm rounded-3" accept="image/*" onchange="handleDoctorPhotoUpload(event, 'cred_doc_photo_preview', 'cred_doc_image')">
+                        <input type="hidden" id="cred_doc_image" value="">
+                        <div class="d-flex align-items-center gap-2 flex-wrap mt-2">
+                            <span class="small text-muted" style="font-size:11px;">Or preset:</span>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/1.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 1</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/2.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 2</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/3.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 3</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary py-0 px-2 rounded-pill" style="font-size:11px;" onclick="selectDoctorPresetPhoto('images/team/4.webp', 'cred_doc_photo_preview', 'cred_doc_image')">Doc 4</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Portal Login Email *</label>
+                        <input type="email" id="cred_doc_email" class="form-control rounded-3" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small">Portal Password *</label>
+                        <div class="input-group">
+                            <input type="text" id="cred_doc_password" class="form-control rounded-3" placeholder="Enter new password" required>
+                            <button type="button" class="btn btn-outline-secondary" onclick="generateRandomPass()">Generate</button>
+                        </div>
+                    </div>
+
+                    <div class="form-check form-switch p-3 bg-light rounded-3 mb-2">
+                        <input class="form-check-input ms-0 me-2" type="checkbox" id="cred_doc_has_login">
+                        <label class="form-check-label fw-semibold small" for="cred_doc_has_login">Activate Doctor Dashboard Access</label>
+                        <div class="text-muted" style="font-size:11px;">When enabled, this doctor can log into their private dashboard using these credentials.</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Update Credentials & Photo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL: PREVIEW DISPATCHED EMAIL / SMS -->
+<div class="modal fade" id="messagePreviewModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white p-3">
+                <h5 class="modal-title fw-bold text-white mb-0" id="msg_preview_title">
+                    <i class="fa fa-envelope-o text-primary me-2"></i> Dispatched Communication Preview
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 bg-light" id="msg_preview_body">
+                <!-- Injected dynamically -->
+            </div>
+            <div class="modal-footer bg-white p-3">
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close Preview</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/plugins.js"></script>
+<script>
+// Admin Authentication Guard
+(function checkAdminAuth() {
+    const session = sessionStorage.getItem('dentia_admin') || localStorage.getItem('dentia_admin');
+    if (!session) {
+        window.location.replace('../login.html?role=admin');
+    }
+})();
+
+function handleAdminLogout() {
+    sessionStorage.removeItem('dentia_admin');
+    localStorage.removeItem('dentia_admin');
+    window.location.href = '../login.html?role=admin';
+}
+
+let globalAppointments = [];
+let globalDoctors = [];
+let globalPatients = [];
+let currentFilter = 'All';
+
+function showAlert(msg, type = 'success') {
+    const el = document.getElementById('admin_alert');
+    el.className = `alert alert-${type} rounded-3 shadow-sm mb-4 d-block`;
+    el.innerHTML = `<i class="fa fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'} me-2"></i> ${msg}`;
+    setTimeout(() => { el.className = 'alert d-none'; }, 4000);
+}
+
+function switchSection(sec) {
+    document.getElementById('section_appointments').classList.add('d-none');
+    document.getElementById('section_doctors').classList.add('d-none');
+    document.getElementById('section_patients').classList.add('d-none');
+    document.getElementById('section_notifications').classList.add('d-none');
+    document.getElementById('section_gateway').classList.add('d-none');
+    document.getElementById('section_database').classList.add('d-none');
+
+    document.querySelectorAll('.admin-nav a').forEach(a => a.classList.remove('active'));
+
+    if (sec === 'appointments') {
+        document.getElementById('section_appointments').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[0].classList.add('active');
+    } else if (sec === 'doctors') {
+        document.getElementById('section_doctors').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[1].classList.add('active');
+        renderDoctors();
+    } else if (sec === 'patients') {
+        document.getElementById('section_patients').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[2].classList.add('active');
+        renderPatients();
+    } else if (sec === 'notifications') {
+        document.getElementById('section_notifications').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[3].classList.add('active');
+        renderNotifications();
+    } else if (sec === 'gateway') {
+        document.getElementById('section_gateway').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[4].classList.add('active');
+        loadGatewaySettings();
+    } else if (sec === 'database') {
+        document.getElementById('section_database').classList.remove('d-none');
+        document.querySelectorAll('.admin-nav a')[5].classList.add('active');
+        loadDatabaseStats();
+        browseTable('patients');
+    }
+}
+
+let globalNotifications = [];
+
+async function loadAllData() {
+    try {
+        const [appRes, docRes, usersRes, notifRes] = await Promise.all([
+            fetch('/api/appointments').then(r => r.json()),
+            fetch('/api/dentists').then(r => r.json()),
+            fetch('/api/admin/users').then(r => r.json()),
+            fetch('/api/notifications').then(r => r.json())
+        ]);
+
+        globalAppointments = appRes || [];
+        globalDoctors = docRes || [];
+        globalPatients = (usersRes && usersRes.users) ? usersRes.users : [];
+        globalNotifications = (notifRes && notifRes.notifications) ? notifRes.notifications : [];
+
+        updateStats();
+        renderAppointments();
+        renderDoctors();
+        renderPatients();
+        renderNotifications();
+    } catch (e) {
+        console.error('Error loading data:', e);
+    }
+}
+
+function updateStats() {
+    const pending = globalAppointments.filter(a => a.status === 'Pending').length;
+    const confirmed = globalAppointments.filter(a => a.status === 'Confirmed').length;
+
+    document.getElementById('stat_pending').innerText = pending;
+    document.getElementById('stat_confirmed').innerText = confirmed;
+    document.getElementById('stat_doctors').innerText = globalDoctors.length;
+    document.getElementById('stat_patients').innerText = globalPatients.length;
+
+    document.getElementById('count_all').innerText = globalAppointments.length;
+    document.getElementById('count_pending').innerText = pending;
+    document.getElementById('count_confirmed').innerText = confirmed;
+}
+
+function filterAppointments(status) {
+    currentFilter = status;
+    document.querySelectorAll('.btn-group button').forEach(b => b.classList.remove('active-tab'));
+    
+    if (status === 'All') document.getElementById('btn_filter_all').classList.add('active-tab');
+    if (status === 'Pending') document.getElementById('btn_filter_pending').classList.add('active-tab');
+    if (status === 'Confirmed') document.getElementById('btn_filter_confirmed').classList.add('active-tab');
+    if (status === 'Completed') document.getElementById('btn_filter_completed').classList.add('active-tab');
+
+    renderAppointments();
+}
+
+function renderAppointments() {
+    const tbody = document.getElementById('appointments_table_body');
+    let list = globalAppointments;
+
+    if (currentFilter !== 'All') {
+        list = list.filter(a => a.status === currentFilter);
+    }
+
+    const q = (document.getElementById('appointment_search').value || '').toLowerCase().trim();
+    if (q) {
+        list = list.filter(a => 
+            (a.patient_name || '').toLowerCase().includes(q) ||
+            (a.appointment_ref || '').toLowerCase().includes(q) ||
+            (a.dentist_name || '').toLowerCase().includes(q) ||
+            (a.patient_email || '').toLowerCase().includes(q)
+        );
+    }
+
+    if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-5 text-muted">No appointments found matching this view.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = list.map(app => {
+        const isPending = app.status === 'Pending';
+        const isConfirmed = app.status === 'Confirmed';
+
+        return `
+            <tr>
+                <td><strong class="font-monospace text-primary small">${app.appointment_ref}</strong></td>
+                <td>
+                    <div class="fw-bold text-dark">${app.patient_name}</div>
+                    <div class="small text-muted"><i class="fa fa-envelope-o me-1"></i>${app.patient_email}</div>
+                    <div class="small text-muted"><i class="fa fa-phone me-1"></i>${app.patient_phone || '—'}</div>
+                </td>
+                <td>
+                    <div class="fw-semibold text-dark">${app.service_name || 'Dental Procedure'}</div>
+                    <small class="text-muted">${app.message ? `"${app.message}"` : ''}</small>
+                </td>
+                <td>
+                    <div class="fw-semibold text-primary"><i class="fa fa-user-md me-1"></i>${app.dentist_name || 'Doctor'}</div>
+                </td>
+                <td>
+                    <div class="small fw-bold"><i class="fa fa-calendar me-1 text-primary"></i> ${app.appointment_date}</div>
+                    <div class="small text-muted"><i class="fa fa-clock-o me-1"></i> ${app.appointment_time}</div>
+                </td>
+                <td>
+                    <span class="badge badge-${(app.status || 'pending').toLowerCase()} px-3 py-1 rounded-pill fw-semibold">
+                        ${app.status}
+                    </span>
+                </td>
+                <td class="text-end">
+                    <div class="d-flex justify-content-end gap-1">
+                        ${isPending ? `
+                            <button class="action-btn-accept shadow-sm" onclick="updateAppointmentStatus(${app.id}, 'Confirmed')" title="Accept this request">
+                                <i class="fa fa-check me-1"></i> Accept
+                            </button>
+                        ` : ''}
+
+                        ${isConfirmed ? `
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="updateAppointmentStatus(${app.id}, 'Completed')" title="Mark treatment completed">
+                                <i class="fa fa-check-circle me-1"></i> Complete
+                            </button>
+                        ` : ''}
+
+                        ${app.status !== 'Cancelled' ? `
+                            <button class="action-btn-cancel" onclick="updateAppointmentStatus(${app.id}, 'Cancelled')" title="Reject or cancel">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function searchAppointments() {
+    renderAppointments();
+}
+
+async function updateAppointmentStatus(appId, newStatus) {
+    try {
+        const res = await fetch('/api/appointments/status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: appId, status: newStatus })
+        }).then(r => r.json());
+
+        if (res.success) {
+            showAlert(`Appointment ${newStatus === 'Confirmed' ? 'accepted and confirmed' : newStatus.toLowerCase()} successfully!`);
+            loadAllData();
+        } else {
+            showAlert(res.message || 'Error updating status', 'danger');
+        }
+    } catch (e) {
+        showAlert('Server communication error', 'danger');
+    }
+}
+
+function getDoctorImgSrc(img) {
+    if (!img) return '../images/team/1.webp';
+    if (img.startsWith('data:') || img.startsWith('http://') || img.startsWith('https://')) {
+        return img;
+    }
+    return '../' + img.replace(/^\/+/, '');
+}
+
+function handleDoctorPhotoUpload(event, previewImgId, targetInputId) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    if (file.size > 8 * 1024 * 1024) {
+        showAlert('Photo is too large. Please select an image under 8MB.', 'warning');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Data = e.target.result;
+        const previewEl = document.getElementById(previewImgId);
+        if (previewEl) previewEl.src = base64Data;
+        const targetInput = document.getElementById(targetInputId);
+        if (targetInput) targetInput.value = base64Data;
+    };
+    reader.readAsDataURL(file);
+}
+
+function selectDoctorPresetPhoto(presetPath, previewImgId, targetInputId) {
+    const previewEl = document.getElementById(previewImgId);
+    if (previewEl) previewEl.src = '../' + presetPath;
+    const targetInput = document.getElementById(targetInputId);
+    if (targetInput) targetInput.value = presetPath;
+    if (previewImgId === 'doc_photo_preview') {
+        const fileInput = document.getElementById('doc_photo_file');
+        if (fileInput) fileInput.value = '';
+    } else if (previewImgId === 'cred_doc_photo_preview') {
+        const fileInput = document.getElementById('cred_doc_photo_file');
+        if (fileInput) fileInput.value = '';
+    }
+}
+
+function renderDoctors() {
+    const container = document.getElementById('doctors_container');
+    container.innerHTML = globalDoctors.map(d => `
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white h-100">
+                <div class="row g-0 h-100">
+                    <div class="col-sm-4 bg-light text-center p-3 d-flex flex-column align-items-center justify-content-center">
+                        <img src="${getDoctorImgSrc(d.image)}" alt="${d.name}" class="img-fluid rounded-4 shadow-sm mb-3" style="max-height: 180px; width: 100%; object-fit: cover;">
+                        <span class="badge ${d.is_active ? 'bg-success' : 'bg-secondary'} rounded-pill px-3 py-1 mb-2">
+                            ${d.is_active ? 'Active Doctor' : 'Inactive'}
+                        </span>
+                        <span class="badge ${d.has_login ? 'bg-primary' : 'bg-warning text-dark'} rounded-pill px-2 py-1 small">
+                            <i class="fa fa-${d.has_login ? 'check' : 'lock'} me-1"></i> ${d.has_login ? 'Portal Active' : 'No Login'}
+                        </span>
+                    </div>
+                    <div class="col-sm-8 p-4 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="fw-bold text-dark mb-1">${d.name}</h5>
+                                <div class="text-primary fw-semibold small mb-2">${d.specialization}</div>
+                            </div>
+                        </div>
+                        <div class="small text-muted mb-2"><i class="fa fa-graduation-cap text-primary me-1"></i> ${d.qualification}</div>
+                        <div class="small text-muted mb-2"><i class="fa fa-envelope-o text-primary me-1"></i> ${d.login_email || d.email}</div>
+                        <div class="small text-muted mb-3"><i class="fa fa-clock-o text-primary me-1"></i> ${d.availability_days} &bull; ${d.availability_hours}</div>
+                        <p class="small text-muted flex-grow-1" style="line-height:1.6;">${d.description || ''}</p>
+                        
+                        <div class="d-flex justify-content-end gap-2 mt-auto pt-2 border-top">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-semibold" onclick="openDoctorCredentialsModal(${d.id})">
+                                <i class="fa fa-key me-1"></i> Credentials & Photo
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="deleteDoctor(${d.id})">
+                                <i class="fa fa-trash me-1"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openDoctorCredentialsModal(docId) {
+    const doc = globalDoctors.find(d => d.id === docId);
+    if (!doc) return;
+
+    document.getElementById('cred_doc_id').value = doc.id;
+    document.getElementById('cred_doc_name').innerText = doc.name;
+    document.getElementById('cred_doc_spec').innerText = doc.specialization;
+    document.getElementById('cred_doc_email').value = doc.login_email || doc.email || '';
+    document.getElementById('cred_doc_password').value = doc.password || 'doctor123';
+    document.getElementById('cred_doc_has_login').checked = Boolean(doc.has_login);
+
+    // Doctor photo preview and state
+    document.getElementById('cred_doc_photo_preview').src = getDoctorImgSrc(doc.image);
+    document.getElementById('cred_doc_image').value = doc.image || 'images/team/1.webp';
+    const credFileInput = document.getElementById('cred_doc_photo_file');
+    if (credFileInput) credFileInput.value = '';
+
+    const modal = new bootstrap.Modal(document.getElementById('doctorCredentialsModal'));
+    modal.show();
+}
+
+function generateRandomPass() {
+    const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+    let pass = 'doc';
+    for (let i = 0; i < 5; i++) {
+        pass += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    document.getElementById('cred_doc_password').value = pass;
+}
+
+async function saveDoctorCredentials(e) {
+    e.preventDefault();
+    const docId = parseInt(document.getElementById('cred_doc_id').value, 10);
+    const loginEmail = document.getElementById('cred_doc_email').value.trim();
+    const password = document.getElementById('cred_doc_password').value.trim();
+    const hasLogin = document.getElementById('cred_doc_has_login').checked;
+    const image = document.getElementById('cred_doc_image').value.trim();
+
+    try {
+        const res = await fetch('/api/admin/doctor/credentials', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id: docId,
+                login_email: loginEmail,
+                password: password,
+                has_login: hasLogin,
+                image: image
+            })
+        }).then(r => r.json());
+
+        if (res.success) {
+            const modalEl = document.getElementById('doctorCredentialsModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+
+            showAlert(res.message);
+            loadAllData();
+        } else {
+            showAlert(res.message || 'Error updating credentials', 'danger');
+        }
+    } catch (err) {
+        showAlert('Server communication error', 'danger');
+    }
+}
+
+async function submitNewDoctor(e) {
+    e.preventDefault();
+    const docData = {
+        name: document.getElementById('doc_name').value.trim(),
+        specialization: document.getElementById('doc_specialization').value.trim(),
+        qualification: document.getElementById('doc_qualification').value.trim(),
+        experience: document.getElementById('doc_experience').value.trim(),
+        availability_days: document.getElementById('doc_days').value.trim(),
+        availability_hours: document.getElementById('doc_hours').value.trim(),
+        email: document.getElementById('doc_email').value.trim(),
+        phone: document.getElementById('doc_phone').value.trim(),
+        login_email: document.getElementById('doc_login_email').value.trim(),
+        password: document.getElementById('doc_password').value.trim(),
+        has_login: document.getElementById('doc_enable_login').checked,
+        image: document.getElementById('doc_image').value.trim() || 'images/team/1.webp',
+        description: document.getElementById('doc_description').value.trim()
+    };
+
+    try {
+        const res = await fetch('/api/dentists', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(docData)
+        }).then(r => r.json());
+
+        if (res.success) {
+            // Dismiss modal
+            const modalEl = document.getElementById('addDoctorModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) modal.hide();
+            document.getElementById('add_doctor_form').reset();
+            document.getElementById('doc_photo_preview').src = '../images/team/1.webp';
+            document.getElementById('doc_image').value = 'images/team/1.webp';
+            const newDocFileInput = document.getElementById('doc_photo_file');
+            if (newDocFileInput) newDocFileInput.value = '';
+
+            showAlert(`Doctor ${docData.name} has been added successfully with profile photo and login access ${docData.has_login ? 'ENABLED' : 'DISABLED'}!`);
+            loadAllData();
+        } else {
+            showAlert(res.message || 'Error saving doctor', 'danger');
+        }
+    } catch (err) {
+        showAlert('Server communication error', 'danger');
+    }
+}
+
+async function deleteDoctor(id) {
+    if (!confirm('Are you sure you want to remove this doctor?')) return;
+    try {
+        const res = await fetch('/api/dentists/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id })
+        }).then(r => r.json());
+
+        if (res.success) {
+            showAlert('Doctor removed successfully');
+            loadAllData();
+        }
+    } catch (e) {
+        showAlert('Error removing doctor', 'danger');
+    }
+}
+
+function renderPatients() {
+    const tbody = document.getElementById('patients_table_body');
+    if (globalPatients.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-muted">No patient accounts registered yet.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = globalPatients.map(p => `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:34px; height:34px;">
+                        ${(p.name || 'P')[0].toUpperCase()}
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark">${p.name}</div>
+                        <small class="text-muted">${p.address || 'Address not set'}</small>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <span class="font-monospace text-primary fw-semibold"><i class="fa fa-user me-1"></i> ${p.email}</span>
+                <div class="small text-muted" style="font-size:11px;">Username: <strong>${p.email}</strong></div>
+            </td>
+            <td><i class="fa fa-phone text-muted me-1"></i> ${p.phone || '—'}</td>
+            <td>
+                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 small">
+                    <i class="fa fa-check-circle me-1"></i> ${p.account_status || 'Active'}
+                </span>
+            </td>
+            <td>
+                <span class="badge bg-light text-primary border rounded-pill px-3 py-1 fw-bold">
+                    ${p.total_visits || 0} Visits
+                </span>
+            </td>
+            <td class="small text-muted">
+                <i class="fa fa-calendar me-1"></i> ${p.registered_at ? p.registered_at.split('T')[0] : '2026-01-10'}
+            </td>
+        </tr>
+    `).join('');
+}
+
+function renderNotifications() {
+    const tbody = document.getElementById('admin_notifications_body');
+    if (!tbody) return;
+    if (!globalNotifications || globalNotifications.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-muted">No dispatched messages found in system ledger.</td></tr>`;
+        return;
+    }
+
+    tbody.innerHTML = globalNotifications.slice(0, 50).map(n => {
+        const isEmail = n.channel === 'email';
+        const isUnavailable = n.type === 'slot_unavailable';
+        const isReal = (n.status || '').toLowerCase().includes('real inbox');
+        return `
+            <tr>
+                <td>
+                    <span class="badge ${isEmail ? 'bg-primary' : 'bg-success'} rounded-pill px-2 py-1 small">
+                        <i class="fa fa-${isEmail ? 'envelope' : 'comment'} me-1"></i> ${isEmail ? 'EMAIL' : 'SMS'}
+                    </span>
+                    <div class="font-monospace text-muted small mt-1">${n.appointment_ref || ''}</div>
+                </td>
+                <td>
+                    <div class="fw-bold text-dark small">${n.recipient_name}</div>
+                    <small class="text-muted">${isEmail ? n.recipient_email : n.recipient_phone}</small>
+                </td>
+                <td>
+                    <div class="small fw-semibold ${isUnavailable ? 'text-warning' : 'text-dark'}">${n.subject || 'Alert'}</div>
+                </td>
+                <td style="max-width: 320px;">
+                    <p class="small text-muted mb-0" style="font-size:12px; line-height:1.4;">${n.message.substring(0, 140)}${n.message.length > 140 ? '...' : ''}</p>
+                </td>
+                <td>
+                    <span class="badge ${isReal ? 'bg-success' : 'bg-info-subtle text-info border'} rounded-pill px-2 py-1 small">
+                        <i class="fa fa-${isReal ? 'paper-plane' : 'database'} me-1"></i> ${isReal ? 'Real Inbox' : 'Clinic Ledger'}
+                    </span>
+                </td>
+                <td class="small text-muted">
+                    ${n.created_at ? n.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}
+                </td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="previewAdminNotification(${n.id})">
+                        <i class="fa fa-eye me-1"></i> Preview
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function previewAdminNotification(id) {
+    const notif = globalNotifications.find(n => n.id === id);
+    if (!notif) return;
+
+    const titleEl = document.getElementById('msg_preview_title');
+    const bodyEl = document.getElementById('msg_preview_body');
+    const isEmail = notif.channel === 'email';
+
+    titleEl.innerHTML = `<i class="fa fa-${isEmail ? 'envelope' : 'commenting'} ${isEmail ? 'text-primary' : 'text-success'} me-2"></i> ${isEmail ? 'Dispatched Email Preview' : 'Dispatched Mobile SMS Preview'} &mdash; Ref ${notif.appointment_ref || ''}`;
+
+    if (isEmail) {
+        bodyEl.innerHTML = `
+            <div class="card border-0 shadow-sm rounded-4 mb-3 bg-white p-3">
+                <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                    <div>
+                        <div class="small text-muted">From: <strong>Doctor Dental Clinic Dentia &lt;no-reply@dentiacare.com&gt;</strong></div>
+                        <div class="small text-muted">To: <strong>${notif.recipient_name} &lt;${notif.recipient_email}&gt;</strong></div>
+                        <div class="fw-bold text-dark mt-1">Subject: ${notif.subject || 'Dentia Notification'}</div>
+                    </div>
+                    <span class="badge ${notif.status.toLowerCase().includes('real inbox') ? 'bg-success' : 'bg-info-subtle text-info border'} rounded-pill px-3 py-2 small">
+                        ${notif.status}
+                    </span>
+                </div>
+                <div class="border rounded-3 p-3 bg-white" style="max-height: 480px; overflow-y: auto;">
+                    ${notif.html || `<div class="p-3" style="white-space: pre-wrap; font-family: sans-serif; line-height: 1.6;">${notif.message}</div>`}
+                </div>
+            </div>
+        `;
+    } else {
+        bodyEl.innerHTML = `
+            <div class="d-flex justify-content-center py-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white" style="max-width: 440px; width:100%;">
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
+                        <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style="width:38px; height:38px;">
+                            <i class="fa fa-commenting"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold small text-dark">Dentia Dental Clinic SMS Service</div>
+                            <small class="text-muted">Mobile Recipient: <strong>${notif.recipient_phone || 'Patient Phone'}</strong></small>
+                        </div>
+                    </div>
+                    <div class="p-3 rounded-4 bg-success-subtle text-dark border border-success-subtle mb-3" style="line-height:1.6; font-size:13px;">
+                        ${notif.message}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center text-muted small" style="font-size:11px;">
+                        <span>Status: <strong class="text-success">${notif.status}</strong></span>
+                        <span>${notif.created_at ? notif.created_at.replace('T', ' ').substring(0, 16) : 'Just now'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('messagePreviewModal'));
+    modal.show();
+}
+
+function toggleSmtpFields() {
+    const prov = document.getElementById('gw_email_provider').value;
+    const customFields = document.getElementById('custom_smtp_fields');
+    if (customFields) {
+        if (prov === 'custom') {
+            customFields.style.display = 'block';
+        } else {
+            customFields.style.display = 'none';
+            document.getElementById('gw_email_host').value = 'smtp.gmail.com';
+            document.getElementById('gw_email_port').value = '465';
+        }
+    }
+}
+
+async function loadGatewaySettings() {
+    try {
+        const res = await fetch('/api/admin/gateway').then(r => r.json());
+        if (res.success && res.config) {
+            const email = res.config.email || {};
+            const sms = res.config.sms || {};
+
+            document.getElementById('gw_email_enabled').checked = !!email.enabled;
+            document.getElementById('gw_email_provider').value = email.provider || 'gmail';
+            document.getElementById('gw_email_from').value = email.from || '';
+            document.getElementById('gw_email_user').value = email.user || '';
+            document.getElementById('gw_email_host').value = email.host || 'smtp.gmail.com';
+            document.getElementById('gw_email_port').value = email.port || 465;
+
+            document.getElementById('gw_sms_enabled').checked = !!sms.enabled;
+            document.getElementById('gw_sms_provider').value = sms.provider || 'fast2sms';
+            document.getElementById('gw_sms_api_key').value = sms.api_key || '';
+            document.getElementById('gw_twilio_sid').value = sms.twilio_sid || '';
+            document.getElementById('gw_twilio_token').value = sms.twilio_token || '';
+            document.getElementById('gw_twilio_phone').value = sms.twilio_phone || '';
+
+            toggleSmtpFields();
+            toggleSmsFields();
+        }
+    } catch (e) {
+        console.error('Error loading gateway settings:', e);
+    }
+}
+
+function toggleSmsFields() {
+    const prov = document.getElementById('gw_sms_provider').value;
+    const f2sEl = document.getElementById('fast2sms_fields');
+    const twilioEl = document.getElementById('twilio_fields');
+    if (prov === 'twilio') {
+        f2sEl.classList.add('d-none');
+        twilioEl.classList.remove('d-none');
+    } else {
+        f2sEl.classList.remove('d-none');
+        twilioEl.classList.add('d-none');
+    }
+}
+
+async function saveGatewaySettings(e) {
+    if (e) e.preventDefault();
+    const config = {
+        email: {
+            enabled: document.getElementById('gw_email_enabled').checked,
+            provider: document.getElementById('gw_email_provider').value,
+            host: document.getElementById('gw_email_host').value.trim(),
+            port: parseInt(document.getElementById('gw_email_port').value, 10) || 465,
+            secure: true,
+            user: document.getElementById('gw_email_user').value.trim(),
+            pass: document.getElementById('gw_email_pass').value.trim(),
+            from: document.getElementById('gw_email_from').value.trim()
+        },
+        sms: {
+            enabled: document.getElementById('gw_sms_enabled').checked,
+            provider: document.getElementById('gw_sms_provider').value,
+            api_key: document.getElementById('gw_sms_api_key').value.trim(),
+            twilio_sid: document.getElementById('gw_twilio_sid').value.trim(),
+            twilio_token: document.getElementById('gw_twilio_token').value.trim(),
+            twilio_phone: document.getElementById('gw_twilio_phone').value.trim()
+        }
+    };
+
+    try {
+        const res = await fetch('/api/admin/gateway', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(config)
+        }).then(r => r.json());
+
+        if (res.success) {
+            showAlert('Gateway configuration saved! Real SMS delivery is ' + (config.sms.enabled ? 'ACTIVE (Real Cellular SMS)' : 'INACTIVE (Clinic Ledger Mode)'));
+        } else {
+            showAlert(res.message || 'Error saving gateway configuration', 'danger');
+        }
+    } catch (err) {
+        showAlert('Server communication error', 'danger');
+    }
+}
+
+async function sendTestEmail() {
+    const recipient = (document.getElementById('test_email_recipient').value || '').trim();
+    const resultEl = document.getElementById('test_email_result');
+    if (!recipient) {
+        resultEl.innerHTML = '<span class="text-danger fw-semibold"><i class="fa fa-exclamation-circle me-1"></i> Please enter an email address first.</span>';
+        return;
+    }
+
+    resultEl.innerHTML = '<span class="text-primary fw-semibold"><i class="fa fa-spinner fa-spin me-1"></i> Connecting to SMTP server and dispatching test email to ' + recipient + '...</span>';
+
+    try {
+        const res = await fetch('/api/admin/gateway/test-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ to: recipient, recipient: recipient })
+        }).then(r => r.json());
+
+        if (res.success) {
+            resultEl.innerHTML = `
+                <div class="alert alert-success p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-check-circle me-1"></i> <strong>Real Email Delivered Successfully!</strong><br>
+                    ${res.message}<br>
+                    <span class="text-muted">Message ID: <code>${res.messageId || 'OK'}</code></span>
+                </div>
+            `;
+            loadAllData();
+        } else {
+            resultEl.innerHTML = `
+                <div class="alert alert-danger p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-times-circle me-1"></i> <strong>Email Delivery Unsuccessful:</strong><br>
+                    ${res.message || 'Error sending test email'}<br>
+                    <small class="text-muted mt-1 d-block">Make sure your Gmail App Password (16 characters) is saved in the form above.</small>
+                </div>
+            `;
+        }
+    } catch (err) {
+        resultEl.innerHTML = '<span class="text-danger">Failed to send test email: ' + err.message + '</span>';
+    }
+}
+
+async function sendTestSms() {
+    const phone = (document.getElementById('test_sms_phone').value || '').trim();
+    const resultEl = document.getElementById('test_sms_result');
+    if (!phone) {
+        resultEl.innerHTML = '<span class="text-danger fw-semibold"><i class="fa fa-exclamation-circle me-1"></i> Please enter a mobile phone number first.</span>';
+        return;
+    }
+
+    resultEl.innerHTML = '<span class="text-primary fw-semibold"><i class="fa fa-spinner fa-spin me-1"></i> Connecting to SMS gateway and dispatching live test SMS to ' + phone + '...</span>';
+
+    try {
+        const res = await fetch('/api/admin/gateway/test-sms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone: phone })
+        }).then(r => r.json());
+
+        if (res.success) {
+            resultEl.innerHTML = `
+                <div class="alert alert-success p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-check-circle me-1"></i> <strong>Real SMS Delivered to Mobile!</strong><br>
+                    ${res.message}<br>
+                    <span class="text-muted">Gateway ID: <code>${res.messageId || 'OK'}</code></span>
+                </div>
+            `;
+            loadAllData();
+        } else {
+            resultEl.innerHTML = `
+                <div class="alert alert-danger p-3 mt-2 rounded-3 small">
+                    <i class="fa fa-times-circle me-1"></i> <strong>SMS Delivery Failed:</strong><br>
+                    ${res.message || 'Error sending test SMS'}<br>
+                    <small class="text-muted mt-1 d-block">For Fast2SMS, enter your authorization key. For Twilio, enter SID, Auth Token & From phone.</small>
+                </div>
+            `;
+        }
+    } catch (err) {
+        resultEl.innerHTML = '<span class="text-danger">Failed to send test SMS: ' + err.message + '</span>';
+    }
+}
+
+async function loadDatabaseStats() {
+    try {
+        const res = await fetch('/api/admin/database/stats').then(r => r.json());
+        if (res.success) {
+            document.getElementById('db_engine_name').innerText = res.engine || 'SQLite 3';
+            document.getElementById('db_file_name').innerText = res.database_file || 'dentia.sqlite';
+            document.getElementById('db_size_formatted').innerText = res.size_formatted || '90 KB';
+
+            const tables = res.tables || {};
+            let total = 0;
+            const container = document.getElementById('db_table_metrics_container');
+            const tableNames = Object.keys(tables);
+            
+            tableNames.forEach(t => total += (tables[t] || 0));
+            document.getElementById('db_total_records').innerText = total;
+
+            const tableIcons = {
+                patients: 'users',
+                dentists: 'user-md',
+                appointments: 'calendar-check-o',
+                patient_medical_records: 'stethoscope',
+                notifications: 'envelope-o',
+                services: 'list',
+                admins: 'shield'
+            };
+
+            container.innerHTML = tableNames.map(t => `
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100" style="cursor:pointer;" onclick="browseTable('${t}')">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="text-muted small fw-semibold">${t}</div>
+                                <h3 class="fw-bold mb-0 text-dark">${tables[t]}</h3>
+                                <small class="text-primary fw-semibold"><i class="fa fa-arrow-right me-1"></i> Browse table</small>
+                            </div>
+                            <div class="bg-primary-subtle text-primary rounded-circle d-flex align-items-center justify-content-center" style="width:42px; height:42px;">
+                                <i class="fa fa-${tableIcons[t] || 'database'} fs-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        console.error('Error loading database stats:', e);
+    }
+}
+
+async function browseTable(tableName) {
+    if (!tableName) tableName = 'patients';
+    document.getElementById('db_table_selector').value = tableName;
+    const thead = document.getElementById('db_browser_thead');
+    const tbody = document.getElementById('db_browser_tbody');
+    const statusText = document.getElementById('db_table_status_text');
+
+    statusText.innerText = `Loading live records from table '${tableName}'...`;
+    thead.innerHTML = '';
+    tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted"><i class="fa fa-spinner fa-spin me-2"></i> Querying table ${tableName}...</td></tr>`;
+
+    try {
+        const res = await fetch(`/api/admin/database/table?name=${encodeURIComponent(tableName)}`).then(r => r.json());
+        if (res.success && res.rows) {
+            const rows = res.rows;
+            statusText.innerText = `Showing ${rows.length} rows from table '${tableName}' (Sorted DESC by id)`;
+
+            if (rows.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted">Table '${tableName}' is currently empty.</td></tr>`;
+                return;
+            }
+
+            const columns = Object.keys(rows[0]);
+            thead.innerHTML = `<tr>${columns.map(c => `<th>${c}</th>`).join('')}</tr>`;
+
+            tbody.innerHTML = rows.map(r => `
+                <tr>
+                    ${columns.map(c => {
+                        let val = r[c];
+                        if (val === null || val === undefined) val = '<span class="text-muted">NULL</span>';
+                        else if (typeof val === 'string' && val.length > 50) val = val.substring(0, 50) + '...';
+                        return `<td>${val}</td>`;
+                    }).join('')}
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = `<tr><td colspan="10" class="text-danger py-4 text-center">${res.message || 'Error querying table'}</td></tr>`;
+        }
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="10" class="text-danger py-4 text-center">Network error loading table</td></tr>`;
+    }
+}
+
+// Initial Load (Guaranteed immediate execution)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadAllData);
+} else {
+    loadAllData();
+}
+</script>
+</body>
+</html>
+

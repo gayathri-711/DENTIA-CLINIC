@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Patient Account — Doctor Dental Clinic Dentia</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+    <link rel="icon" href="images/icon.webp" type="image/gif">
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+        }
+        .portal-auth-card {
+            background: #ffffff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px -15px rgba(11, 37, 69, 0.18);
+            max-width: 1060px;
+            width: 100%;
+        }
+        .portal-hero-pane {
+            background: linear-gradient(135deg, rgba(11, 37, 69, 0.94) 0%, rgba(20, 99, 184, 0.88) 100%), url('images/misc/l2.webp');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            padding: 45px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .portal-form-pane {
+            padding: 45px 42px;
+        }
+        .form-control, .form-select {
+            padding: 11px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            border: 1px solid #cbd5e1;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+        .trust-badge-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 13.5px;
+            color: rgba(255,255,255,0.92);
+        }
+        .trust-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #38bdf8;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="portal-auth-card">
+        <div class="row g-0">
+            
+            <!-- Left Hero Pane -->
+            <div class="col-lg-5 d-none d-lg-flex portal-hero-pane">
+                <div>
+                    <a href="index.html" class="d-inline-block mb-4">
+                        <img src="images/logo-white.webp" alt="Dentia" style="max-height: 44px;">
+                    </a>
+                    <h3 class="fw-bold text-white mb-2">Join Dentia Care Network</h3>
+                    <p class="text-white-50 small mb-4">Register in 60 seconds to book appointments, review clinical dental records, and receive automated confirmations.</p>
+
+                    <div class="pt-2">
+                        <div class="trust-badge-item">
+                            <div class="trust-icon-box"><i class="fa fa-calendar-check-o"></i></div>
+                            <div>
+                                <strong>Instant Online Scheduling</strong>
+                                <div class="text-white-50" style="font-size:11.5px;">Book and reschedule with your preferred dentist</div>
+                            </div>
+                        </div>
+
+                        <div class="trust-badge-item">
+                            <div class="trust-icon-box"><i class="fa fa-stethoscope"></i></div>
+                            <div>
+                                <strong>Digital Prescriptions & Records</strong>
+                                <div class="text-white-50" style="font-size:11.5px;">Access doctor notes and dental history 24/7</div>
+                            </div>
+                        </div>
+
+                        <div class="trust-badge-item">
+                            <div class="trust-icon-box"><i class="fa fa-bell"></i></div>
+                            <div>
+                                <strong>Automated SMS & Email Alerts</strong>
+                                <div class="text-white-50" style="font-size:11.5px;">Never miss a scheduled checkup or follow-up</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-top border-white border-opacity-25 pt-3 mt-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <small class="text-white-50 d-block">Already have an account?</small>
+                            <a href="login.html" class="text-white fw-bold small text-decoration-none"><i class="fa fa-sign-in me-1"></i> Sign In to Portal &rarr;</a>
+                        </div>
+                        <a href="index.html" class="btn btn-outline-light rounded-pill btn-sm px-3">
+                            <i class="fa fa-home me-1"></i> Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Form Pane -->
+            <div class="col-lg-7 portal-form-pane">
+                
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-lg-none">
+                        <a href="index.html"><img src="images/logo-black.webp" alt="Dentia" style="max-height: 34px;"></a>
+                    </div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 small fw-semibold">
+                        <i class="fa fa-user-plus me-1"></i> Patient Registration
+                    </span>
+                    <a href="index.html" class="text-muted small text-decoration-none">
+                        <i class="fa fa-arrow-left me-1"></i> Return Home
+                    </a>
+                </div>
+
+                <h3 class="fw-bold text-dark mb-1">Create Your Patient Account</h3>
+                <p class="text-muted small mb-4">Please fill in your details below to activate your patient portal</p>
+
+                <div id="reg_alert" class="alert d-none rounded-3 mb-4 shadow-sm"></div>
+
+                <form id="patient_register_form" onsubmit="handlePatientRegister(event)">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-dark">Full Legal Name *</label>
+                            <input type="text" id="reg_name" class="form-control" placeholder="e.g. Sarah Jenkins" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Email Address *</label>
+                            <input type="email" id="reg_email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Mobile Phone Number *</label>
+                            <input type="tel" id="reg_phone" class="form-control" placeholder="+1 (555) 000-0000" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Create Password *</label>
+                            <input type="password" id="reg_password" class="form-control" placeholder="••••••••" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Confirm Password *</label>
+                            <input type="password" id="reg_confirm" class="form-control" placeholder="••••••••" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Date of Birth</label>
+                            <input type="date" id="reg_dob" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small text-dark">Gender</label>
+                            <select id="reg_gender" class="form-select">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small text-dark">Residential Address</label>
+                            <input type="text" id="reg_address" class="form-control" placeholder="Street, City, State, ZIP Code">
+                        </div>
+
+                        <div class="col-12 mt-4">
+                            <button type="submit" id="btn_reg_submit" class="btn btn-primary btn-lg rounded-pill w-100 fw-bold shadow-sm">
+                                <i class="fa fa-user-plus me-2"></i> Complete Account Registration
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="text-center pt-3 border-top mt-4">
+                    <p class="text-muted small mb-0">
+                        Already have an account? 
+                        <a href="login.html" class="text-primary fw-bold text-decoration-none">Sign In to Portal &rarr;</a>
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+<script>
+async function handlePatientRegister(e) {
+    e.preventDefault();
+    const alertEl = document.getElementById('reg_alert');
+    const submitBtn = document.getElementById('btn_reg_submit');
+
+    const name = document.getElementById('reg_name').value.trim();
+    const email = document.getElementById('reg_email').value.trim();
+    const phone = document.getElementById('reg_phone').value.trim();
+    const pass = document.getElementById('reg_password').value;
+    const confirm = document.getElementById('reg_confirm').value;
+    const dob = document.getElementById('reg_dob').value;
+    const gender = document.getElementById('reg_gender').value;
+    const address = document.getElementById('reg_address').value.trim();
+
+    if (pass.length < 6) {
+        alertEl.className = 'alert alert-danger rounded-3 mb-4';
+        alertEl.innerHTML = '<i class="fa fa-exclamation-circle me-2"></i> Password must be at least 6 characters.';
+        return;
+    }
+    if (pass !== confirm) {
+        alertEl.className = 'alert alert-danger rounded-3 mb-4';
+        alertEl.innerHTML = '<i class="fa fa-exclamation-circle me-2"></i> Passwords do not match.';
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Registering Account...';
+
+    try {
+        const res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name, email, phone, password: pass, dob, gender, address
+            })
+        }).then(r => r.json());
+
+        if (res.success) {
+            localStorage.setItem('dentia_patient', JSON.stringify(res.patient));
+            alertEl.className = 'alert alert-success rounded-3 mb-4';
+            alertEl.innerHTML = `<i class="fa fa-check-circle me-2"></i> Registration successful, welcome <strong>${name}</strong>! Opening your Patient Dashboard...`;
+            setTimeout(() => {
+                window.location.href = 'patient-dashboard.html';
+            }, 800);
+        } else {
+            alertEl.className = 'alert alert-danger rounded-3 mb-4';
+            alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> ${res.message || 'Registration failed'}`;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fa fa-user-plus me-2"></i> Complete Account Registration';
+        }
+    } catch (err) {
+        alertEl.className = 'alert alert-danger rounded-3 mb-4';
+        alertEl.innerHTML = '<i class="fa fa-exclamation-circle me-2"></i> Server communication error. Please try again.';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa fa-user-plus me-2"></i> Complete Account Registration';
+    }
+}
+</script>
+</body>
+</html>

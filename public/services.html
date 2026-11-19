@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dentia — Dentist & Dental Clinic Website Template</title>
+    <link rel="icon" href="images/icon.webp" type="image/gif" sizes="16x16">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" >
+    <meta content="Dentia — Dentist & Dental Clinic Website Template" name="description" >
+    <meta content="" name="keywords" >
+    <meta content="" name="author" >
+    <!-- CSS Files
+    ================================================== -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
+    <link href="css/plugins.css" rel="stylesheet" type="text/css" >
+    <link href="css/swiper.css" rel="stylesheet" type="text/css" >
+    <link href="css/style.css" rel="stylesheet" type="text/css" >
+    <!-- color scheme -->
+    <link id="colors" href="css/colors/scheme-01.css" rel="stylesheet" type="text/css" >
+
+    <link href="css/custom-modern.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="wrapper">
+        <a href="#" id="back-to-top"></a>
+
+        <!-- preloader begin -->
+        <div id="de-loader"></div>
+        <!-- preloader end -->
+
+                <!-- Top Utility Bar -->
+        <div class="dentia-topbar d-none d-lg-block" style="background:#0b2545; color:#d1e3ff; padding:8px 0; font-size:13px; z-index:100; position:relative; border-bottom:1px solid rgba(255,255,255,0.08);">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-4">
+                        <div><i class="fa fa-clock-o text-info me-2"></i>Mon - Sat: 08:00 AM - 08:00 PM</div>
+                        <div><i class="fa fa-map-marker text-danger me-2"></i>100 S Main St, New York, NY</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="mailto:info@dentia.com" class="text-white text-decoration-none small"><i class="fa fa-envelope-o text-info me-1"></i> info@dentia.com</a>
+                        <a href="tel:+18009113368" class="badge bg-danger text-white text-decoration-none px-3 py-1 rounded-pill fw-semibold">
+                            <i class="fa fa-phone me-1"></i> EMERGENCY: +1 (800) 911-DENT
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- header begin -->
+        <header class="transparent header-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="de-flex sm-pt10">
+                            <div class="de-flex-col">
+                                <!-- logo begin -->
+                                <div id="logo">
+                                    <a href="index.html">
+                                        <img class="logo-main" src="images/logo-black.webp" alt="" >
+                                        <img class="logo-scroll" src="images/logo-black.webp" alt="" >
+                                        <img class="logo-mobile" src="images/logo-black.webp" alt="" >
+                                    </a>
+                                </div>
+                                <!-- logo end -->
+                            </div>
+                            <div class="de-flex-col header-col-mid">
+                                                                <!-- mainemenu begin -->
+                                <ul id="mainmenu">
+                                    <li><a class="menu-item " href="index.html">Home</a></li>
+                                    <li><a class="menu-item active" href="services.html">Services</a>
+                                        <ul>
+                                            <li><a href="service-general-dentistry.html">General Dentistry</a></li>
+                                            <li><a href="service-cosmetic-dentistry.html">Cosmetic Dentistry</a></li>
+                                            <li><a href="service-pediatric-dentistry.html">Pediatric Dentistry</a></li>
+                                            <li><a href="service-restorative-dentistry.html">Dental Implants</a></li>
+                                            <li><a href="service-preventive-dentistry.html">Teeth Whitening</a></li>
+                                            <li><a href="service-orthodontics.html">Orthodontics & Braces</a></li>
+                                            <li><a href="services.html" class="fw-bold text-primary">View All Services &rarr;</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item " href="dentists.html">Dentists</a></li>
+                                    <li><a class="menu-item " href="about.html">About Us</a>
+                                        <ul>
+                                            <li><a href="about.html">About Dentia</a></li>
+                                            <li><a href="faq.html">FAQ</a></li>
+                                            <li><a href="gallery.html">Clinic Gallery</a></li>
+                                            <li><a href="testimonials.html">Testimonials</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="menu-item " href="contact.html">Contact</a></li>
+                                </ul>
+                                <!-- mainmenu end -->
+                            </div>
+                            <div class="de-flex-col">
+                                <div class="menu_side_area d-flex align-items-center gap-2">
+                                    <a href="login.html" class="btn-portal-nav">
+                                        <i class="fa fa-user-circle-o"></i>
+                                        <span>Sign In</span>
+                                    </a>
+                                    <a href="booking.html" class="btn-main fx-slide rounded-pill">
+                                        <span>Book Appointment</span>
+                                    </a>
+                                    <span id="menu-btn"></span>
+                                </div>
+
+                                <div id="btn-extra">
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header end -->
+        <!-- content begin -->
+        <div class="no-bottom no-top" id="content">
+
+            <div id="top"></div>
+
+            <section id="subheader" class="bg-color-op-1 text-center">
+                <div class="container relative z-2">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12">
+                            <h1 class="wow fadeInUp">Our Services</h1>
+                            <div class="border-bottom my-3"></div>
+                            <ul class="crumb wow fadeInDown">
+                                <li><a href="index.html">Home</a></li>
+                                <li class="active">Our Services</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            
+            <section class="bg-light py-5">
+                <div class="container">
+                    <div class="row g-4 gy-4">
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-general-dentistry.html"><img src="images/icons/tooth-1.png" class="w-40px" alt="General Dentistry"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹1,499
+                                    </span>
+                                </div>
+                                <a href="service-general-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">General Dentistry</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Complete routine oral exams, digital cavity screenings, precision tartar removal, and preventive fluoride treatments for lasting oral health.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-general-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=General%20Dentistry" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-preventive-dentistry.html"><img src="images/icons/tooth-2.png" class="w-40px" alt="Teeth Whitening"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹4,999
+                                    </span>
+                                </div>
+                                <a href="service-preventive-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Teeth Whitening</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Advanced in-office laser whitening treatment lightening teeth up to 8 shades in a single safe, pain-free 45-minute dental session.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-preventive-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Teeth%20Whitening" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-restorative-dentistry.html"><img src="images/icons/tooth-4.png" class="w-40px" alt="Dental Implants"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹25,000
+                                    </span>
+                                </div>
+                                <a href="service-restorative-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Dental Implants</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Permanent biocompatible titanium implants topped with custom shade-matched porcelain crowns for full functional chew and natural aesthetics.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-restorative-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Dental%20Implants" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-restorative-dentistry.html"><img src="images/icons/tooth-3.png" class="w-40px" alt="Root Canal Treatment"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹5,500
+                                    </span>
+                                </div>
+                                <a href="service-restorative-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Root Canal Treatment</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Comfortable microscopic endodontic therapy to remove infected pulp, halt severe dental pain, and save your natural tooth from extraction.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-restorative-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Root%20Canal%20Treatment" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-orthodontics.html"><img src="images/icons/tooth-6.png" class="w-40px" alt="Orthodontics & Braces"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹35,000
+                                    </span>
+                                </div>
+                                <a href="service-orthodontics.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Orthodontics & Braces</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Discreet clear aligners and modern ceramic braces to correct crooked teeth, close gaps, and restore optimal jaw alignment and confidence.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-orthodontics.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Orthodontics%20%26%20Braces" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-cosmetic-dentistry.html"><img src="images/icons/tooth-2.png" class="w-40px" alt="Cosmetic Dentistry"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹9,999
+                                    </span>
+                                </div>
+                                <a href="service-cosmetic-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Cosmetic Dentistry</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Customized smile makeover therapies including ultra-thin porcelain veneers, composite contouring, and aesthetic enamel shaping.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-cosmetic-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Cosmetic%20Dentistry" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-pediatric-dentistry.html"><img src="images/icons/tooth-3.png" class="w-40px" alt="Pediatric Dentistry"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹1,299
+                                    </span>
+                                </div>
+                                <a href="service-pediatric-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Pediatric Dentistry</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Gentle, comforting dental care tailored for children and toddlers in a warm, friendly setting to establish healthy oral hygiene habits.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-pediatric-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Pediatric%20Dentistry" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-general-dentistry.html"><img src="images/icons/tooth-4.png" class="w-40px" alt="Tooth Extraction"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹2,499
+                                    </span>
+                                </div>
+                                <a href="service-general-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Tooth Extraction</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Safe, atraumatic simple and surgical extractions, including problematic wisdom teeth, performed under local anesthesia with rapid recovery.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-general-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Tooth%20Extraction" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-general-dentistry.html"><img src="images/icons/tooth-5.png" class="w-40px" alt="Dental Cleaning"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹999
+                                    </span>
+                                </div>
+                                <a href="service-general-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Dental Cleaning</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Professional ultrasonic prophylaxis and deep polishing to remove stubborn plaque, eliminate surface stains, and refresh breath.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-general-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Dental%20Cleaning" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="service-card-modern bg-white shadow-sm h-100 p-4 rounded-4 border d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div class="service-icon-box">
+                                        <a href="service-general-dentistry.html"><img src="images/icons/tooth-1.png" class="w-40px" alt="Gum Treatment"></a>
+                                    </div>
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold fs-6">
+                                        ₹3,499
+                                    </span>
+                                </div>
+                                <a href="service-general-dentistry.html" class="text-decoration-none">
+                                    <h4 class="fw-bold text-dark mb-2">Gum Treatment</h4>
+                                </a>
+                                <p class="text-muted small flex-grow-1 mb-3" style="line-height:1.6;">Targeted periodontal therapy, deep scaling, and root planing to reverse early gingivitis, reduce pocket depth, and preserve bone stability.</p>
+                                <div class="pt-3 border-top d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                    <a href="service-general-dentistry.html" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                        <i class="fa fa-info-circle me-1"></i> Details
+                                    </a>
+                                    <a href="booking.html?service=Gum%20Treatment" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold">
+                                        <i class="fa fa-calendar-check-o me-1"></i> Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 mt-5">
+                            <div class="emergency-callout-box rounded-4 p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-center gap-4 text-white">
+                                <div>
+                                    <span class="badge bg-danger rounded-pill px-3 py-1 mb-2 fw-bold text-white"><i class="fa fa-heartbeat me-1"></i> 24/7 EMERGENCY RELIEF DESK</span>
+                                    <h3 class="fw-bold text-white mb-1">Experiencing Sudden Tooth Pain or Dental Emergency?</h3>
+                                    <p class="text-white-50 mb-0">Our standby dentists provide same-day urgent appointments, trauma care, and acute pain relief.</p>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+                                    <a href="tel:+18009113368" class="btn btn-light text-danger rounded-pill px-4 py-2 fw-bold shadow">
+                                        <i class="fa fa-phone me-1"></i> Call +1 (800) 911-DENT
+                                    </a>
+                                    <a href="booking.html" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold">
+                                        <i class="fa fa-calendar me-1"></i> Book Online
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- content end -->
+
+        <!-- footer begin -->
+        <footer class="section-dark">
+            <div class="container">
+                <div class="row gx-5">
+                    <div class="col-lg-4 col-sm-6">
+                        <img src="images/logo-white.webp" class="logo-footer" alt="" >
+                        <div class="spacer-20"></div>
+                        <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+
+                        <div class="social-icons mb-sm-30">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-12 order-lg-1 order-sm-2">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="widget">
+                                    <h5>Company</h5>
+                                    <ul>                                        
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="services.html">Our Services</a></li>
+                                        <li><a href="gallery.html">Gallery</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="widget">
+                                    <h5>Our Services</h5>
+                                    <ul>
+                                        <li><a href="service-general-dentistry.html">General Dentistry</a></li>
+                                        <li><a href="service-cosmetic-dentistry.html">Cosmetic Dentistry</a></li>
+                                        <li><a href="service-pediatric-dentistry.html">Pediatric Dentistry</a></li>
+                                        <li><a href="service-restorative-dentistry.html">Restorative Dentistry</a></li>
+                                        <li><a href="service-preventive-dentistry.html">Preventive Dentistry</a></li>
+                                        <li><a href="service-orthodontics.html">Orthodontics</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-sm-6 order-lg-2 order-sm-1">
+                        <div class="widget">
+                            <h5>Contact Us</h5>
+                            <div class="fw-bold text-white"><i class="icofont-location-pin me-2 id-color"></i>Clinic Location</div>
+                            100 S Main St, New York, NY
+
+                            <div class="spacer-20"></div>
+
+                            <div class="fw-bold text-white"><i class="icofont-phone me-2 id-color"></i>Call Us</div>
+                            +1 123 456 789
+
+                            <div class="spacer-20"></div>
+
+                            <div class="fw-bold text-white"><i class="icofont-envelope me-2 id-color"></i>Send a Message</div>
+                            contact@dentiacare.com                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subfooter">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="de-flex">
+                                <div class="de-flex-col">
+                                    Copyright 2026 - Dentia by Designesia
+                                </div>
+                                <ul class="menu-simple">
+                                    <li><a href="#">Terms &amp; Conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- footer end -->
+    </div>
+
+    <!-- overlay content begin -->
+    <div id="extra-wrap" class="text-light">
+        <div id="btn-close">
+            <span></span>
+            <span></span>
+        </div>
+
+        <div id="extra-content">
+            <img src="images/logo-white.webp" class="w-150px" alt="">
+
+            <div class="spacer-30-line"></div>
+
+            <h5>Our Services</h5>
+            <ul class="ul-check">
+                <li><a href="service-general-dentistry.html">General Dentistry</a></li>
+                <li><a href="service-cosmetic-dentistry.html">Cosmetic Dentistry</a></li>
+                <li><a href="service-pediatric-dentistry.html">Pediatric Dentistry</a></li>
+                <li><a href="service-restorative-dentistry.html">Restorative Dentistry</a></li>
+                <li><a href="service-preventive-dentistry.html">Preventive Dentistry</a></li>
+                <li><a href="service-orthodontics.html">Orthodontics</a></li>
+            </ul>
+
+            <div class="spacer-30-line"></div>
+
+            <h5>Contact Us</h5>
+            <div><i class="icofont-clock-time me-2 op-5"></i>Monday - Friday 08.00 - 18.00</div>
+            <div><i class="icofont-location-pin me-2 op-5"></i>100 S Main St, New York, </div>
+            <div><i class="icofont-envelope me-2 op-5"></i>contact@dentiacare.com </div>
+
+            <div class="spacer-30-line"></div>
+
+            <h5>About Us</h5>
+            <p>At Dentia, we’re dedicated to providing high-quality, personalized dental care for patients of all ages. Our skilled team uses the latest technology to ensure comfortable, efficient treatments and beautiful, healthy smiles for life.</p>
+
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Javascript Files
+    ================================================== -->
+    <script src="js/plugins.js"></script>
+    <script src="js/designesia.js"></script>
+    <script src="js/swiper.js"></script>
+    <script src="js/custom-swiper-1.js"></script>
+    <script src="js/custom-marquee.js"></script>
+
+</body>
+
+</html>

@@ -388,7 +388,9 @@ function sendJSON(res, data, status = 200) {
   res.end(JSON.stringify(data));
 }
 
-const server = http.createServer(async (req, res) => {
+const server = http.createServer(handleRequest);
+
+async function handleRequest(req, res) {
   const parsedUrl = url.parse(req.url, true);
   let pathname = decodeURIComponent(parsedUrl.pathname);
 
@@ -1503,7 +1505,7 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
     res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'no-cache' });
     fs.createReadStream(filePath).pipe(res);
   });
-});
+}
 
 if (require.main === module) {
   server.listen(PORT, '0.0.0.0', () => {
@@ -1517,4 +1519,6 @@ if (require.main === module) {
   });
 }
 
-module.exports = server;
+module.exports = handleRequest;
+module.exports.server = server;
+module.exports.handleRequest = handleRequest;
