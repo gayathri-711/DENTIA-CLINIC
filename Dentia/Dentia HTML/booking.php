@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <option value="">-- Choose Dental Service --</option>
                                                     <?php foreach ($allServices as $s): ?>
                                                         <option value="<?= $s['id'] ?>" <?= ($preselectedServiceId == $s['id'] || (isset($_POST['service_id']) && $_POST['service_id'] == $s['id'])) ? 'selected' : '' ?>>
-                                                            <?= e($s['name']) ?> ($<?= number_format($s['price'], 2) ?> - <?= e($s['duration']) ?>)
+                                                            <?= e($s['name']) ?> (₹<?= number_format($s['price']) ?> - <?= e($s['duration']) ?>)
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>

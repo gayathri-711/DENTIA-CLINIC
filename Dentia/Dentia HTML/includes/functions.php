@@ -139,7 +139,7 @@ function get_fallback_services() {
             'short_description' => 'Complete oral care for every smile with cleanings, exams, and diagnostics.',
             'full_description' => 'Our general dentistry services focus on proactive prevention, accurate digital diagnostics, and effective treatment for patients of all ages. Regular examinations ensure optimal oral health and prevent dental disease before it starts.',
             'benefits' => "Complete Oral Health Examinations\nDigital Low-Radiation X-Rays\nTooth-Colored Biomimetic Fillings\nFluoride & Sealant Treatments\nPersonalized Oral Hygiene Care Plans",
-            'price' => 85.00, 'duration' => '45-60 mins', 'is_featured' => 1
+            'price' => 1499.00, 'duration' => '45-60 mins', 'is_featured' => 1
         ],
         [
             'id' => 2, 'name' => 'Teeth Whitening', 'slug' => 'teeth-whitening',
@@ -147,7 +147,7 @@ function get_fallback_services() {
             'short_description' => 'Achieve a radiant, luminous smile up to 8 shades brighter in a single session.',
             'full_description' => 'Our in-office laser teeth whitening safely dissolves deep stains caused by coffee, tea, wine, and aging. Formulated with enamel-safe protective gels that deliver instant, dazzling, and long-lasting brightness.',
             'benefits' => "Immediate Results in Just 60 Minutes\nSafe for Sensitive Teeth & Enamel\nRemoves Deep Intrinsic & Extrinsic Stains\nCustom Take-Home Maintenance Trays\nUp to 8 Shades Brighter in One Visit",
-            'price' => 199.00, 'duration' => '60 mins', 'is_featured' => 1
+            'price' => 4999.00, 'duration' => '60 mins', 'is_featured' => 1
         ],
         [
             'id' => 3, 'name' => 'Dental Implants', 'slug' => 'dental-implants',
@@ -155,7 +155,7 @@ function get_fallback_services() {
             'short_description' => 'Permanent, natural-looking replacement for missing teeth with medical titanium.',
             'full_description' => 'Dental implants provide a sturdy, lifelong foundation for replacement teeth that look, feel, and function just like natural teeth. Prevent jawbone loss and restore your full chewing power with 3D-guided implant placement.',
             'benefits' => "Permanent, Lifetime Solution for Missing Teeth\nPreserves Facial Structure & Bone Density\nFully Restores Chewing & Speaking Ability\nMatches Your Natural Tooth Color & Contour\nHigh 98% Documented Clinical Success Rate",
-            'price' => 850.00, 'duration' => '90 mins', 'is_featured' => 1
+            'price' => 25000.00, 'duration' => '90 mins', 'is_featured' => 1
         ],
         [
             'id' => 4, 'name' => 'Root Canal Treatment', 'slug' => 'root-canal-treatment',
@@ -163,7 +163,7 @@ function get_fallback_services() {
             'short_description' => 'Gentle, pain-free therapy designed to save severely infected or damaged teeth.',
             'full_description' => 'Modern root canal therapy is quick, comfortable, and painless. Using advanced rotary micro-endodontics and precision digital imaging, we clear out infection, disinfect the root canals, and seal the tooth to preserve its natural structure.',
             'benefits' => "Instant Relief from Acute Tooth Pain\nSaves Natural Tooth from Extraction\nMicroscope-Assisted Precision Care\nPainless with Modern Local Anesthesia\nRestored with a Strong Custom Crown",
-            'price' => 320.00, 'duration' => '60-75 mins', 'is_featured' => 1
+            'price' => 5500.00, 'duration' => '60-75 mins', 'is_featured' => 1
         ],
         [
             'id' => 5, 'name' => 'Orthodontics and Braces', 'slug' => 'orthodontics-and-braces',
@@ -171,7 +171,7 @@ function get_fallback_services() {
             'short_description' => 'Clear aligners and modern braces for beautifully aligned teeth and balanced bites.',
             'full_description' => 'Straighten misaligned teeth and fix bite issues comfortably. We provide state-of-the-art clear aligners (Invisalign certified), ceramic discreet brackets, and traditional orthodontics for teenagers and adults.',
             'benefits' => "Discreet Clear Aligners & Aesthetic Brackets\nCorrects Overbite, Underbite, & Crowding\nImproves Chewing Function & Jaw Comfort\nDigital 3D Smile Simulation Preview\nTailored Payment & Flexible Financing Plans",
-            'price' => 1200.00, 'duration' => '45 mins', 'is_featured' => 1
+            'price' => 35000.00, 'duration' => '45 mins', 'is_featured' => 1
         ],
         [
             'id' => 6, 'name' => 'Cosmetic Dentistry', 'slug' => 'cosmetic-dentistry',
@@ -179,7 +179,7 @@ function get_fallback_services() {
             'short_description' => 'Transform your smile with handcrafted porcelain veneers, contouring, and bonding.',
             'full_description' => 'Cosmetic dentistry blends art and science to craft your dream smile. From porcelain veneers that conceal chips and gaps to composite bonding and gum reshaping, we give you confident, camera-ready smiles.',
             'benefits' => "Custom Porcelain Veneers & Lumineers\nComposite Bonding for Gaps & Chipped Teeth\nAesthetic Gum Line Recontouring\nDigital Smile Design Custom Mockups\nNatural Translucency and Long Durability",
-            'price' => 450.00, 'duration' => '60 mins', 'is_featured' => 1
+            'price' => 9999.00, 'duration' => '60 mins', 'is_featured' => 1
         ],
         [
             'id' => 7, 'name' => 'Pediatric Dentistry', 'slug' => 'pediatric-dentistry',
@@ -187,7 +187,7 @@ function get_fallback_services() {
             'short_description' => 'Child-friendly dental care in a warm, welcoming, and anxiety-free environment.',
             'full_description' => 'We specialize in making dental visits fun, positive, and stress-free for kids. From toddler checkups to preventive sealants and habit counseling, we help your child cultivate lifelong healthy brushing habits.',
             'benefits' => "Gentle, Anxiety-Free Pediatric Dental Team\nProtective Dental Sealants & Fluoride\nHabit Guidance (Thumb Sucking & Teething)\nEarly Orthodontic Growth Monitoring\nFun Prizes and Educational Smile Games",
-            'price' => 95.00, 'duration' => '30-45 mins', 'is_featured' => 1
+            'price' => 1299.00, 'duration' => '30-45 mins', 'is_featured' => 1
         ],
         [
             'id' => 8, 'name' => 'Tooth Extraction', 'slug' => 'tooth-extraction',
@@ -195,7 +195,7 @@ function get_fallback_services() {
             'short_description' => 'Safe, painless extraction of wisdom teeth, impacted teeth, or severe damage.',
             'full_description' => 'When a tooth is broken beyond repair or impacted (like problematic wisdom teeth), our oral surgeons carry out gentle, swift extractions with modern sedation options to keep you completely relaxed throughout.',
             'benefits' => "Minimally Invasive Atraumatic Extraction\nWisdom Tooth Removal with Sedation Options\nFast Healing with Platelet-Rich Fibrin Care\nComprehensive Aftercare Support & Guidance\nImmediate Bone Grafting for Future Implants",
-            'price' => 150.00, 'duration' => '45-60 mins', 'is_featured' => 1
+            'price' => 2499.00, 'duration' => '45-60 mins', 'is_featured' => 1
         ],
         [
             'id' => 9, 'name' => 'Dental Cleaning', 'slug' => 'dental-cleaning',
@@ -203,7 +203,7 @@ function get_fallback_services() {
             'short_description' => 'Ultrasonic plaque, tartar, and stain removal for fresh breath and radiant enamel.',
             'full_description' => 'Professional dental prophylaxis cleans deep where regular toothbrushes cannot reach. Ultrasonic scalers remove calcified tartar, eliminate odor-causing bacteria, and polish enamel to a smooth finish.',
             'benefits' => "Ultrasonic Scaling for Deep Tartar Removal\nAir-Flow Stain Polishing Technology\nEliminates Bad Breath (Halitosis)\nPrevents Gingivitis & Cavity Formation\nLeaves Teeth Feeling Incredibly Smooth & Clean",
-            'price' => 75.00, 'duration' => '40 mins', 'is_featured' => 1
+            'price' => 999.00, 'duration' => '40 mins', 'is_featured' => 1
         ],
         [
             'id' => 10, 'name' => 'Gum Treatment', 'slug' => 'gum-treatment',
@@ -211,7 +211,7 @@ function get_fallback_services() {
             'short_description' => 'Comprehensive periodontal therapy to stop bleeding gums and treat gum disease.',
             'full_description' => 'Healthy gums are the foundation of healthy teeth. Our periodontal treatments treat gingivitis and periodontitis through deep cleaning (scaling and root planing), laser pocket therapy, and antimicrobial rinses.',
             'benefits' => "Halts Gum Bleeding, Swelling, and Soreness\nDeep Scaling & Root Planing (SRP)\nLaser-Assisted Gum Sterilization\nPrevents Bone Loss and Tooth Looseness\nLong-Term Periodontal Maintenance Plans",
-            'price' => 210.00, 'duration' => '60 mins', 'is_featured' => 1
+            'price' => 3499.00, 'duration' => '60 mins', 'is_featured' => 1
         ]
     ];
 }

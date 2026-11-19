@@ -74,7 +74,7 @@ $allServices = get_all_services();
                             <div class="d-flex justify-content-between align-items-center pt-3 border-top">
                                 <div>
                                     <span class="small text-muted d-block">Starting from</span>
-                                    <span class="service-price">$<?= number_format($service['price'], 2) ?></span>
+                                    <span class="service-price">₹<?= number_format($service['price']) ?></span>
                                 </div>
                                 <div class="d-flex gap-2">
                                     <a href="service-<?= e($service['slug']) ?>.php" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
