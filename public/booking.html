@@ -758,15 +758,18 @@
             }
         } catch (e) {}
 
-        // Pre-select service or doctor from URL parameters if present
+        // Pre-select service or doctor from URL parameters if present with robust fuzzy matching
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const reqService = urlParams.get('service');
             if (reqService) {
+                const clean = (s) => (s || '').toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]/g, '');
+                const cleanReq = clean(reqService);
                 const serviceSelect = document.getElementById('service');
                 for (let i = 0; i < serviceSelect.options.length; i++) {
-                    if (serviceSelect.options[i].value.toLowerCase().includes(reqService.toLowerCase()) ||
-                        reqService.toLowerCase().includes(serviceSelect.options[i].value.toLowerCase())) {
+                    const optVal = clean(serviceSelect.options[i].value);
+                    const optText = clean(serviceSelect.options[i].text);
+                    if (optVal && (optVal.includes(cleanReq) || cleanReq.includes(optVal) || optText.includes(cleanReq) || cleanReq.includes(optText))) {
                         serviceSelect.selectedIndex = i;
                         break;
                     }
@@ -775,14 +778,25 @@
             const reqDoctor = urlParams.get('doctor');
             if (reqDoctor) {
                 const docSelect = document.getElementById('dentist_id');
+                const cleanDoc = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
                 for (let i = 0; i < docSelect.options.length; i++) {
-                    if (docSelect.options[i].text.toLowerCase().includes(reqDoctor.toLowerCase())) {
+                    if (cleanDoc(docSelect.options[i].text).includes(cleanDoc(reqDoctor)) || cleanDoc(reqDoctor).includes(cleanDoc(docSelect.options[i].text))) {
                         docSelect.selectedIndex = i;
                         break;
                     }
                 }
             }
         } catch (e) {}
+
+        // Auto-scroll directly to the booking form when coming from a service link
+        if (window.location.search.includes('service=') || window.location.hash.includes('booking_form') || window.location.search.includes('doctor=')) {
+            setTimeout(function() {
+                const formEl = document.getElementById('booking_form_wrapper') || document.getElementById('booking_form');
+                if (formEl) {
+                    formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 300);
+        }
 
         // Load slots for default doctor and today
         loadRealtimeSlots();
