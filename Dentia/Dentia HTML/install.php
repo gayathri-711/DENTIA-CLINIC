@@ -104,26 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                             </ul>
                         </div>
 
-                        <div class="card bg-light border-0 rounded-3 p-3 mb-4">
-                            <h6 class="fw-bold mb-2"><i class="fa fa-key text-primary me-2"></i>Default Credentials</h6>
-                            <div class="row g-2 small">
-                                <div class="col-md-6">
-                                    <div class="border bg-white p-2 rounded">
-                                        <strong>Admin Portal:</strong><br>
-                                        Email: <code>admin@dentia.com</code><br>
-                                        Password: <code>admin123</code>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="border bg-white p-2 rounded">
-                                        <strong>Patient Account:</strong><br>
-                                        Email: <code>john.doe@example.com</code><br>
-                                        Password: <code>patient123</code>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <form method="POST" action="install.php" class="text-center">
                             <input type="hidden" name="action" value="install">
                             <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow-sm mb-3">

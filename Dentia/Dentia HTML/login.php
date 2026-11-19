@@ -92,13 +92,7 @@ require_once __DIR__ . '/includes/header.php';
                                 </button>
                             </form>
 
-                            <!-- Demo Quick Fill Box -->
-                            <div class="bg-light p-3 rounded-3 text-center border mb-3">
-                                <div class="small text-muted mb-2">Need a test patient account?</div>
-                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="fillDemoPatient()">
-                                    <i class="fa fa-magic me-1"></i> Quick Fill: John Doe (Demo)
-                                </button>
-                            </div>
+                            
 
                             <div class="text-center pt-3 border-top">
                                 <p class="text-muted small mb-2">
@@ -118,13 +112,6 @@ require_once __DIR__ . '/includes/header.php';
     </section>
 
 </div>
-
-<script>
-function fillDemoPatient() {
-    document.getElementById('login_email').value = 'john.doe@example.com';
-    document.getElementById('login_password').value = 'patient123';
-}
-</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
 

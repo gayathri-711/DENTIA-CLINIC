@@ -97,12 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </button>
                         </form>
 
-                        <div class="bg-light p-3 rounded-3 text-center border mb-3">
-                            <div class="small text-muted mb-2">Default Admin Credentials:</div>
-                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill" onclick="fillAdminDemo()">
-                                <i class="fa fa-key me-1"></i> Quick Fill Admin (admin@dentia.com)
-                            </button>
-                        </div>
+                        
 
                         <div class="d-flex justify-content-between pt-3 border-top small">
                             <a href="../index.php" class="text-muted text-decoration-none">
@@ -120,12 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 
-<script>
-function fillAdminDemo() {
-    document.getElementById('admin_email').value = 'admin@dentia.com';
-    document.getElementById('admin_password').value = 'admin123';
-}
-</script>
 </body>
 </html>
 

@@ -234,9 +234,7 @@
                             <input class="form-check-input" type="checkbox" id="remember_me" checked>
                             <label class="form-check-label small text-muted" for="remember_me">Keep me signed in</label>
                         </div>
-                        <a href="#" class="small text-primary text-decoration-none" onclick="fillQuickDemo(); return false;">
-                            <i class="fa fa-bolt me-1"></i> Quick Demo Fill
-                        </a>
+                        
                     </div>
 
                     <button type="submit" id="btn_submit" class="btn btn-primary btn-lg rounded-pill w-100 fw-bold shadow-sm mb-3">
@@ -244,15 +242,7 @@
                     </button>
                 </form>
 
-                <!-- Demo Fill Box -->
-                <div class="bg-light p-3 rounded-4 border text-center mb-3">
-                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                        <span class="small text-muted" id="demo_hint_text">Testing credentials: <strong>John Doe (Patient)</strong></span>
-                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="fillQuickDemo()">
-                            <i class="fa fa-magic me-1"></i> Auto-Fill Demo
-                        </button>
-                    </div>
-                </div>
+                
 
                 <div class="text-center pt-3 border-top" id="signup_footer">
                     <p class="text-muted small mb-0">
@@ -274,33 +264,24 @@ const roleConfigs = {
         title: 'Sign In to Patient Portal',
         subtitle: 'Access your scheduled dental visits, appointment status & clinical records',
         emailLabel: 'Patient Email Address',
-        emailPlaceholder: 'john.doe@example.com',
+        emailPlaceholder: 'e.g. name@example.com',
         submitText: 'Sign In as Patient',
-        demoUser: 'john.doe@example.com',
-        demoPass: 'patient123',
-        demoHint: 'Patient Demo: <strong>john.doe@example.com</strong> (Pass: patient123)',
         showRegister: true
     },
     doctor: {
         title: 'Doctor & Specialist Portal',
         subtitle: 'Review assigned appointments, patient clinical records & prescriptions',
         emailLabel: 'Doctor Clinic Login Email',
-        emailPlaceholder: 'sarah.bennett@dentiacare.com',
+        emailPlaceholder: 'e.g. doctor@dentiacare.com',
         submitText: 'Sign In as Doctor',
-        demoUser: 'sarah.bennett@dentiacare.com',
-        demoPass: 'doctor123',
-        demoHint: 'Doctor Demo: <strong>Dr. Sarah Bennett</strong> (Pass: doctor123)',
         showRegister: false
     },
     admin: {
         title: 'Chief Medical Administration',
         subtitle: 'Review incoming requests, manage doctors, and monitor database storage',
         emailLabel: 'Administrator Email',
-        emailPlaceholder: 'admin@dentia.com',
+        emailPlaceholder: 'e.g. admin@dentia.com',
         submitText: 'Sign In as Administrator',
-        demoUser: 'admin@dentia.com',
-        demoPass: 'admin123',
-        demoHint: 'Admin Demo: <strong>admin@dentia.com</strong> (Pass: admin123)',
         showRegister: false
     }
 };
@@ -316,7 +297,6 @@ function setRole(role) {
     document.getElementById('label_email').innerText = cfg.emailLabel;
     document.getElementById('login_email').placeholder = cfg.emailPlaceholder;
     document.getElementById('btn_submit_text').innerText = cfg.submitText;
-    document.getElementById('demo_hint_text').innerHTML = cfg.demoHint;
 
     const signupFooter = document.getElementById('signup_footer');
     if (cfg.showRegister) {
@@ -330,11 +310,7 @@ function setRole(role) {
     alertEl.className = 'alert d-none';
 }
 
-function fillQuickDemo() {
-    const cfg = roleConfigs[currentRole];
-    document.getElementById('login_email').value = cfg.demoUser;
-    document.getElementById('login_password').value = cfg.demoPass;
-}
+
 
 function togglePasswordVisibility() {
     const passInput = document.getElementById('login_password');
@@ -427,7 +403,7 @@ async function handlePortalLogin(e) {
                 setTimeout(() => { window.location.href = 'admin/index.html'; }, 600);
             } else {
                 alertEl.className = 'alert alert-danger rounded-3 mb-4';
-                alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> ${data.message || 'Invalid administrator credentials.'} (Default: <code>admin@dentia.com</code> / <code>admin123</code>)`;
+                alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> ${data.message || 'Invalid administrator credentials.'} Please check your email and password.`;
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa fa-sign-in me-2"></i> ${roleConfigs[currentRole].submitText}`;
             }
@@ -441,7 +417,7 @@ async function handlePortalLogin(e) {
                 setTimeout(() => { window.location.href = 'admin/index.html'; }, 600);
             } else {
                 alertEl.className = 'alert alert-danger rounded-3 mb-4';
-                alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> Invalid administrator credentials. (Default: <code>admin@dentia.com</code> / <code>admin123</code>)`;
+                alertEl.innerHTML = `<i class="fa fa-exclamation-circle me-2"></i> Invalid administrator credentials. Please check your email and password.`;
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa fa-sign-in me-2"></i> ${roleConfigs[currentRole].submitText}`;
             }
