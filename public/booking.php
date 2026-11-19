@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <div class="col-6 fw-bold text-success"><?= e($bookingResult['details']['date']) ?> at <?= e($bookingResult['details']['time']) ?></div>
                                         
                                         <div class="col-6 text-muted">Clinic Address:</div>
-                                        <div class="col-6 fw-bold">100 S Main St, Suite 400, New York, NY</div>
+                                        <div class="col-6 fw-bold">45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu</div>
                                     </div>
                                 </div>
 

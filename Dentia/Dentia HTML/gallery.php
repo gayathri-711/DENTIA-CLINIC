@@ -46,7 +46,7 @@ $galleryItems = [
                 <div class="col-lg-8">
                     <span class="section-subtitle-modern">Designed For Comfort</span>
                     <h2 class="fw-bold mt-2">A Welcoming, High-Tech Environment</h2>
-                    <p class="text-muted">Take a visual tour of our modern New York clinic featuring state-of-the-art diagnostic instruments and relaxing treatment rooms.</p>
+                    <p class="text-muted">Take a visual tour of our modern Salem, Tamil Nadu clinic featuring state-of-the-art diagnostic instruments and relaxing treatment rooms.</p>
                 </div>
             </div>
 

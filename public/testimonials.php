@@ -126,7 +126,7 @@ $testimonials = get_all_testimonials(true);
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small">Occupation / City</label>
-                                    <input type="text" name="patient_role" class="form-control rounded-3" placeholder="e.g. Architect, New York">
+                                    <input type="text" name="patient_role" class="form-control rounded-3" placeholder="e.g. Architect, Salem, Tamil Nadu">
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small">Overall Rating *</label>

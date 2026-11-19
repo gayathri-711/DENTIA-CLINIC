@@ -58,10 +58,10 @@ function get_clinic_settings() {
         'email'                 => 'contact@dentiacare.com',
         'phone'                 => '+1 (800) 234-5678',
         'emergency_phone'       => '+1 (800) 911-DENT',
-        'address'               => '100 S Main St, Suite 400, New York, NY 10001',
+        'address'               => '45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu 636007',
         'opening_hours_weekday' => 'Monday - Friday: 08:00 AM - 08:00 PM',
         'opening_hours_weekend' => 'Saturday: 09:00 AM - 05:00 PM (Emergency 24/7)',
-        'google_map_embed'      => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1689247190821!5m2!1sen!2sus'
+        'google_map_embed'      => 'https://maps.google.com/maps?q=Cherry+Road,+Salem,+Tamil+Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed'
     ];
 
     if (!$pdo) return $defaults;
@@ -233,7 +233,7 @@ function get_all_dentists($active_only = true) {
     return [
         [
             'id' => 1, 'name' => 'Dr. Sarah Bennett',
-            'qualification' => 'Doctor of Dental Surgery (DDS), New York University College of Dentistry',
+            'qualification' => 'BDS, MDS (Prosthodontics), The Tamil Nadu Dr. M.G.R. Medical University',
             'specialization' => 'Lead Dentist & General Care',
             'experience' => '12+ Years Experience',
             'email' => 'sarah.bennett@dentiacare.com',
@@ -474,7 +474,7 @@ function process_appointment_booking($data) {
                  "Doctor: {$dentist_name}\n" .
                  "Date: {$date}\n" .
                  "Time: {$time}\n\n" .
-                 "Location: 100 S Main St, Suite 400, New York, NY\n" .
+                 "Location: 45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu\n" .
                  "Emergency Contact: +1 (800) 911-DENT\n\n" .
                  "Thank you for choosing Doctor Dental Clinic Dentia.";
 

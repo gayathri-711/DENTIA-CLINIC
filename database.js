@@ -348,7 +348,7 @@ async function syncDataFromJSON() {
       ['email', 'contact@dentiacare.com'],
       ['phone', '+1 (800) 234-5678'],
       ['emergency_phone', '+1 (800) 911-DENT'],
-      ['address', '100 S Main St, Suite 400, New York, NY 10001']
+      ['address', '45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu 636007']
     ];
     for (const [k, v] of settings) {
       await run(`INSERT OR IGNORE INTO clinic_settings (setting_key, setting_value) VALUES (?, ?)`, [k, v]);

@@ -82,7 +82,7 @@ require_once __DIR__ . '/includes/header.php';
                     <!-- Callout: Book Appointment -->
                     <div class="card border-0 bg-light rounded-4 p-4 p-md-5 text-center shadow-sm">
                         <h4 class="fw-bold text-dark mb-2">Have Concerns About Your Teeth or Gums?</h4>
-                        <p class="text-muted small mb-4">Our experienced dentists in New York are ready to examine your smile and provide gentle, painless treatment.</p>
+                        <p class="text-muted small mb-4">Our experienced dentists in Salem, Tamil Nadu are ready to examine your smile and provide gentle, painless treatment.</p>
                         <div class="d-flex justify-content-center gap-3">
                             <a href="booking.php" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow">
                                 <i class="fa fa-calendar-check-o me-2"></i> Book Online Now

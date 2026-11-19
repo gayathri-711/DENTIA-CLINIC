@@ -157,7 +157,7 @@ ${message}
     <!-- Footer -->
     <div style="background:#f8fafc; padding:22px 24px; text-align:center; font-size:11px; color:#64748b; border-top:1px solid #e2e8f0;">
       <strong>Doctor Dental Clinic Dentia</strong><br>
-      100 S Main St, Suite 400, New York, NY 10001<br>
+      45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu 636007<br>
       Emergency Dental Hotline: +1 (800) 911-DENT &bull; contact@dentiacare.com
     </div>
 
@@ -464,7 +464,7 @@ async function handleRequest(req, res) {
           appointment_ref: app.appointment_ref,
           type: 'booking_confirmed',
           subject: `Appointment Confirmed! [${app.appointment_ref}] - Dentia Dental Clinic`,
-          message: `Dear ${app.patient_name}, Great news! Your appointment for ${app.service_name} with ${app.dentist_name} on ${app.appointment_date} at ${app.appointment_time} has been accepted and CONFIRMED. Clinic address: 100 S Main St, Suite 400, New York, NY. Please arrive 10 minutes before your slot.`,
+          message: `Dear ${app.patient_name}, Great news! Your appointment for ${app.service_name} with ${app.dentist_name} on ${app.appointment_date} at ${app.appointment_time} has been accepted and CONFIRMED. Clinic address: 45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu. Please arrive 10 minutes before your slot.`,
           sms_text: `Dentia Clinic: Hello ${app.patient_name}, your appointment ${app.appointment_ref} on ${app.appointment_date} at ${app.appointment_time} with ${app.dentist_name} is CONFIRMED. Call (800) 234-5678 for queries.`
         });
       } else if (newStatus === 'Cancelled') {
@@ -717,7 +717,7 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
         appointment_ref: app.appointment_ref,
         type: 'booking_confirmed',
         subject: `Appointment Confirmed by ${app.dentist_name}! [${app.appointment_ref}]`,
-        message: `Dear ${app.patient_name}, ${app.dentist_name} has reviewed and CONFIRMED your dental appointment for ${app.service_name} on ${app.appointment_date} at ${app.appointment_time}. Please arrive promptly at our clinic (100 S Main St, Suite 400, NY).`,
+        message: `Dear ${app.patient_name}, ${app.dentist_name} has reviewed and CONFIRMED your dental appointment for ${app.service_name} on ${app.appointment_date} at ${app.appointment_time}. Please arrive promptly at our clinic (45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu).`,
         sms_text: `Dentia Clinic: ${app.dentist_name} has CONFIRMED your appointment on ${app.appointment_date} at ${app.appointment_time}. Ref: ${app.appointment_ref}.`
       });
     } else if (action === 'Complete' || action === 'Completed') {

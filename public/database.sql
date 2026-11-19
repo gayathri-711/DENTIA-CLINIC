@@ -23,10 +23,10 @@ INSERT INTO `clinic_settings` (`setting_key`, `setting_value`) VALUES
 ('email', 'contact@dentiacare.com'),
 ('phone', '+1 (800) 234-5678'),
 ('emergency_phone', '+1 (800) 911-DENT'),
-('address', '100 S Main St, Suite 400, New York, NY 10001'),
+('address', '45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu 636007'),
 ('opening_hours_weekday', 'Monday - Friday: 08:00 AM - 08:00 PM'),
 ('opening_hours_weekend', 'Saturday: 09:00 AM - 05:00 PM (Emergency On-Call Sunday)'),
-('google_map_embed', 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1689247190821!5m2!1sen!2sus');
+('google_map_embed', 'https://maps.google.com/maps?q=Cherry+Road,+Salem,+Tamil+Nadu&t=&z=14&ie=UTF8&iwloc=&output=embed');
 
 -- --------------------------------------------------------
 -- Table: admins
@@ -64,7 +64,7 @@ CREATE TABLE `patients` (
 
 -- Default sample patient password is 'patient123'
 INSERT INTO `patients` (`name`, `email`, `phone`, `password`, `dob`, `gender`, `address`) VALUES
-('John Doe', 'john.doe@example.com', '+1 (555) 234-5678', '$2y$10$eE0m9L1Z5Qf1m4WbT2K3teK1pMhVj7V9c9zD1bC7/XG3j8Z1F1Mxe', '1990-05-15', 'Male', '742 Evergreen Terrace, New York, NY'),
+('John Doe', 'john.doe@example.com', '+1 (555) 234-5678', '$2y$10$eE0m9L1Z5Qf1m4WbT2K3teK1pMhVj7V9c9zD1bC7/XG3j8Z1F1Mxe', '1990-05-15', 'Male', '12 Peramanur Main Road, Salem, Tamil Nadu 636007'),
 ('Emily Watson', 'emily.watson@example.com', '+1 (555) 987-6543', '$2y$10$eE0m9L1Z5Qf1m4WbT2K3teK1pMhVj7V9c9zD1bC7/XG3j8Z1F1Mxe', '1995-10-22', 'Female', '452 Broadway Ave, Brooklyn, NY');
 
 -- --------------------------------------------------------

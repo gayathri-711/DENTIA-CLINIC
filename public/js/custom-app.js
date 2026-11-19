@@ -150,7 +150,7 @@
                     <div class="col-6 fw-bold text-success">${res.details.date} at ${res.details.time}</div>
                     
                     <div class="col-6 text-muted">Clinic Location:</div>
-                    <div class="col-6 fw-bold">100 S Main St, Suite 400, NY</div>
+                    <div class="col-6 fw-bold">45 Cherry Road, Near New Bus Stand, Salem, Tamil Nadu</div>
                   </div>
                 </div>
 

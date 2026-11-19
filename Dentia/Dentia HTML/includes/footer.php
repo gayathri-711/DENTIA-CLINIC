@@ -11,7 +11,7 @@ $clinicSettings = get_clinic_settings();
                     <div class="col-lg-4 col-md-6">
                         <div class="widget">
                             <img src="images/logo-white.webp" class="w-180px mb-4" alt="Dentia Dental Clinic">
-                            <p>Doctor Dental Clinic Dentia is a patient-first dental clinic in New York delivering advanced, gentle, and aesthetic oral healthcare for children, adults, and seniors using world-class dental technology.</p>
+                            <p>Doctor Dental Clinic Dentia is a patient-first dental clinic in Salem, Tamil Nadu delivering advanced, gentle, and aesthetic oral healthcare for children, adults, and seniors using world-class dental technology.</p>
                             
                             <div class="d-flex align-items-center gap-3 mt-4">
                                 <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">

@@ -41,7 +41,7 @@ $clinicSettings = get_clinic_settings();
                         Doctor Dental Clinic Dentia was founded with a singular conviction: dental visits should be welcoming, transparent, and completely free of discomfort.
                     </p>
                     <p class="text-muted" style="line-height: 1.8;">
-                        Located in the heart of New York, our practice combines compassionate patient care with the gold standard of contemporary dental science. From routine checkups to intricate smile makeovers and guided implant surgery, we treat every patient like family.
+                        Located in the heart of Salem, Tamil Nadu, our practice combines compassionate patient care with the gold standard of contemporary dental science. From routine checkups to intricate smile makeovers and guided implant surgery, we treat every patient like family.
                     </p>
 
                     <div class="row g-3 my-4">

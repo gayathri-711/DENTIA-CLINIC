@@ -437,7 +437,7 @@ $blogs = get_recent_blogs(3);
                         </span>
                         <h2 class="text-white fw-bold mb-3">Suffering from a Toothache or Dental Trauma?</h2>
                         <p class="text-white mb-4" style="opacity: 0.95; max-width: 650px;">
-                            Dental emergencies cannot wait. Our on-call emergency dental specialists in New York provide prompt same-day appointments, trauma relief, and repair for broken teeth.
+                            Dental emergencies cannot wait. Our on-call emergency dental specialists in Salem, Tamil Nadu provide prompt same-day appointments, trauma relief, and repair for broken teeth.
                         </p>
                         <div class="d-flex flex-wrap gap-3">
                             <a href="tel:<?= e($clinicSettings['emergency_phone']) ?>" class="btn btn-danger btn-lg rounded-pill px-4 fw-bold shadow">
