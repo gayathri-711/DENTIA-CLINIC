@@ -391,8 +391,14 @@ function sendJSON(res, data, status = 200) {
 const server = http.createServer(handleRequest);
 
 async function handleRequest(req, res) {
-  const parsedUrl = url.parse(req.url, true);
+  const incomingUrl = req.headers['x-forwarded-uri'] || req.headers['x-matched-path'] || req.url;
+  const parsedUrl = url.parse(incomingUrl, true);
   let pathname = decodeURIComponent(parsedUrl.pathname);
+
+  // Vercel rewrite support: if query has _route, reconstruct target pathname
+  if (parsedUrl.query && parsedUrl.query._route) {
+    pathname = '/api/' + parsedUrl.query._route;
+  }
 
   // Route Aliases
   if (pathname === '/' || pathname === '/index.php') pathname = '/index.html';
