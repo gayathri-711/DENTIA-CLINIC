@@ -15,12 +15,25 @@ const url = require('url');
 const nodemailer = require('nodemailer');
 const database = require('./database');
 
+const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const PORT = process.env.PORT || 8000;
 const WEB_ROOT = path.join(__dirname, 'Dentia', 'Dentia HTML');
-const DATA_DIR = path.join(WEB_ROOT, 'data');
+const SOURCE_DATA_DIR = path.join(WEB_ROOT, 'data');
+const DATA_DIR = isVercel ? path.join('/tmp', 'dentia_data') : SOURCE_DATA_DIR;
 
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// In Vercel serverless environment, copy seed JSON files to writable /tmp
+if (isVercel) {
+  ['appointments.json', 'dentists.json', 'patients.json', 'notifications.json', 'medical_records.json', 'gateway_config.json'].forEach(f => {
+    const src = path.join(SOURCE_DATA_DIR, f);
+    const dst = path.join(DATA_DIR, f);
+    if (!fs.existsSync(dst) && fs.existsSync(src)) {
+      try { fs.copyFileSync(src, dst); } catch (e) {}
+    }
+  });
 }
 
 const APPOINTMENTS_FILE = path.join(DATA_DIR, 'appointments.json');
@@ -1492,12 +1505,16 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
   });
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`====================================================`);
-  console.log(`Doctor Dental Clinic Dentia Platform Server Running`);
-  console.log(`Local URL: http://localhost:${PORT}`);
-  console.log(`Admin Portal: http://localhost:${PORT}/admin/index.html`);
-  console.log(`Doctor Login: http://localhost:${PORT}/doctor-login.html`);
-  console.log(`Patient Login: http://localhost:${PORT}/login.html`);
-  console.log(`====================================================`);
-});
+if (require.main === module) {
+  server.listen(PORT, '0.0.0.0', () => {
+    console.log(`====================================================`);
+    console.log(`Doctor Dental Clinic Dentia Platform Server Running`);
+    console.log(`Local URL: http://localhost:${PORT}`);
+    console.log(`Admin Portal: http://localhost:${PORT}/admin/index.html`);
+    console.log(`Doctor Login: http://localhost:${PORT}/doctor-login.html`);
+    console.log(`Patient Login: http://localhost:${PORT}/login.html`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = server;

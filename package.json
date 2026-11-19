@@ -4,8 +4,9 @@
   "description": "A modern, responsive, full-stack dental clinic management platform built with PHP, MySQL, Bootstrap 5, and JavaScript. This platform transforms the clinic website into a comprehensive clinical management solution featuring real-time appointment scheduling, duplicate booking prevention, patient self-service portal, and an administrative control panel.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "node -e \"console.log('Build complete')\"",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

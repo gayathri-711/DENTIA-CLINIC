@@ -7,12 +7,27 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = path.join(__dirname, 'Dentia', 'Dentia HTML', 'data', 'dentia.sqlite');
-const DATA_DIR = path.join(__dirname, 'Dentia', 'Dentia HTML', 'data');
+const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const SOURCE_DIR = path.join(__dirname, 'Dentia', 'Dentia HTML', 'data');
+const DATA_DIR = isVercel ? path.join('/tmp', 'dentia_data') : SOURCE_DIR;
+const DB_PATH = isVercel ? path.join(DATA_DIR, 'dentia.sqlite') : path.join(DATA_DIR, 'dentia.sqlite');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// In Vercel serverless environment, copy seed database to writable /tmp directory
+if (isVercel && !fs.existsSync(DB_PATH)) {
+  const sourceDB = path.join(SOURCE_DIR, 'dentia.sqlite');
+  if (fs.existsSync(sourceDB)) {
+    try {
+      fs.copyFileSync(sourceDB, DB_PATH);
+      console.log('[DATABASE VERCEL] Seed database copied to /tmp:', DB_PATH);
+    } catch (copyErr) {
+      console.error('[DATABASE VERCEL ERROR] Could not copy seed DB:', copyErr.message);
+    }
+  }
 }
 
 const db = new sqlite3.Database(DB_PATH, (err) => {
