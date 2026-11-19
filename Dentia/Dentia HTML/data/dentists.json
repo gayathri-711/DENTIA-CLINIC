@@ -86,5 +86,22 @@
     "description": "Experienced dental professional dedicated to comprehensive oral care and patient comfort.",
     "image": "images/team/1.webp",
     "is_active": true
+  },
+  {
+    "id": 6,
+    "name": "suji",
+    "qualification": "dds",
+    "specialization": "dentist",
+    "experience": "3",
+    "email": "gayathri.240103@cse.ritchennai.edu.in",
+    "login_email": "gayatrisenthamarai@gmail.com",
+    "password": "doctor123",
+    "has_login": true,
+    "phone": "+917598092785",
+    "availability_days": "Monday - Friday",
+    "availability_hours": "09:00 AM - 05:00 PM",
+    "description": "Experienced dental professional dedicated to comprehensive oral care and patient comfort.",
+    "image": "images/team/doctor_6_1794994205116.png",
+    "is_active": true
   }
 ]

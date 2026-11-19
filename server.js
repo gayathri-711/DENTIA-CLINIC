@@ -387,6 +387,27 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/dashboard') pathname = '/patient-dashboard.html';
   if (pathname === '/doctor-login' || pathname === '/doctor/login') pathname = '/doctor-login.html';
   if (pathname === '/doctor-dashboard' || pathname === '/doctor/dashboard' || pathname === '/doctor') pathname = '/doctor-dashboard.html';
+  if (pathname === '/services' || pathname === '/services/') pathname = '/services.html';
+
+  // Smart Service Route Aliases (prevent 404 on any service link)
+  if (pathname.startsWith('/service-') || pathname.startsWith('/service/')) {
+    const clean = pathname.toLowerCase();
+    if (clean.includes('general') || clean.includes('exam') || clean.includes('cleaning') || clean.includes('gum') || clean.includes('extraction')) {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/service-general-dentistry.html';
+    } else if (clean.includes('cosmetic') || clean.includes('veneer') || clean.includes('aesthetic')) {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/service-cosmetic-dentistry.html';
+    } else if (clean.includes('pediatric') || clean.includes('kid') || clean.includes('child')) {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/service-pediatric-dentistry.html';
+    } else if (clean.includes('restorative') || clean.includes('implant') || clean.includes('crown') || clean.includes('bridge') || clean.includes('root-canal')) {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/service-restorative-dentistry.html';
+    } else if (clean.includes('whitening') || clean.includes('preventive') || clean.includes('laser')) {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/service-preventive-dentistry.html';
+    } else if (clean.includes('orthodontic') || clean.includes('brace') || clean.includes('aligner') || clean.includes('invisalign')) {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/service-orthodontics.html';
+    } else {
+      if (!fs.existsSync(path.join(WEB_ROOT, pathname))) pathname = '/services.html';
+    }
+  }
 
   // ----------------------------------------------------
   // REST API ENDPOINTS
