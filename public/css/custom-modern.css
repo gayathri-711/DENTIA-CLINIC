@@ -559,7 +559,7 @@ header.sticky-top {
 @media (max-width: 576px) {
   /* Navigation header compact on small phones */
   .menu_side_area .btn-portal-nav span {
-    display: none !important; /* show icon only on small screens */
+    display: inline-block !important; font-size: 12px !important;
   }
   .menu_side_area .btn-portal-nav {
     padding: 7px 10px !important;
@@ -1076,11 +1076,12 @@ section.pt-40.pb-40 {
     line-height: normal !important;
   }
   header #logo img.logo-main,
+  header #logo img.logo-scroll,
   header #logo img.logo-white {
     display: none !important;
   }
-  header #logo img.logo-mobile,
-  header #logo img.logo-scroll {
+
+  header #logo img.logo-mobile {
     display: block !important;
     max-height: 38px !important;
     width: auto !important;
