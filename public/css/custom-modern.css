@@ -438,7 +438,6 @@ header:not(.transparent) .btn-portal-nav:hover {
 }
 
 /* --- Dashboard & Admin Topbar Alignment (Prevent Absolute Overlay Collisions) --- */
-.admin-topbar,
 header.dashboard-header,
 header.sticky-top {
   position: relative !important;
@@ -447,6 +446,19 @@ header.sticky-top {
   width: 100% !important;
   z-index: 100 !important;
   background-color: #ffffff !important;
+  margin: 0 !important;
+}
+.admin-topbar {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  min-height: 60px !important;
+  height: 60px !important;
+  z-index: 1020 !important;
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04) !important;
   margin: 0 !important;
 }
 
