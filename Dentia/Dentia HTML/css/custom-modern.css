@@ -760,71 +760,129 @@ header.sticky-top {
   margin-bottom: 0 !important;
 }
 
-/* 2. Services Cards on Home Page (Section 4) */
-.home-services-row {
-  max-width: 1040px !important;
-  margin: 0 auto !important;
-}
-.home-service-card {
-  max-width: 235px !important;
-  margin: 0 auto !important;
-  padding: 16px 14px !important;
-  border-radius: 12px !important;
-  background: #ffffff !important;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04) !important;
-  border: 1px solid rgba(0, 0, 0, 0.06) !important;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  text-align: left !important;
-}
-.home-service-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 22px rgba(20, 99, 184, 0.1) !important;
-  border-color: rgba(20, 99, 184, 0.25) !important;
-}
-.home-service-card .service-icon {
-  width: 36px !important;
-  height: 36px !important;
-  object-fit: contain !important;
-  margin-bottom: 10px !important;
-}
-.home-service-card h4 {
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  margin-bottom: 6px !important;
-  color: #1e293b !important;
-}
-.home-service-card p {
-  font-size: 12px !important;
-  line-height: 1.45 !important;
-  color: #64748b !important;
-  margin-bottom: 10px !important;
-}
-.home-service-card .btn-plus {
-  font-size: 11.5px !important;
-  font-weight: 600 !important;
+/* ==========================================================================
+   ULTRA-COMPACT HOMEPAGE (SHORT VERTICAL HEIGHT, MAXIMUM EFFICIENCY)
+   ========================================================================== */
+
+/* 1. Global Section Padding: Reduce from 120px 0 down to 36px 0 */
+#content > section:not(#section-intro) {
+  padding: 36px 0 !important;
 }
 
-/* 3. Doctor / Team Cards on Home Page (Section 7) */
-.home-team-row {
+/* 2. Spacers: Minimize empty spacer gap heights */
+#content .spacer-single {
+  height: 10px !important;
+}
+#content .spacer-half {
+  height: 5px !important;
+}
+#content .spacer-double {
+  height: 15px !important;
+}
+
+/* 3. Section Titles & Subtitles */
+#content section .subtitle {
+  font-size: 12.5px !important;
+  margin-bottom: 4px !important;
+  letter-spacing: 0.5px !important;
+}
+#content section h2 {
+  font-size: 26px !important;
+  line-height: 1.25 !important;
+  margin-bottom: 6px !important;
+}
+#content section p.col-lg-8,
+#content section p.col-lg-6 {
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 4. Quick Info Bar (Section 2) */
+.quick-info-section {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+.quick-info-card {
+  padding: 6px 10px !important;
+  gap: 10px !important;
+}
+.quick-info-icon {
+  font-size: 18px !important;
+}
+.quick-info-text h4 {
+  font-size: 14.5px !important;
+  margin-bottom: 1px !important;
+}
+.quick-info-text p {
+  font-size: 12px !important;
+}
+
+/* 5. Services Cards (Section 4) */
+.home-services-row {
   max-width: 980px !important;
   margin: 0 auto !important;
 }
+.home-service-card {
+  max-width: 225px !important;
+  margin: 0 auto !important;
+  padding: 14px 12px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.25s ease !important;
+  text-align: left !important;
+}
+.home-service-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 20px rgba(20, 99, 184, 0.1) !important;
+  border-color: rgba(20, 99, 184, 0.25) !important;
+}
+.home-service-card .service-icon {
+  width: 32px !important;
+  height: 32px !important;
+  object-fit: contain !important;
+  margin-bottom: 8px !important;
+}
+.home-service-card h4 {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+  color: #1e293b !important;
+}
+.home-service-card p {
+  font-size: 11.5px !important;
+  line-height: 1.4 !important;
+  color: #64748b !important;
+  margin-bottom: 8px !important;
+}
+.home-service-card .btn-plus {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+}
+
+/* 6. Doctor / Team Cards (Section 7) */
+.home-team-row {
+  max-width: 900px !important;
+  margin: 0 auto !important;
+}
 .home-team-card {
-  max-width: 205px !important;
+  max-width: 190px !important;
   margin: 0 auto !important;
   border-radius: 12px !important;
   overflow: hidden !important;
   background: #ffffff !important;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05) !important;
-  transition: all 0.3s ease !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.25s ease !important;
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 .home-team-card:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08) !important;
 }
 .home-team-card .team-img-wrapper {
-  height: 165px !important;
+  height: 140px !important;
   overflow: hidden !important;
   background: #f1f5f9 !important;
   position: relative !important;
@@ -834,129 +892,162 @@ header.sticky-top {
   height: 100% !important;
   object-fit: cover !important;
   object-position: top center !important;
-  transition: transform 0.4s ease !important;
-}
-.home-team-card:hover .team-img-wrapper img {
-  transform: scale(1.05) !important;
 }
 .home-team-card .team-info-pill {
-  padding: 5px 8px !important;
-  margin: 6px !important;
-  border-radius: 8px !important;
+  padding: 4px 6px !important;
+  margin: 5px !important;
+  border-radius: 6px !important;
   background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(6px) !important;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07) !important;
+  backdrop-filter: blur(4px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important;
   text-align: center !important;
 }
 .home-team-card .team-info-pill h4 {
-  font-size: 13px !important;
+  font-size: 12.5px !important;
   font-weight: 700 !important;
   color: #0f172a !important;
-  margin-bottom: 1px !important;
+  margin-bottom: 0 !important;
 }
 .home-team-card .team-info-pill p {
-  font-size: 11px !important;
+  font-size: 10.5px !important;
   color: #1463b8 !important;
   font-weight: 600 !important;
   margin-bottom: 0 !important;
 }
 
-/* 4. Testimonial Cards on Home Page (Section 9) */
-.home-testi-card {
-  max-width: 260px !important;
-  margin: 6px auto !important;
-  padding: 16px 14px !important;
-  border-radius: 12px !important;
-  background: #ffffff !important;
-  border: 1px solid #eef2f6 !important;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04) !important;
-  text-align: center !important;
-}
-.home-testi-card .de_testi_by img.circle {
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50% !important;
-  margin-bottom: 5px !important;
-  object-fit: cover !important;
-}
-.home-testi-card .de_testi_by div {
-  font-size: 13px !important;
-  font-weight: 700 !important;
-  color: #1e293b !important;
-}
-.home-testi-card .de_testi_by div span {
-  font-size: 11px !important;
-  color: #64748b !important;
-}
-.home-testi-card blockquote p {
-  font-size: 12px !important;
-  line-height: 1.45 !important;
-  margin-top: 8px !important;
-  color: #475569 !important;
-}
-.home-testi-card i.icofont-quote-left {
-  font-size: 18px !important;
-  opacity: 0.25 !important;
-}
-
-/* 5. About Us Image Cards (Section 3) */
+/* 7. About Us Section (Section 3) */
 .home-about-img-box {
-  max-height: 220px !important;
-  max-width: 195px !important;
+  max-height: 165px !important;
+  max-width: 155px !important;
   margin: 0 auto !important;
-  border-radius: 14px !important;
+  border-radius: 12px !important;
   overflow: hidden !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06) !important;
 }
 .home-about-img-box img {
-  height: 220px !important;
+  height: 165px !important;
   width: 100% !important;
   object-fit: cover !important;
 }
+#content section ul.ul-check.cols-2 {
+  margin-bottom: 10px !important;
+}
+#content section ul.ul-check.cols-2 li {
+  font-size: 12.5px !important;
+  margin-bottom: 3px !important;
+}
 
-/* 6. Why Choose Us Image Cards (Section 6) */
+/* 8. Why Choose Us Section (Section 6) */
 .home-why-images-wrapper {
-  max-width: 400px !important;
+  max-width: 340px !important;
   margin: 0 auto !important;
 }
 .home-why-img-sm {
-  max-height: 105px !important;
-  max-width: 165px !important;
-  border-radius: 12px !important;
+  max-height: 80px !important;
+  max-width: 135px !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
   display: inline-block !important;
-  margin-bottom: 10px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 6px !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05) !important;
 }
 .home-why-img-sm img {
-  height: 105px !important;
+  height: 80px !important;
   width: 100% !important;
   object-fit: cover !important;
 }
 .home-why-img-lg {
-  max-height: 220px !important;
-  max-width: 185px !important;
-  border-radius: 12px !important;
+  max-height: 170px !important;
+  max-width: 155px !important;
+  border-radius: 10px !important;
   overflow: hidden !important;
   display: inline-block !important;
-  margin-bottom: 10px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 6px !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05) !important;
 }
 .home-why-img-lg img {
-  height: 220px !important;
+  height: 170px !important;
   width: 100% !important;
   object-fit: cover !important;
 }
+#content section .border-bottom {
+  margin-bottom: 12px !important;
+}
+#content section h5 {
+  font-size: 13.5px !important;
+  margin-bottom: 2px !important;
+}
+#content section .col-sm-6 p {
+  font-size: 11.5px !important;
+  line-height: 1.4 !important;
+}
 
-/* 7. FAQ Accordion Compact (Section 8) */
-.accordion.s2 .accordion-section-title {
-  padding: 10px 16px !important;
+/* 9. Testimonial Cards (Section 9) */
+.home-testi-card {
+  max-width: 240px !important;
+  margin: 4px auto !important;
+  padding: 12px 10px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  border: 1px solid #eef2f6 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  text-align: center !important;
+}
+.home-testi-card .de_testi_by img.circle {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  margin-bottom: 4px !important;
+  object-fit: cover !important;
+}
+.home-testi-card .de_testi_by div {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+.home-testi-card .de_testi_by div span {
+  font-size: 10px !important;
+  color: #64748b !important;
+}
+.home-testi-card blockquote p {
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  margin-top: 5px !important;
+  color: #475569 !important;
+}
+.home-testi-card i.icofont-quote-left {
   font-size: 14px !important;
+  opacity: 0.25 !important;
+}
+
+/* 10. FAQ Accordion (Section 8) */
+.accordion.s2 .accordion-section-title {
+  padding: 8px 14px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
-  margin-bottom: 6px !important;
+  margin-bottom: 4px !important;
 }
 .accordion.s2 .accordion-section-content {
-  padding: 8px 16px 12px !important;
-  font-size: 13px !important;
-  line-height: 1.5 !important;
+  padding: 6px 14px 8px !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+/* 11. Counter / Stats Banner (Section 5) */
+section.pt-60.pb-60 {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+.de_count h3 {
+  font-size: 26px !important;
+  margin-bottom: 2px !important;
+}
+.de_count span {
+  font-size: 12px !important;
+}
+
+/* 12. Pre-Footer CTA (Section 10) */
+section.pt-40.pb-40 {
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
 }
