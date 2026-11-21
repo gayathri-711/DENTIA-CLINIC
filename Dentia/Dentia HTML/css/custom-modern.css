@@ -761,57 +761,70 @@ header.sticky-top {
 }
 
 /* 2. Services Cards on Home Page (Section 4) */
+.home-services-row {
+  max-width: 1040px !important;
+  margin: 0 auto !important;
+}
 .home-service-card {
-  padding: 24px 20px !important;
-  border-radius: 14px !important;
+  max-width: 235px !important;
+  margin: 0 auto !important;
+  padding: 16px 14px !important;
+  border-radius: 12px !important;
   background: #ffffff !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04) !important;
   border: 1px solid rgba(0, 0, 0, 0.06) !important;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-align: left !important;
 }
 .home-service-card:hover {
-  transform: translateY(-5px) !important;
-  box-shadow: 0 12px 28px rgba(20, 99, 184, 0.12) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 22px rgba(20, 99, 184, 0.1) !important;
   border-color: rgba(20, 99, 184, 0.25) !important;
 }
 .home-service-card .service-icon {
-  width: 48px !important;
-  height: 48px !important;
+  width: 36px !important;
+  height: 36px !important;
   object-fit: contain !important;
-  margin-bottom: 12px !important;
+  margin-bottom: 10px !important;
 }
 .home-service-card h4 {
-  font-size: 17px !important;
+  font-size: 15px !important;
   font-weight: 700 !important;
-  margin-bottom: 8px !important;
+  margin-bottom: 6px !important;
   color: #1e293b !important;
 }
 .home-service-card p {
-  font-size: 13px !important;
-  line-height: 1.55 !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
   color: #64748b !important;
-  margin-bottom: 14px !important;
+  margin-bottom: 10px !important;
 }
 .home-service-card .btn-plus {
-  font-size: 12.5px !important;
+  font-size: 11.5px !important;
   font-weight: 600 !important;
 }
 
 /* 3. Doctor / Team Cards on Home Page (Section 7) */
+.home-team-row {
+  max-width: 980px !important;
+  margin: 0 auto !important;
+}
 .home-team-card {
-  border-radius: 14px !important;
+  max-width: 205px !important;
+  margin: 0 auto !important;
+  border-radius: 12px !important;
   overflow: hidden !important;
   background: #ffffff !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05) !important;
   transition: all 0.3s ease !important;
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
 }
 .home-team-card:hover {
   transform: translateY(-4px) !important;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.09) !important;
 }
 .home-team-card .team-img-wrapper {
-  height: 250px !important;
+  height: 165px !important;
   overflow: hidden !important;
   background: #f1f5f9 !important;
   position: relative !important;
@@ -827,22 +840,22 @@ header.sticky-top {
   transform: scale(1.05) !important;
 }
 .home-team-card .team-info-pill {
-  padding: 8px 12px !important;
-  margin: 10px !important;
-  border-radius: 10px !important;
-  background: rgba(255, 255, 255, 0.94) !important;
-  backdrop-filter: blur(8px) !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+  padding: 5px 8px !important;
+  margin: 6px !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(6px) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07) !important;
   text-align: center !important;
 }
 .home-team-card .team-info-pill h4 {
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
   color: #0f172a !important;
-  margin-bottom: 2px !important;
+  margin-bottom: 1px !important;
 }
 .home-team-card .team-info-pill p {
-  font-size: 12px !important;
+  font-size: 11px !important;
   color: #1463b8 !important;
   font-weight: 600 !important;
   margin-bottom: 0 !important;
@@ -850,37 +863,100 @@ header.sticky-top {
 
 /* 4. Testimonial Cards on Home Page (Section 9) */
 .home-testi-card {
-  padding: 22px 20px !important;
-  border-radius: 14px !important;
+  max-width: 260px !important;
+  margin: 6px auto !important;
+  padding: 16px 14px !important;
+  border-radius: 12px !important;
   background: #ffffff !important;
   border: 1px solid #eef2f6 !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04) !important;
   text-align: center !important;
-  margin: 8px 6px !important;
 }
 .home-testi-card .de_testi_by img.circle {
-  width: 52px !important;
-  height: 52px !important;
+  width: 40px !important;
+  height: 40px !important;
   border-radius: 50% !important;
-  margin-bottom: 6px !important;
+  margin-bottom: 5px !important;
   object-fit: cover !important;
 }
 .home-testi-card .de_testi_by div {
-  font-size: 14.5px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
   color: #1e293b !important;
 }
 .home-testi-card .de_testi_by div span {
-  font-size: 11.5px !important;
+  font-size: 11px !important;
   color: #64748b !important;
 }
 .home-testi-card blockquote p {
-  font-size: 13px !important;
-  line-height: 1.55 !important;
-  margin-top: 12px !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  margin-top: 8px !important;
   color: #475569 !important;
 }
 .home-testi-card i.icofont-quote-left {
-  font-size: 20px !important;
-  opacity: 0.3 !important;
+  font-size: 18px !important;
+  opacity: 0.25 !important;
+}
+
+/* 5. About Us Image Cards (Section 3) */
+.home-about-img-box {
+  max-height: 220px !important;
+  max-width: 195px !important;
+  margin: 0 auto !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06) !important;
+}
+.home-about-img-box img {
+  height: 220px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+/* 6. Why Choose Us Image Cards (Section 6) */
+.home-why-images-wrapper {
+  max-width: 400px !important;
+  margin: 0 auto !important;
+}
+.home-why-img-sm {
+  max-height: 105px !important;
+  max-width: 165px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  display: inline-block !important;
+  margin-bottom: 10px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+.home-why-img-sm img {
+  height: 105px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+.home-why-img-lg {
+  max-height: 220px !important;
+  max-width: 185px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  display: inline-block !important;
+  margin-bottom: 10px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+.home-why-img-lg img {
+  height: 220px !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+
+/* 7. FAQ Accordion Compact (Section 8) */
+.accordion.s2 .accordion-section-title {
+  padding: 10px 16px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  margin-bottom: 6px !important;
+}
+.accordion.s2 .accordion-section-content {
+  padding: 8px 16px 12px !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
 }
