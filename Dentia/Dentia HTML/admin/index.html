@@ -82,6 +82,47 @@
             background-color: #1463b8 !important;
             color: #fff !important;
         }
+            @media (max-width: 991.98px) {
+            .admin-sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                height: 100vh !important;
+                z-index: 1050 !important;
+                transform: translateX(-100%);
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+                box-shadow: 4px 0 24px rgba(0,0,0,0.25) !important;
+                background: #0b2545 !important;
+                overflow-y: auto !important;
+            }
+            .admin-sidebar.show {
+                transform: translateX(0) !important;
+            }
+            .admin-sidebar-backdrop {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(11, 37, 69, 0.55);
+                backdrop-filter: blur(2px);
+                z-index: 1040;
+                display: none;
+            }
+            .admin-sidebar-backdrop.show {
+                display: block;
+            }
+            .admin-topbar {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+            }
+            main {
+                padding: 16px 12px !important;
+            }
+            .admin-stat-box {
+                padding: 16px !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -89,9 +130,14 @@
 <div class="d-flex">
     <!-- Sidebar -->
     <div class="admin-sidebar d-flex flex-column flex-shrink-0 p-3" style="width: 260px; min-height: 100vh;">
-        <a href="index.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none px-2 py-3 border-bottom border-secondary w-100">
-            <img src="../images/logo-white.webp" alt="Dentia" style="max-height: 38px;">
-        </a>
+        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom border-secondary pb-3 px-2 w-100">
+            <a href="index.html" class="d-flex align-items-center text-white text-decoration-none">
+                <img src="../images/logo-white.webp" alt="Dentia" style="max-height: 36px;">
+            </a>
+            <button class="btn btn-sm btn-outline-light d-lg-none rounded-circle" onclick="toggleAdminSidebar()" aria-label="Close Sidebar" style="width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                <i class="fa fa-times"></i>
+            </button>
+        </div>
 
         <div class="py-2 px-2 text-white-50 small mt-2">
             MANAGEMENT MODULES
@@ -150,11 +196,16 @@
         
         <!-- Topbar -->
         <nav class="admin-topbar bg-white border-bottom py-2 px-4 d-flex justify-content-between align-items-center shadow-sm" style="position: relative !important; left: auto !important; width: 100% !important; z-index: 10 !important;">
-            <div>
-                <h5 class="fw-bold mb-0 text-dark">Dentia Clinic Administration</h5>
-                <small class="text-muted" style="font-size: 12px;">Accept appointment requests, manage doctors, and monitor patient care</small>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-outline-primary d-lg-none py-1 px-2 me-1" id="adminSidebarToggle" onclick="toggleAdminSidebar()" aria-label="Toggle Menu">
+                    <i class="fa fa-bars fs-5"></i>
+                </button>
+                <div>
+                    <h5 class="fw-bold mb-0 text-dark fs-6 fs-md-5">Dentia Administration</h5>
+                    <small class="text-muted d-none d-sm-block" style="font-size: 12px;">Accept appointment requests, manage doctors, and monitor patient care</small>
+                </div>
             </div>
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 gap-md-3">
                 <span class="badge bg-primary text-white rounded-pill px-3 py-1 small fw-semibold">
                     <i class="fa fa-shield me-1"></i> Chief Medical Admin
                 </span>
@@ -853,7 +904,32 @@ function showAlert(msg, type = 'success') {
     setTimeout(() => { el.className = 'alert d-none'; }, 4000);
 }
 
+function toggleAdminSidebar() {
+    const sidebar = document.querySelector('.admin-sidebar');
+    let backdrop = document.querySelector('.admin-sidebar-backdrop');
+    if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.className = 'admin-sidebar-backdrop';
+        backdrop.onclick = toggleAdminSidebar;
+        document.body.appendChild(backdrop);
+    }
+    const isOpen = sidebar.classList.contains('show');
+    if (isOpen) {
+        sidebar.classList.remove('show');
+        backdrop.classList.remove('show');
+    } else {
+        sidebar.classList.add('show');
+        backdrop.classList.add('show');
+    }
+}
+
 function switchSection(sec) {
+    if (window.innerWidth < 992) {
+        const sidebar = document.querySelector('.admin-sidebar');
+        const backdrop = document.querySelector('.admin-sidebar-backdrop');
+        if (sidebar) sidebar.classList.remove('show');
+        if (backdrop) backdrop.classList.remove('show');
+    }
     document.getElementById('section_appointments').classList.add('d-none');
     document.getElementById('section_doctors').classList.add('d-none');
     document.getElementById('section_patients').classList.add('d-none');
