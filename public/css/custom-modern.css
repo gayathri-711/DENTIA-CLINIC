@@ -1051,3 +1051,129 @@ section.pt-40.pb-40 {
   padding-top: 18px !important;
   padding-bottom: 18px !important;
 }
+
+/* ==========================================================================
+   13. Mobile Header Visibility & Contrast Fixes (Screen <= 993px)
+   ========================================================================== */
+@media only screen and (max-width: 993px) {
+  /* 1. Force solid white background and clear bottom border for header */
+  header,
+  header.header-mobile,
+  header.transparent,
+  header.scroll-light {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+    padding: 10px 0 !important;
+    z-index: 1001 !important;
+  }
+
+  /* 2. Logo visibility: show dark logo on white background */
+  header #logo {
+    display: flex !important;
+    align-items: center !important;
+    height: auto !important;
+    line-height: normal !important;
+  }
+  header #logo img.logo-main,
+  header #logo img.logo-white {
+    display: none !important;
+  }
+  header #logo img.logo-mobile,
+  header #logo img.logo-scroll {
+    display: block !important;
+    max-height: 38px !important;
+    width: auto !important;
+  }
+
+  /* 3. Hamburger Menu Button: High-contrast, clearly visible button */
+  #menu-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 40px !important;
+    height: 40px !important;
+    background: #f1f5f9 !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    color: #0b2545 !important;
+    cursor: pointer !important;
+    margin-left: 10px !important;
+    margin-top: 0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.2s ease !important;
+  }
+  #menu-btn:before {
+    color: #0b2545 !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+  #menu-btn:hover,
+  #menu-btn.menu-open {
+    background: #e2e8f0 !important;
+    border-color: #1463b8 !important;
+    color: #1463b8 !important;
+  }
+  #menu-btn.menu-open:before {
+    color: #1463b8 !important;
+  }
+
+  /* 4. Sign In button on Mobile: crisp blue text & border on light blue pill */
+  header .btn-portal-nav {
+    color: #1463b8 !important;
+    background: #f0f7ff !important;
+    border: 1.5px solid #1463b8 !important;
+    font-size: 12.5px !important;
+    padding: 6px 14px !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 1px 4px rgba(20, 99, 184, 0.12) !important;
+    line-height: normal !important;
+    text-decoration: none !important;
+  }
+  header .btn-portal-nav i,
+  header .btn-portal-nav span {
+    color: #1463b8 !important;
+    display: inline-block !important;
+  }
+  header .btn-portal-nav:hover {
+    background: #1463b8 !important;
+    color: #ffffff !important;
+  }
+  header .btn-portal-nav:hover i,
+  header .btn-portal-nav:hover span {
+    color: #ffffff !important;
+  }
+
+  /* 5. Flex Alignment in header row */
+  header .de-flex {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 !important;
+  }
+  header .menu_side_area {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: auto !important;
+    margin-left: auto !important;
+    float: none !important;
+  }
+
+  /* 6. Mobile Drawer when menu opens */
+  header.menu-open {
+    background: #ffffff !important;
+  }
+  header.menu-open #mainmenu {
+    background: #ffffff !important;
+    border-top: 1px solid #e2e8f0 !important;
+  }
+  header.menu-open #mainmenu > li > a {
+    color: #0b2545 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+  }
+}
