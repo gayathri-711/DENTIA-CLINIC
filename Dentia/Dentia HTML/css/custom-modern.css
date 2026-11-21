@@ -731,3 +731,156 @@ header.sticky-top {
 
 
 
+
+
+/* ========================================================
+   Compact Home Page Cards (Services, Dentists, Testimonials)
+   ======================================================== */
+
+/* 1. Quick Info Top Cards (Section 2) */
+.quick-info-section {
+  padding-top: 32px !important;
+  padding-bottom: 22px !important;
+}
+.quick-info-card {
+  padding: 10px 16px !important;
+}
+.quick-info-icon {
+  font-size: 38px !important;
+  line-height: 1 !important;
+}
+.quick-info-text h4 {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  margin-bottom: 2px !important;
+}
+.quick-info-text p {
+  font-size: 13px !important;
+  color: #cbd5e1 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 2. Services Cards on Home Page (Section 4) */
+.home-service-card {
+  padding: 24px 20px !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.home-service-card:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 12px 28px rgba(20, 99, 184, 0.12) !important;
+  border-color: rgba(20, 99, 184, 0.25) !important;
+}
+.home-service-card .service-icon {
+  width: 48px !important;
+  height: 48px !important;
+  object-fit: contain !important;
+  margin-bottom: 12px !important;
+}
+.home-service-card h4 {
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  margin-bottom: 8px !important;
+  color: #1e293b !important;
+}
+.home-service-card p {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  color: #64748b !important;
+  margin-bottom: 14px !important;
+}
+.home-service-card .btn-plus {
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+}
+
+/* 3. Doctor / Team Cards on Home Page (Section 7) */
+.home-team-card {
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.3s ease !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+.home-team-card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+}
+.home-team-card .team-img-wrapper {
+  height: 250px !important;
+  overflow: hidden !important;
+  background: #f1f5f9 !important;
+  position: relative !important;
+}
+.home-team-card .team-img-wrapper img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: top center !important;
+  transition: transform 0.4s ease !important;
+}
+.home-team-card:hover .team-img-wrapper img {
+  transform: scale(1.05) !important;
+}
+.home-team-card .team-info-pill {
+  padding: 8px 12px !important;
+  margin: 10px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+  text-align: center !important;
+}
+.home-team-card .team-info-pill h4 {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-bottom: 2px !important;
+}
+.home-team-card .team-info-pill p {
+  font-size: 12px !important;
+  color: #1463b8 !important;
+  font-weight: 600 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 4. Testimonial Cards on Home Page (Section 9) */
+.home-testi-card {
+  padding: 22px 20px !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+  border: 1px solid #eef2f6 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+  text-align: center !important;
+  margin: 8px 6px !important;
+}
+.home-testi-card .de_testi_by img.circle {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  margin-bottom: 6px !important;
+  object-fit: cover !important;
+}
+.home-testi-card .de_testi_by div {
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+.home-testi-card .de_testi_by div span {
+  font-size: 11.5px !important;
+  color: #64748b !important;
+}
+.home-testi-card blockquote p {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  margin-top: 12px !important;
+  color: #475569 !important;
+}
+.home-testi-card i.icofont-quote-left {
+  font-size: 20px !important;
+  opacity: 0.3 !important;
+}
