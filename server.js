@@ -14,6 +14,11 @@ const path = require('path');
 const url = require('url');
 const nodemailer = require('nodemailer');
 const database = require('./database');
+const emailService = require('./email-service');
+
+// In-memory verification token stores
+const otpStore = new Map(); // email -> { otp, expiresAt }
+const resetTokenStore = new Map(); // email -> { token, expiresAt }
 
 const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const PORT = process.env.PORT || 8000;
@@ -166,7 +171,7 @@ ${message}
 </html>`;
 }
 
-// Notification Dispatcher (Email & SMS with Real SMTP delivery support)
+// Notification Dispatcher (Email & SMS with Google Apps Script & SMTP support)
 async function dispatchNotification({ patient_name, patient_email, patient_phone, appointment_ref, type, subject, message, sms_text }) {
   let notifications = readJSON(NOTIFICATIONS_FILE, []);
   const now = new Date().toISOString();
@@ -175,8 +180,41 @@ async function dispatchNotification({ patient_name, patient_email, patient_phone
   let emailStatus = 'Delivered (System Ledger)';
   let smsStatus = 'Delivered (System Ledger)';
 
-  // 1. Attempt Real Email via SMTP if configured and enabled
-  if (gwConfig.email && gwConfig.email.enabled && gwConfig.email.user && gwConfig.email.pass && patient_email) {
+  // 1. Attempt Real Email via Google Apps Script if configured
+  const appsScriptCfg = emailService.getAppsScriptConfig();
+  if (appsScriptCfg.url && patient_email) {
+    try {
+      let appsScriptTemplate = 'custom';
+      if (type === 'booking_confirmed') appsScriptTemplate = 'booking_confirmation';
+      else if (type === 'slot_unavailable' || type === 'booking_cancelled') appsScriptTemplate = 'booking_cancelled';
+      else if (type === 'welcome') appsScriptTemplate = 'welcome';
+      else if (type === 'payment_receipt') appsScriptTemplate = 'payment_receipt';
+
+      const asResult = await emailService.sendAppsScriptEmail({
+        template: appsScriptTemplate,
+        recipient: patient_email,
+        subject: subject,
+        idempotencyKey: appointment_ref ? `NOTIF-${appointment_ref}-${type}` : undefined,
+        data: {
+          patient_name,
+          patient_email,
+          patient_phone,
+          appointment_ref,
+          message,
+          subject
+        }
+      });
+
+      if (asResult.success) {
+        emailStatus = `Delivered via Google Apps Script (${asResult.messageId || 'OK'})`;
+      } else {
+        emailStatus = `Apps Script: ${asResult.error || asResult.message}`;
+      }
+    } catch (asErr) {
+      emailStatus = `Apps Script Error: ${asErr.message}`;
+    }
+  } else if (gwConfig.email && gwConfig.email.enabled && gwConfig.email.user && gwConfig.email.pass && patient_email) {
+    // 1b. Fallback to SMTP if Apps Script is not configured
     try {
       const transporter = nodemailer.createTransport({
         service: gwConfig.email.provider === 'gmail' ? 'gmail' : undefined,
@@ -204,7 +242,7 @@ async function dispatchNotification({ patient_name, patient_email, patient_phone
       console.error(`[SMTP ERROR] Sending to ${patient_email}:`, err.message);
     }
   } else {
-    emailStatus = 'Delivered (System Ledger - Configure SMTP in Admin to send to real inbox)';
+    emailStatus = 'Delivered (System Ledger - Configure Google Apps Script or SMTP to dispatch to real inboxes)';
   }
 
   // 2. Email Notification Record
@@ -932,6 +970,40 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
     }
   }
 
+  // POST /api/admin/gateway/test-apps-script (Send live test email to verify Google Apps Script Email Automation)
+  if (pathname === '/api/admin/gateway/test-apps-script' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const toEmail = (data.to || data.recipient || data.email || '').trim();
+
+    if (!toEmail) {
+      return sendJSON(res, { success: false, message: 'Recipient email address is required.' }, 400);
+    }
+
+    const testResult = await emailService.sendBookingConfirmationEmail({
+      patient_name: toEmail.split('@')[0],
+      patient_email: toEmail,
+      appointment_ref: 'DEN-TEST-' + Math.floor(1000 + Math.random() * 9000),
+      service_name: 'Google Apps Script Automation Verification',
+      dentist_name: 'Dr. Sarah Bennett',
+      appointment_date: new Date().toLocaleDateString('en-US'),
+      appointment_time: '10:00 AM'
+    });
+
+    if (testResult.success) {
+      return sendJSON(res, {
+        success: true,
+        message: `Live test email successfully dispatched to ${toEmail} via Google Apps Script! (Message ID: ${testResult.messageId || 'OK'})`,
+        details: testResult
+      });
+    } else {
+      return sendJSON(res, {
+        success: false,
+        message: `Google Apps Script dispatch failed: ${testResult.error || testResult.message}`,
+        details: testResult
+      }, 500);
+    }
+  }
+
   // POST /api/admin/gateway/test-sms (Send live test SMS to verify SMS gateway delivery)
   if (pathname === '/api/admin/gateway/test-sms' && req.method === 'POST') {
     const data = await parsePostData(req);
@@ -1154,9 +1226,164 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
       [newPatient.id, newPatient.name, newPatient.email, newPatient.phone, newPatient.password, newPatient.dob, newPatient.gender, newPatient.address, 0, newPatient.created_at]
     ).catch(e => console.error('[DB ERROR] Insert patient:', e.message));
 
+    // Automated Welcome Email & Admin Notification via Google Apps Script
+    emailService.sendWelcomeEmail({
+      name: newPatient.name,
+      email: newPatient.email,
+      phone: newPatient.phone
+    }).catch(e => console.error('[WELCOME EMAIL ERROR]', e.message));
+
+    emailService.sendAdminAlertEmail({
+      event: 'New Patient Registered',
+      details: `New patient account created:\nName: ${newPatient.name}\nEmail: ${newPatient.email}\nPhone: ${newPatient.phone || 'N/A'}\nTime: ${new Date().toLocaleString()}`,
+      ref: 'PATIENT-' + newPatient.id,
+      patient_name: newPatient.name
+    }).catch(e => console.error('[ADMIN ALERT ERROR]', e.message));
+
     const safePatient = { ...newPatient };
     delete safePatient.password;
     return sendJSON(res, { success: true, message: 'Registration successful', patient: safePatient });
+  }
+
+  // POST /api/auth/send-otp (Send 6-digit email verification OTP)
+  if (pathname === '/api/auth/send-otp' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+    const name = (data.name || 'Patient').trim();
+
+    if (!email || !email.includes('@')) {
+      return sendJSON(res, { success: false, message: 'A valid email address is required.' }, 400);
+    }
+
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+    otpStore.set(email, { otp, expiresAt });
+
+    const emailRes = await emailService.sendOtpEmail({ name, email, otp, validityMinutes: 10 });
+    return sendJSON(res, {
+      success: true,
+      message: 'Verification OTP sent to ' + email,
+      emailStatus: emailRes.success ? 'delivered' : 'queued'
+    });
+  }
+
+  // POST /api/auth/verify-otp (Verify 6-digit OTP code)
+  if (pathname === '/api/auth/verify-otp' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+    const otp = (data.otp || '').trim();
+
+    if (!email || !otp) {
+      return sendJSON(res, { success: false, message: 'Email and OTP code are required.' }, 400);
+    }
+
+    const record = otpStore.get(email);
+    if (!record || record.expiresAt < Date.now()) {
+      return sendJSON(res, { success: false, message: 'OTP has expired or is invalid. Please request a new one.' }, 400);
+    }
+
+    if (record.otp !== otp) {
+      return sendJSON(res, { success: false, message: 'Invalid OTP code. Please check and try again.' }, 400);
+    }
+
+    otpStore.delete(email);
+    return sendJSON(res, { success: true, message: 'Email verified successfully!' });
+  }
+
+  // POST /api/auth/forgot-password (Dispatch password reset instructions)
+  if (pathname === '/api/auth/forgot-password' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+
+    if (!email) {
+      return sendJSON(res, { success: false, message: 'Email address is required.' }, 400);
+    }
+
+    const patients = readJSON(PATIENTS_FILE, []);
+    const patient = patients.find(p => p.email.toLowerCase() === email);
+
+    if (patient) {
+      const resetToken = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const expiresAt = Date.now() + 15 * 60 * 1000; // 15 mins
+      resetTokenStore.set(email, { token: resetToken, expiresAt });
+
+      const origin = req.headers.host ? `http://${req.headers.host}` : 'https://dentia-clinic.vercel.app';
+      const resetLink = `${origin}/login.html?action=reset&email=${encodeURIComponent(email)}&code=${resetToken}`;
+
+      await emailService.sendPasswordResetEmail({
+        name: patient.name,
+        email: patient.email,
+        resetLink,
+        resetCode: resetToken
+      });
+    }
+
+    return sendJSON(res, {
+      success: true,
+      message: 'If the email is registered, password recovery instructions have been sent.'
+    });
+  }
+
+  // POST /api/auth/reset-password (Set new password after verification)
+  if (pathname === '/api/auth/reset-password' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const email = (data.email || '').trim().toLowerCase();
+    const token = (data.token || data.code || '').trim();
+    const newPassword = (data.password || '').trim();
+
+    if (!email || !token || !newPassword) {
+      return sendJSON(res, { success: false, message: 'Email, reset code, and new password are required.' }, 400);
+    }
+
+    const record = resetTokenStore.get(email);
+    if (!record || record.expiresAt < Date.now() || record.token !== token) {
+      return sendJSON(res, { success: false, message: 'Reset token is invalid or has expired.' }, 400);
+    }
+
+    let patients = readJSON(PATIENTS_FILE, []);
+    const pIndex = patients.findIndex(p => p.email.toLowerCase() === email);
+    if (pIndex !== -1) {
+      patients[pIndex].password = newPassword;
+      writeJSON(PATIENTS_FILE, patients);
+      database.run('UPDATE patients SET password = ? WHERE LOWER(email) = ?', [newPassword, email])
+        .catch(e => console.error('[DB ERROR] Update password:', e.message));
+    }
+    resetTokenStore.delete(email);
+    return sendJSON(res, { success: true, message: 'Your password has been successfully reset. You may now log in.' });
+  }
+
+  // POST /api/payments/confirm (Dispatch official itemized receipt email)
+  if (pathname === '/api/payments/confirm' && req.method === 'POST') {
+    const data = await parsePostData(req);
+    const appointmentRef = (data.appointment_ref || data.ref || 'DEN-INV-' + Math.floor(1000 + Math.random() * 9000)).trim();
+    const patientEmail = (data.patient_email || data.email || '').trim().toLowerCase();
+    const patientName = (data.patient_name || data.name || 'Valued Patient').trim();
+    const amount = (data.amount || '$150.00').trim();
+    const serviceName = (data.service_name || data.service || 'Comprehensive Dental Care').trim();
+    const paymentMethod = (data.payment_method || 'Online Payment (Card)').trim();
+    const receiptId = (data.receipt_id || 'REC-' + Date.now().toString(36).toUpperCase()).trim();
+
+    if (!patientEmail) {
+      return sendJSON(res, { success: false, message: 'Patient email address is required.' }, 400);
+    }
+
+    const receiptResult = await emailService.sendPaymentReceiptEmail({
+      patient_name: patientName,
+      patient_email: patientEmail,
+      appointment_ref: appointmentRef,
+      receipt_id: receiptId,
+      service_name: serviceName,
+      amount: amount,
+      payment_method: paymentMethod,
+      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    });
+
+    return sendJSON(res, {
+      success: true,
+      message: 'Payment confirmed and official receipt dispatched to ' + patientEmail,
+      receipt_id: receiptId,
+      details: receiptResult
+    });
   }
 
   // 15. POST /api/auth/login (User login)
@@ -1451,6 +1678,14 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
       message: `Dear ${name}, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for ${serviceName} with ${currentDoc.name} on ${rawDate} at ${time} has been received and scheduled (Ref: ${ref}). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.`,
       sms_text: `Dentia Clinic: Hello ${name}, your appointment request ${ref} with ${currentDoc.name} on ${rawDate} at ${time} is received. We will send confirmation shortly!`
     });
+
+    // Alert Chief Medical Admin of new booking request
+    emailService.sendAdminAlertEmail({
+      event: 'New Appointment Booking Request',
+      details: `New booking submitted by patient:\nRef: ${ref}\nPatient: ${name} (${email}, Phone: ${phone || 'N/A'})\nDoctor: ${currentDoc.name}\nService: ${serviceName}\nScheduled: ${rawDate} at ${time}\nMessage: ${message || 'None'}`,
+      ref: ref,
+      patient_name: name
+    }).catch(e => console.error('[ADMIN BOOKING ALERT ERROR]', e.message));
 
     // If legacy jQuery AJAX expecting plain text 'sent'
     if (req.headers['x-requested-with'] === 'XMLHttpRequest' && pathname === '/booking.php' && !req.headers['accept']?.includes('json')) {
