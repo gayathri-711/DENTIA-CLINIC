@@ -2,7 +2,7 @@
   "email": {
     "enabled": true,
     "provider": "google_apps_script",
-    "apps_script_url": "",
+    "apps_script_url": "https://script.google.com/macros/s/AKfycbz3JEhm8oIz1qRiPvyTMgHG_t-b7YTS2gRAmLErNSvEWGgDKyb0Z-K8ugwxtnOqOQxI/exec",
     "apps_script_secret": "dentia_secure_email_secret_2026",
     "host": "smtp.gmail.com",
     "port": 465,
