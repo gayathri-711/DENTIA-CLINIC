@@ -42,5 +42,32 @@
     "gender": "Female",
     "address": "11/256,kuzhimedu, Ulipuram (po), gangavalli (tk),salem(dt).",
     "created_at": "2026-11-18T05:38:57.651Z"
+  },
+  {
+    "id": 5,
+    "name": "Test Patient",
+    "email": "testpatient@gmail.com",
+    "phone": "9876543210",
+    "password": "patient427",
+    "address": "",
+    "created_at": "2026-11-24T05:35:49.475Z"
+  },
+  {
+    "id": 6,
+    "name": "Verification Patient",
+    "email": "patient.test@dentia.com",
+    "phone": "9876543210",
+    "password": "patient988",
+    "address": "",
+    "created_at": "2026-11-24T05:50:34.632Z"
+  },
+  {
+    "id": 7,
+    "name": "Verification Patient 2",
+    "email": "patient2.test@dentia.com",
+    "phone": "9876543210",
+    "password": "patient126",
+    "address": "",
+    "created_at": "2026-11-24T05:50:34.733Z"
   }
 ]

@@ -23,7 +23,7 @@
       slotContainer.html('<div class="text-muted small p-2"><i class="fa fa-spinner fa-spin me-1"></i> Checking real-time slot availability...</div>');
 
       $.ajax({
-        url: 'api/check-slots.php',
+        url: '/api/check-slots',
         type: 'GET',
         dataType: 'json',
         data: {
@@ -116,7 +116,7 @@
       alertBox.addClass('d-none').removeClass('alert-danger alert-success');
 
       $.ajax({
-        url: 'api/book-appointment.php',
+        url: '/api/book-appointment',
         type: 'POST',
         data: form.serialize(),
         dataType: 'json',

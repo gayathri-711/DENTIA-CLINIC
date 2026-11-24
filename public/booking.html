@@ -524,7 +524,12 @@
         const selectedDate = dateInput.value;
 
         try {
-            const res = await fetch(`/api/check-slots.php?dentist_id=${docId}&date=${encodeURIComponent(selectedDate)}`).then(r => r.json());
+            let res;
+            try {
+                res = await fetch(`/api/check-slots?dentist_id=${docId}&date=${encodeURIComponent(selectedDate)}`).then(r => r.json());
+            } catch (err1) {
+                res = await fetch(`/api/check-slots.php?dentist_id=${docId}&date=${encodeURIComponent(selectedDate)}`).then(r => r.json());
+            }
             if (res && res.success) {
                 const slots = res.slots && res.slots.length > 0 ? res.slots : DEFAULT_SLOTS;
                 const booked = res.booked || [];
@@ -581,11 +586,20 @@
         collisionBox.classList.add('d-none');
 
         try {
-            const res = await fetch('/api/book-appointment.php', {
+            let res;
+            let response = await fetch('/api/book-appointment', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                 body: JSON.stringify(formData)
-            }).then(r => r.json());
+            });
+            if (!response.ok && (response.status === 404 || response.status === 405)) {
+                response = await fetch('/api/book-appointment.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+            }
+            res = await response.json();
 
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<span>Confirm & Schedule Appointment</span>';

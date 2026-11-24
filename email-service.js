@@ -74,13 +74,15 @@ async function sendAppsScriptEmail({ template, recipient, subject, data, idempot
   };
 
   try {
+    const controller = typeof AbortSignal !== 'undefined' && AbortSignal.timeout ? AbortSignal.timeout(6500) : undefined;
     const response = await fetch(cfg.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
-      redirect: 'follow'
+      redirect: 'follow',
+      signal: controller
     });
 
     const responseText = await response.text();

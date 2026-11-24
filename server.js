@@ -1460,8 +1460,8 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
     return sendJSON(res, { success: true, notifications: filtered.reverse() });
   }
 
-  // 18. GET /api/check-slots.php
-  if (pathname === '/api/check-slots.php') {
+  // 18. GET /api/check-slots or /api/check-slots.php
+  if (pathname === '/api/check-slots' || pathname === '/api/check-slots.php') {
     const dentistId = parseInt(parsedUrl.query.dentist_id || '0', 10);
     const rawDate = parsedUrl.query.date || '';
     const normDate = normalizeDate(rawDate);
@@ -1496,8 +1496,8 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
     return res.end('sent');
   }
 
-  // 19. POST /api/book-appointment.php or /booking.php
-  if ((pathname === '/api/book-appointment.php' || pathname === '/booking.php') && req.method === 'POST') {
+  // 19. POST /api/book-appointment or /api/book-appointment.php or /booking.php
+  if ((pathname === '/api/book-appointment' || pathname === '/api/book-appointment.php' || pathname === '/booking.php') && req.method === 'POST') {
     const postData = await parsePostData(req);
 
     const name = (postData.name || '').trim();
@@ -1585,16 +1585,21 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
       }
 
       // Dispatch Regret Notification (Email & SMS)
-      const notif = dispatchNotification({
-        patient_name: name,
-        patient_email: email,
-        patient_phone: phone,
-        appointment_ref: 'REGRET-UNAVAILABLE',
-        type: 'slot_unavailable',
-        subject: regretSubject,
-        message: detailedRegretMsg,
-        sms_text: smsRegret
-      });
+      let notif = [];
+      try {
+        notif = await dispatchNotification({
+          patient_name: name,
+          patient_email: email,
+          patient_phone: phone,
+          appointment_ref: 'REGRET-UNAVAILABLE',
+          type: 'slot_unavailable',
+          subject: regretSubject,
+          message: detailedRegretMsg,
+          sms_text: smsRegret
+        });
+      } catch (notifErr) {
+        console.error('[REGRET NOTIFICATION ERROR]', notifErr.message);
+      }
 
       return sendJSON(res, {
         success: false,
@@ -1668,16 +1673,21 @@ function saveDoctorPhotoIfBase64(imageData, docId) {
     ).catch(e => console.error('[DB ERROR] Insert appointment:', e.message));
 
     // Dispatch Confirmation Email & SMS for the booked appointment
-    const notifs = dispatchNotification({
-      patient_name: name,
-      patient_email: email,
-      patient_phone: phone,
-      appointment_ref: ref,
-      type: 'booking_received',
-      subject: `Appointment Booking Request Received: [${ref}] - Dentia Dental Clinic`,
-      message: `Dear ${name}, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for ${serviceName} with ${currentDoc.name} on ${rawDate} at ${time} has been received and scheduled (Ref: ${ref}). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.`,
-      sms_text: `Dentia Clinic: Hello ${name}, your appointment request ${ref} with ${currentDoc.name} on ${rawDate} at ${time} is received. We will send confirmation shortly!`
-    });
+    let notifs = [];
+    try {
+      notifs = await dispatchNotification({
+        patient_name: name,
+        patient_email: email,
+        patient_phone: phone,
+        appointment_ref: ref,
+        type: 'booking_received',
+        subject: `Appointment Booking Request Received: [${ref}] - Dentia Dental Clinic`,
+        message: `Dear ${name}, thank you for booking with Doctor Dental Clinic Dentia. Your appointment request for ${serviceName} with ${currentDoc.name} on ${rawDate} at ${time} has been received and scheduled (Ref: ${ref}). You will receive an immediate update once confirmed by our medical team. View your status anytime in your Patient Dashboard.`,
+        sms_text: `Dentia Clinic: Hello ${name}, your appointment request ${ref} with ${currentDoc.name} on ${rawDate} at ${time} is received. We will send confirmation shortly!`
+      });
+    } catch (notifErr) {
+      console.error('[CONFIRMATION NOTIFICATION ERROR]', notifErr.message);
+    }
 
     // Alert Chief Medical Admin of new booking request
     emailService.sendAdminAlertEmail({

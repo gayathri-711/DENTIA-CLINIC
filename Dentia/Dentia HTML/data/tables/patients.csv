@@ -3,3 +3,6 @@ id,name,email,phone,password,dob,gender,address,total_visits,registered_at,creat
 "2","Emily Watson","emily.watson@example.com","+1 (555) 987-6543","patient123","","Male","452 Anna Salai, Salem, Tamil Nadu 636001","0","2026-11-18T06:24:53.735Z","2026-11-18 06:24:53"
 "3","Gayathri Dhanasekaran","gayathri.240103@cse.ritchennai.edu.in","+917598092785","gayathri","","Male","11/256,kuzhimedu, Ulipuram (po), gangavalli (tk),salem(dt).","0","2026-11-18T06:24:53.744Z","2026-11-18 06:24:53"
 "4","Gayathri Dhanasekaran","gayatrisenthamarai@gmail.com","+917598092785","gayathri","","Male","11/256,kuzhimedu, Ulipuram (po), gangavalli (tk),salem(dt).","0","2026-11-18T06:24:53.754Z","2026-11-18 06:24:53"
+"5","Test Patient","testpatient@gmail.com","9876543210","patient427","","Male","","0","2026-11-24T05:35:49.475Z","2026-11-24 05:35:49"
+"6","Verification Patient","patient.test@dentia.com","9876543210","patient988","","Male","","0","2026-11-24T05:50:34.632Z","2026-11-24 05:50:34"
+"7","Verification Patient 2","patient2.test@dentia.com","9876543210","patient126","","Male","","0","2026-11-24T05:50:34.733Z","2026-11-24 05:50:34"

@@ -136,5 +136,22 @@
     "status": "Confirmed",
     "created_at": "2026-11-18T06:02:37.508Z",
     "updated_at": "2026-11-18T06:03:12.702Z"
+  },
+  {
+    "id": 9,
+    "appointment_ref": "DEN-2026-5105",
+    "patient_id": 5,
+    "patient_name": "Test Patient",
+    "patient_email": "testpatient@gmail.com",
+    "patient_phone": "9876543210",
+    "service_id": 1,
+    "service_name": "Teeth Whitening (₹4,999)",
+    "dentist_id": 1,
+    "dentist_name": "Dr. Sarah Bennett",
+    "appointment_date": "2026-11-28",
+    "appointment_time": "10:00 AM",
+    "message": "Test booking",
+    "status": "Pending",
+    "created_at": "2026-11-24T05:35:49.477Z"
   }
 ]
